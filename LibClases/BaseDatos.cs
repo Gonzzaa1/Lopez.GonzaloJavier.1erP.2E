@@ -41,10 +41,24 @@ namespace LibClases
                 string rol = fila[4];
                 string correo = fila[5];
 
-                lista.Add(new(nombre, apellido, user, contraseña, rol, correo));
+                lista.Add(new(nombre, apellido, user, contraseña, ParsearRol(rol), correo));
             }
 
             return lista;
+        }
+        private static ERoles ParsearRol(string rol)
+        {
+            switch(rol)
+            {
+                case "Administrador":
+                    return ERoles.Administrador;
+                case "Gerente":
+                    return ERoles.Gerente;
+                case "Empleado":
+                    return ERoles.Empleado;
+                default:
+                    return ERoles.Cliente;
+            }
         }
         private static string ParseArchivoUsuarioToCsv(List<Usuario> lista)
         {

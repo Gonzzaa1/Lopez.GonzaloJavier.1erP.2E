@@ -44,7 +44,7 @@ namespace LibClases
                 {
                     if (user.User == usuarioIngresado)
                     {
-                        if (user.Rol == "administrador")
+                        if (user.Rol == ERoles.Administrador)
                         {
                             return true;
                         }
@@ -61,7 +61,7 @@ namespace LibClases
                 {
                     if (user.User == usuarioIngresado)
                     {
-                        if (user.Rol == "gerente")
+                        if (user.Rol == ERoles.Empleado)
                         {
                             return true;
                         }
@@ -81,9 +81,9 @@ namespace LibClases
             }
             throw new Exception("Usuario incorrecto");
         }
-        private static bool BuscarUsuario(string user, string contra, string rol)
+        private static bool BuscarUsuario(string user, string contra, ERoles rol)
         {
-            if (!String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(contra) && !String.IsNullOrEmpty(rol))
+            if (!String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(contra))
             {
                 foreach (Usuario usuario in usuarios)
                 {
@@ -95,7 +95,7 @@ namespace LibClases
             }
             return false;
         }
-        public static void CrearUsuario(string nombre, string apellido, string usuario, string contraseña, string rol, string correo)
+        public static void CrearUsuario(string nombre, string apellido, string usuario, string contraseña, ERoles rol, string correo)
         {
             if (!BuscarUsuario(usuario, contraseña, rol))
             {
@@ -125,22 +125,15 @@ namespace LibClases
                 }
             }
         }
-        public static void CambiarRolUsuario(string usuario, string rol)
+        public static void CambiarRolUsuario(string usuario, ERoles rol)
         {
-            if (rol == "administrador" || rol == "gerente" || rol == "empleado")
+            foreach (Usuario user in usuarios)
             {
-                foreach (Usuario user in usuarios)
+                if (user.User == usuario)
                 {
-                    if (user.User == usuario)
-                    {
-                        user.Rol = rol;
-                    }
+                    user.Rol = rol;
                 }
-            }
-            else
-            {
-                throw new Exception("Rol seleccionado incorrecto!");
-            }
+            }  
         }
         public static void EliminarUsuario(string usuario)
         {

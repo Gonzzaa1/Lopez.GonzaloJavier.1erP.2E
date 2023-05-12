@@ -33,8 +33,8 @@ namespace Pantallas
         }
         private void FrmMenuPrincipal_Load(object sender, EventArgs e)
         {
-            txtUsuario.Text = usuario.Nombre;
-            txtRol.Text = usuario.Rol;
+            txtUsuario.Text = usuario.User;
+            txtRol.Text = usuario.Rol.ToString();
             OcularSubmenus();
         }
 
@@ -120,7 +120,7 @@ namespace Pantallas
         private void btnAdministracion_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmAdministracion administracion = new FrmAdministracion();
+            FrmAdministracion administracion = new FrmAdministracion(usuario);
             Abrirformulario(administracion);
             
         }

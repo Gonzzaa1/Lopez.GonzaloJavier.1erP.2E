@@ -10,9 +10,9 @@ namespace LibClases
     {
         private string _usuario;
         private string _contraseña;
-        private string _rol;
+        private ERoles _rol;
 
-        public Usuario(string nombre, string apellido, string usuario, string contraseña, string rol, string correo) : base(nombre, apellido, correo)
+        public Usuario(string nombre, string apellido, string usuario, string contraseña, ERoles rol, string correo) : base(nombre, apellido, correo)
         {
             _usuario = usuario;
             _contraseña = contraseña;
@@ -21,7 +21,7 @@ namespace LibClases
 
         public string User { get => _usuario; set => _usuario = value; }
         public string Contraseña { get => _contraseña; set => _contraseña = value; }
-        public string Rol { get => _rol; set => _rol = value; }
+        public ERoles Rol { get => _rol; set => _rol = value; }
 
         public string parseUsuario()
         {
@@ -29,7 +29,9 @@ namespace LibClases
         }
         public override string ToString()
         {
-            return $" {Nombre.ToUpper()} {Apellido.ToUpper()} - {Rol.ToUpper()}";
+            string auxRol = Rol.ToString();
+
+            return $" {Nombre.ToUpper()} {Apellido.ToUpper()} - {auxRol.ToUpper()}";
         }
 
         public void RealizarPresupuesto()
