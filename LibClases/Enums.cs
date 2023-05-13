@@ -16,10 +16,21 @@ namespace LibClases
     }
     public enum ECategoria
     {
-        Microprocesadores,
-        Motherboards,
+        Microprocesador,
+        Motherboard,
         MemoriaRam,
+        Disco,
         GPU,
-        Gabinetes
+        Gabinete,
+        Fuente,
+        Cooler,
+        Mouse,
+        Teclado,
+        Auriculares,
+        Parlantes,
+        Microfono,
+        Monitor,
+        CamaraWeb
+       
     }
 }
