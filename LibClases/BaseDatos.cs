@@ -46,7 +46,7 @@ namespace LibClases
 
             return lista;
         }
-        private static ERoles ParsearRol(string rol)
+        public static ERoles ParsearRol(string rol)
         {
             switch(rol)
             {

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +11,16 @@ namespace LibClases
     public static class Registro
     {
         private static List<Usuario> usuarios;
+        private static Queue<Usuario> solicitudMod;
 
         static Registro()
         {
             usuarios = BaseDatos.CargarUsuario();
+            solicitudMod = new Queue<Usuario>();
         }
 
         public static List<Usuario> Usuarios { get => usuarios; }
+        public static Queue<Usuario> Solicitudes { get => solicitudMod!; }
 
         public static bool ConfirmarUsuario(string usuario, string contraseña)
         {
@@ -81,7 +86,7 @@ namespace LibClases
             }
             throw new Exception("Usuario incorrecto");
         }
-        private static bool BuscarUsuario(string user, string contra, ERoles rol)
+        private static bool BuscarUsuario(string user, string contra)
         {
             if (!String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(contra))
             {
@@ -97,12 +102,30 @@ namespace LibClases
         }
         public static void CrearUsuario(string nombre, string apellido, string usuario, string contraseña, ERoles rol, string correo)
         {
-            if (!BuscarUsuario(usuario, contraseña, rol))
+            if (!BuscarUsuario(usuario, contraseña))
             {
-                usuarios.Add(new(nombre, apellido, usuario, contraseña, rol, correo));
+                if(!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(correo))
+                    usuarios.Add(new(nombre, apellido, usuario, contraseña, rol, correo));
+                else
+                    throw new Exception("Datos incompletos");
             }
             else
                 throw new Exception("Usuario existente");
+        }
+        public static void ModificarUsuario(Usuario userMod)
+        {
+            foreach (Usuario user in usuarios)
+            {
+                if (userMod.User == user.User)
+                {
+                    user.User = userMod.User;
+                    user.Contraseña = userMod.Contraseña;
+                    user.Rol = userMod.Rol;
+                    user.Nombre = userMod.Nombre;
+                    user.Apellido = userMod.Apellido;
+                    user.Correo = userMod.Correo;
+                }
+            }
         }
         public static void ModificarUsuario(string usuario, string usuarioNuevo)
         {
@@ -122,6 +145,18 @@ namespace LibClases
                         user.Contraseña = contraseña;
                     else
                         throw new Exception("Contraseña anterior incorrecta");
+                }
+            }
+        }
+        public static void ModificarUsuario(string usuario, string nombre, string apellido, string correo)
+        {
+            foreach (Usuario user in usuarios)
+            {
+                if (user.User == usuario)
+                {
+                    user.Nombre = nombre;
+                    user.Apellido = apellido;
+                    user.Correo = correo;
                 }
             }
         }
@@ -155,6 +190,38 @@ namespace LibClases
                 return true;
 
             return false;
+        }
+        public static void SolicitarMod (string usuario,string contraseña,ERoles rol,string nombre,string apellido,string correo)
+        {
+            if(solicitudMod != null)
+            {
+                solicitudMod.Enqueue(new Usuario(nombre, apellido, usuario, contraseña, rol, correo));
+            }
+        }
+        public static string MostrarSolicitud()
+        {
+            Usuario auxUser = solicitudMod.Peek();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"El usuario {auxUser.User.ToUpper()} solicito modificar los siguientes datos");
+            sb.AppendLine($"Nombre = {auxUser.Nombre.ToUpper()}");
+            sb.AppendLine($"Apellido = { auxUser.Apellido.ToUpper()}");
+            sb.AppendLine($"Correo = {auxUser.Correo.ToUpper()}");
+
+            return sb.ToString();
+        }
+        public static void ConfirmarSolicitudMod()
+        {
+            if(solicitudMod != null)
+            {
+                Usuario userMod = solicitudMod.Dequeue();
+                ModificarUsuario(userMod);
+            }
+        }
+        public static void CancelarSolicitud()
+        {
+            solicitudMod.Dequeue();
         }
     }
 }

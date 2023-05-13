@@ -28,13 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlTitle = new System.Windows.Forms.Panel();
+            this.btnGuardar = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.gbAdministracion = new System.Windows.Forms.GroupBox();
+            this.btnCancelSol = new System.Windows.Forms.Button();
+            this.btnConfirmSol = new System.Windows.Forms.Button();
             this.btnSolicitarCambios = new System.Windows.Forms.Button();
             this.btnEditPass = new System.Windows.Forms.Button();
             this.cbRoles = new System.Windows.Forms.ComboBox();
+            this.btnNo = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             this.txtCorreo = new System.Windows.Forms.TextBox();
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
@@ -57,12 +62,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.pnlBotonera = new System.Windows.Forms.Panel();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.txtSolicitudesMod = new System.Windows.Forms.TextBox();
+            this.lblSolicitudes = new System.Windows.Forms.Label();
+            this.txtBuscar = new System.Windows.Forms.TextBox();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnSolis = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnBaja = new System.Windows.Forms.Button();
+            this.btnAlta = new System.Windows.Forms.Button();
             this.pnlListado = new System.Windows.Forms.Panel();
             this.dgvUsers = new System.Windows.Forms.DataGridView();
             this.pnlTitle.SuspendLayout();
@@ -72,6 +79,47 @@
             this.pnlListado.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).BeginInit();
             this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Consolas", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(399, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(299, 43);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "ADMINISTRACION";
+            // 
+            // pnlTitle
+            // 
+            this.pnlTitle.Controls.Add(this.btnGuardar);
+            this.pnlTitle.Controls.Add(this.button1);
+            this.pnlTitle.Controls.Add(this.label1);
+            this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTitle.Location = new System.Drawing.Point(0, 0);
+            this.pnlTitle.Name = "pnlTitle";
+            this.pnlTitle.Size = new System.Drawing.Size(1100, 83);
+            this.pnlTitle.TabIndex = 1;
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGuardar.FlatAppearance.BorderSize = 0;
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Image = global::Pantallas.Properties.Resources.disco;
+            this.btnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGuardar.Location = new System.Drawing.Point(945, 12);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(130, 56);
+            this.btnGuardar.TabIndex = 1;
+            this.btnGuardar.Text = "GUARDAR";
+            this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // button1
             // 
@@ -92,33 +140,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Consolas", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(399, 25);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(299, 43);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "ADMINISTRACION";
-            // 
-            // pnlTitle
-            // 
-            this.pnlTitle.Controls.Add(this.button1);
-            this.pnlTitle.Controls.Add(this.label1);
-            this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTitle.Location = new System.Drawing.Point(0, 0);
-            this.pnlTitle.Name = "pnlTitle";
-            this.pnlTitle.Size = new System.Drawing.Size(1100, 83);
-            this.pnlTitle.TabIndex = 1;
-            // 
             // gbAdministracion
             // 
+            this.gbAdministracion.Controls.Add(this.btnCancelSol);
+            this.gbAdministracion.Controls.Add(this.btnConfirmSol);
             this.gbAdministracion.Controls.Add(this.btnSolicitarCambios);
             this.gbAdministracion.Controls.Add(this.btnEditPass);
             this.gbAdministracion.Controls.Add(this.cbRoles);
+            this.gbAdministracion.Controls.Add(this.btnNo);
+            this.gbAdministracion.Controls.Add(this.btnOk);
             this.gbAdministracion.Controls.Add(this.txtCorreo);
             this.gbAdministracion.Controls.Add(this.txtApellido);
             this.gbAdministracion.Controls.Add(this.txtNombre);
@@ -139,15 +169,43 @@
             this.gbAdministracion.TabIndex = 2;
             this.gbAdministracion.TabStop = false;
             // 
+            // btnCancelSol
+            // 
+            this.btnCancelSol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancelSol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelSol.Location = new System.Drawing.Point(889, 174);
+            this.btnCancelSol.Name = "btnCancelSol";
+            this.btnCancelSol.Size = new System.Drawing.Size(135, 32);
+            this.btnCancelSol.TabIndex = 4;
+            this.btnCancelSol.Text = "Cancelar";
+            this.btnCancelSol.UseVisualStyleBackColor = true;
+            this.btnCancelSol.Visible = false;
+            this.btnCancelSol.Click += new System.EventHandler(this.btnCancelSol_Click);
+            // 
+            // btnConfirmSol
+            // 
+            this.btnConfirmSol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConfirmSol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfirmSol.Location = new System.Drawing.Point(665, 174);
+            this.btnConfirmSol.Name = "btnConfirmSol";
+            this.btnConfirmSol.Size = new System.Drawing.Size(135, 32);
+            this.btnConfirmSol.TabIndex = 4;
+            this.btnConfirmSol.Text = "Confirmar";
+            this.btnConfirmSol.UseVisualStyleBackColor = true;
+            this.btnConfirmSol.Visible = false;
+            this.btnConfirmSol.Click += new System.EventHandler(this.btnConfirmSol_Click);
+            // 
             // btnSolicitarCambios
             // 
+            this.btnSolicitarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSolicitarCambios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSolicitarCambios.Location = new System.Drawing.Point(391, 176);
+            this.btnSolicitarCambios.Location = new System.Drawing.Point(703, 174);
             this.btnSolicitarCambios.Name = "btnSolicitarCambios";
             this.btnSolicitarCambios.Size = new System.Drawing.Size(288, 32);
             this.btnSolicitarCambios.TabIndex = 4;
             this.btnSolicitarCambios.Text = "Solicitar Modificacion";
             this.btnSolicitarCambios.UseVisualStyleBackColor = true;
+            this.btnSolicitarCambios.Click += new System.EventHandler(this.btnSolicitarCambios_Click);
             // 
             // btnEditPass
             // 
@@ -169,6 +227,32 @@
             this.cbRoles.Name = "cbRoles";
             this.cbRoles.Size = new System.Drawing.Size(208, 32);
             this.cbRoles.TabIndex = 2;
+            // 
+            // btnNo
+            // 
+            this.btnNo.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNo.Image = global::Pantallas.Properties.Resources.circulo_cruzado;
+            this.btnNo.Location = new System.Drawing.Point(582, 169);
+            this.btnNo.Name = "btnNo";
+            this.btnNo.Size = new System.Drawing.Size(63, 43);
+            this.btnNo.TabIndex = 0;
+            this.btnNo.UseVisualStyleBackColor = true;
+            this.btnNo.Visible = false;
+            this.btnNo.Click += new System.EventHandler(this.btnNo_Click);
+            // 
+            // btnOk
+            // 
+            this.btnOk.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOk.Image = global::Pantallas.Properties.Resources.caja;
+            this.btnOk.Location = new System.Drawing.Point(475, 169);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(63, 43);
+            this.btnOk.TabIndex = 0;
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Visible = false;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // txtCorreo
             // 
@@ -213,6 +297,7 @@
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(208, 32);
             this.txtUsuario.TabIndex = 1;
+            this.txtUsuario.TextChanged += new System.EventHandler(this.txtUsuario_TextChanged);
             // 
             // label7
             // 
@@ -292,6 +377,7 @@
             // 
             // cbShowPass
             // 
+            this.cbShowPass.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cbShowPass.AutoSize = true;
             this.cbShowPass.Location = new System.Drawing.Point(734, 50);
             this.cbShowPass.Name = "cbShowPass";
@@ -303,6 +389,7 @@
             // 
             // btnCancelar
             // 
+            this.btnCancelar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnCancelar.Location = new System.Drawing.Point(889, 101);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(135, 45);
@@ -313,29 +400,36 @@
             // 
             // btnConfirmar
             // 
+            this.btnConfirmar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnConfirmar.Location = new System.Drawing.Point(734, 101);
             this.btnConfirmar.Name = "btnConfirmar";
             this.btnConfirmar.Size = new System.Drawing.Size(135, 45);
             this.btnConfirmar.TabIndex = 2;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = true;
+            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
             // 
             // txtNewPassRep
             // 
+            this.txtNewPassRep.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtNewPassRep.Location = new System.Drawing.Point(400, 114);
             this.txtNewPassRep.Name = "txtNewPassRep";
             this.txtNewPassRep.Size = new System.Drawing.Size(279, 32);
             this.txtNewPassRep.TabIndex = 1;
+            this.txtNewPassRep.TextChanged += new System.EventHandler(this.txtNewPassRep_TextChanged);
             // 
             // txtNewPass
             // 
+            this.txtNewPass.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtNewPass.Location = new System.Drawing.Point(400, 65);
             this.txtNewPass.Name = "txtNewPass";
             this.txtNewPass.Size = new System.Drawing.Size(279, 32);
             this.txtNewPass.TabIndex = 1;
+            this.txtNewPass.TextChanged += new System.EventHandler(this.txtNewPass_TextChanged);
             // 
             // txtLastPass
             // 
+            this.txtLastPass.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtLastPass.Location = new System.Drawing.Point(400, 16);
             this.txtLastPass.Name = "txtLastPass";
             this.txtLastPass.Size = new System.Drawing.Size(279, 32);
@@ -343,6 +437,7 @@
             // 
             // label10
             // 
+            this.label10.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(87, 122);
             this.label10.Name = "label10";
@@ -352,6 +447,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(87, 73);
             this.label9.Name = "label9";
@@ -361,6 +457,7 @@
             // 
             // label8
             // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(87, 24);
             this.label8.Name = "label8";
@@ -370,79 +467,123 @@
             // 
             // pnlBotonera
             // 
-            this.pnlBotonera.Controls.Add(this.textBox10);
-            this.pnlBotonera.Controls.Add(this.button8);
-            this.pnlBotonera.Controls.Add(this.button7);
-            this.pnlBotonera.Controls.Add(this.button6);
-            this.pnlBotonera.Controls.Add(this.button5);
-            this.pnlBotonera.Controls.Add(this.button4);
+            this.pnlBotonera.Controls.Add(this.txtSolicitudesMod);
+            this.pnlBotonera.Controls.Add(this.lblSolicitudes);
+            this.pnlBotonera.Controls.Add(this.txtBuscar);
+            this.pnlBotonera.Controls.Add(this.btnBuscar);
+            this.pnlBotonera.Controls.Add(this.btnSolis);
+            this.pnlBotonera.Controls.Add(this.btnEdit);
+            this.pnlBotonera.Controls.Add(this.btnBaja);
+            this.pnlBotonera.Controls.Add(this.btnAlta);
             this.pnlBotonera.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlBotonera.Font = new System.Drawing.Font("Consolas", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pnlBotonera.ForeColor = System.Drawing.Color.White;
             this.pnlBotonera.Location = new System.Drawing.Point(0, 487);
             this.pnlBotonera.Name = "pnlBotonera";
-            this.pnlBotonera.Size = new System.Drawing.Size(1100, 74);
+            this.pnlBotonera.Size = new System.Drawing.Size(1100, 76);
             this.pnlBotonera.TabIndex = 4;
             // 
-            // textBox10
+            // txtSolicitudesMod
             // 
-            this.textBox10.Location = new System.Drawing.Point(633, 21);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(299, 32);
-            this.textBox10.TabIndex = 1;
+            this.txtSolicitudesMod.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtSolicitudesMod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.txtSolicitudesMod.Enabled = false;
+            this.txtSolicitudesMod.ForeColor = System.Drawing.Color.White;
+            this.txtSolicitudesMod.Location = new System.Drawing.Point(607, 22);
+            this.txtSolicitudesMod.Name = "txtSolicitudesMod";
+            this.txtSolicitudesMod.Size = new System.Drawing.Size(47, 32);
+            this.txtSolicitudesMod.TabIndex = 3;
+            this.txtSolicitudesMod.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSolicitudesMod.TextChanged += new System.EventHandler(this.txtSolicitudesMod_TextChanged);
             // 
-            // button8
+            // lblSolicitudes
             // 
-            this.button8.Location = new System.Drawing.Point(957, 16);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(131, 43);
-            this.button8.TabIndex = 0;
-            this.button8.Text = "button4";
-            this.button8.UseVisualStyleBackColor = true;
+            this.lblSolicitudes.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblSolicitudes.AutoSize = true;
+            this.lblSolicitudes.Location = new System.Drawing.Point(274, 25);
+            this.lblSolicitudes.Name = "lblSolicitudes";
+            this.lblSolicitudes.Size = new System.Drawing.Size(334, 24);
+            this.lblSolicitudes.TabIndex = 2;
+            this.lblSolicitudes.Text = "Solicitudes de modificacion";
             // 
-            // button7
+            // txtBuscar
             // 
-            this.button7.Location = new System.Drawing.Point(453, 16);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(131, 43);
-            this.button7.TabIndex = 0;
-            this.button7.Text = "button4";
-            this.button7.UseVisualStyleBackColor = true;
+            this.txtBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBuscar.Location = new System.Drawing.Point(762, 21);
+            this.txtBuscar.Name = "txtBuscar";
+            this.txtBuscar.PlaceholderText = "Buscar usuario";
+            this.txtBuscar.Size = new System.Drawing.Size(257, 32);
+            this.txtBuscar.TabIndex = 1;
+            this.txtBuscar.TextChanged += new System.EventHandler(this.txtBuscar_TextChanged);
             // 
-            // button6
+            // btnBuscar
             // 
-            this.button6.Location = new System.Drawing.Point(303, 16);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(131, 43);
-            this.button6.TabIndex = 0;
-            this.button6.Text = "button4";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscar.Image = global::Pantallas.Properties.Resources.busqueda;
+            this.btnBuscar.Location = new System.Drawing.Point(1025, 15);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(63, 43);
+            this.btnBuscar.TabIndex = 0;
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // button5
+            // btnSolis
             // 
-            this.button5.Location = new System.Drawing.Point(158, 16);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(131, 43);
-            this.button5.TabIndex = 0;
-            this.button5.Text = "button4";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnSolis.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnSolis.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSolis.Image = global::Pantallas.Properties.Resources.acercarse;
+            this.btnSolis.Location = new System.Drawing.Point(663, 15);
+            this.btnSolis.Name = "btnSolis";
+            this.btnSolis.Size = new System.Drawing.Size(63, 43);
+            this.btnSolis.TabIndex = 0;
+            this.btnSolis.UseVisualStyleBackColor = true;
+            this.btnSolis.Click += new System.EventHandler(this.btnSolis_Click);
             // 
-            // button4
+            // btnEdit
             // 
-            this.button4.Location = new System.Drawing.Point(12, 16);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(131, 43);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnEdit.Enabled = false;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.Image = global::Pantallas.Properties.Resources.editar;
+            this.btnEdit.Location = new System.Drawing.Point(184, 15);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(63, 43);
+            this.btnEdit.TabIndex = 0;
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnBaja
+            // 
+            this.btnBaja.Enabled = false;
+            this.btnBaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBaja.Image = global::Pantallas.Properties.Resources.borrar_usuario;
+            this.btnBaja.Location = new System.Drawing.Point(96, 16);
+            this.btnBaja.Name = "btnBaja";
+            this.btnBaja.Size = new System.Drawing.Size(63, 43);
+            this.btnBaja.TabIndex = 0;
+            this.btnBaja.UseVisualStyleBackColor = true;
+            this.btnBaja.Click += new System.EventHandler(this.btnBaja_Click);
+            // 
+            // btnAlta
+            // 
+            this.btnAlta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAlta.Image = global::Pantallas.Properties.Resources.agregar_usuario;
+            this.btnAlta.Location = new System.Drawing.Point(12, 16);
+            this.btnAlta.Name = "btnAlta";
+            this.btnAlta.Size = new System.Drawing.Size(63, 43);
+            this.btnAlta.TabIndex = 0;
+            this.btnAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
             // 
             // pnlListado
             // 
             this.pnlListado.Controls.Add(this.dgvUsers);
             this.pnlListado.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlListado.Location = new System.Drawing.Point(0, 561);
+            this.pnlListado.Location = new System.Drawing.Point(0, 563);
             this.pnlListado.Name = "pnlListado";
-            this.pnlListado.Size = new System.Drawing.Size(1100, 303);
+            this.pnlListado.Size = new System.Drawing.Size(1100, 301);
             this.pnlListado.TabIndex = 5;
             // 
             // dgvUsers
@@ -451,11 +592,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvUsers.Location = new System.Drawing.Point(12, 15);
+            this.dgvUsers.Location = new System.Drawing.Point(12, 6);
             this.dgvUsers.Name = "dgvUsers";
             this.dgvUsers.RowTemplate.Height = 25;
-            this.dgvUsers.Size = new System.Drawing.Size(1076, 96);
+            this.dgvUsers.Size = new System.Drawing.Size(1076, 283);
             this.dgvUsers.TabIndex = 0;
+            this.dgvUsers.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsers_CellContentDoubleClick);
             // 
             // FrmAdministracion
             // 
@@ -487,7 +629,6 @@
         }
 
         #endregion
-        private Button button1;
         private Label label1;
         private Panel pnlTitle;
         private GroupBox gbAdministracion;
@@ -513,16 +654,24 @@
         private Label label9;
         private Label label8;
         private Panel pnlBotonera;
-        private TextBox textBox10;
-        private Button button8;
-        private Button button7;
-        private Button button6;
-        private Button button5;
-        private Button button4;
+        private TextBox txtBuscar;
+        private Button btnBuscar;
+        private Button btnSolis;
+        private Button btnEdit;
+        private Button btnBaja;
+        private Button btnAlta;
         private Panel pnlListado;
         private DataGridView dgvUsers;
         private ComboBox cbRoles;
         private Button btnEditPass;
         private Button btnSolicitarCambios;
+        private TextBox txtSolicitudesMod;
+        private Label lblSolicitudes;
+        private Button btnCancelSol;
+        private Button btnConfirmSol;
+        private Button btnNo;
+        private Button btnOk;
+        private Button btnGuardar;
+        private Button button1;
     }
 }
