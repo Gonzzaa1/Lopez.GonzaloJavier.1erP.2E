@@ -149,6 +149,20 @@ namespace Pantallas
             lblHoraLogo.Visible = true;
         }
 
+        private void btnPBuscar_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmProducto producto = new FrmProducto(true);
+            Abrirformulario(producto);
+        }
+
+        private void btnPConsultar_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmProducto producto = new FrmProducto(false);
+            Abrirformulario(producto);
+        }
+
         private void OcularSubmenus()
         {
             if(pnlVentas.Visible == true)

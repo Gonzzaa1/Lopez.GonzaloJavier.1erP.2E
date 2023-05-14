@@ -475,9 +475,10 @@
             this.btnPConsultar.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
             this.btnPConsultar.Size = new System.Drawing.Size(323, 40);
             this.btnPConsultar.TabIndex = 1;
-            this.btnPConsultar.Text = "Consultar Stock";
+            this.btnPConsultar.Text = "Gestion Producto/Stock";
             this.btnPConsultar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPConsultar.UseVisualStyleBackColor = false;
+            this.btnPConsultar.Click += new System.EventHandler(this.btnPConsultar_Click);
             // 
             // btnPBuscar
             // 
@@ -496,6 +497,7 @@
             this.btnPBuscar.Text = "Buscar Prodructo";
             this.btnPBuscar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPBuscar.UseVisualStyleBackColor = false;
+            this.btnPBuscar.Click += new System.EventHandler(this.btnPBuscar_Click);
             // 
             // btnProductos
             // 

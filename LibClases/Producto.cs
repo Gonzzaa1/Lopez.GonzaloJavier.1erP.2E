@@ -24,16 +24,30 @@ namespace LibClases
             _categoria = categoria;
             _stock = stock;
         }
-        public string Id { get { return _id; } set { _id = value; } }
-        public string Nombre { get { return _nombre; } set { _nombre = value; } } 
-        public string Marca { get { return _marca; } set { _marca = value; } }
-        public double Precio { get { return _precio; } set { _precio = value; } }
-        public ECategoria Categoria { get { return _categoria; } set { _categoria = value; } } 
-        public int Stock { get { return _stock; } set { _stock = value; } }
+        public string Id { get => _id;  set => _id = value;  }
+        public string Nombre { get => _nombre; set => _nombre = value; } 
+        public string Marca { get => _marca;  set => _marca = value; } 
+        public double Precio { get => _precio;  set => _precio = value; } 
+        public ECategoria Categoria { get => _categoria;  set => _categoria = value; }  
+        public int Stock { get => _stock;  set => _stock = value; } 
 
         public string parseProducto()
         {
             return $"{Id},{Nombre},{Marca},{Precio},{Categoria},{Stock}";
+        }
+        public override string ToString()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"-----------  Producto --------------\n");
+            sb.AppendLine($" ID        = {Id}\n");
+            sb.AppendLine($" Categoria = {Categoria}\n");
+            sb.AppendLine($" Nombre    = {Nombre}\n");
+            sb.AppendLine($" Precio    = ${Precio}.-");
+            sb.AppendLine($"\n-----------------------------------");
+
+            return sb.ToString();
         }
 
     }
