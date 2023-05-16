@@ -23,7 +23,7 @@ namespace LibClases
         public string Contraseña { get => _contraseña; set => _contraseña = value; }
         public ERoles Rol { get => _rol; set => _rol = value; }
 
-        public string parseUsuario()
+        public override string ParsearDatos()
         {
             return $"{Nombre},{Apellido},{User},{Contraseña},{Rol},{Correo}";
         }
@@ -32,26 +32,6 @@ namespace LibClases
             string auxRol = Rol.ToString();
 
             return $" {Nombre.ToUpper()} {Apellido.ToUpper()} - {auxRol.ToUpper()}";
-        }
-
-        public void RealizarPresupuesto()
-        {
-
-        }
-
-        public void RealizarVenta()
-        {
-
-        }
-
-        public void RealizarCompra()
-        {
-
-        }
-
-        public void ConsultarStock()
-        {
-
         }
     }
 }

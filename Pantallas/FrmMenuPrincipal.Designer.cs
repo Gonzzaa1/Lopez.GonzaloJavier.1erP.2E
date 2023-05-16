@@ -76,6 +76,7 @@
             this.lblMain2 = new System.Windows.Forms.Label();
             this.lblMain1 = new System.Windows.Forms.Label();
             this.hora = new System.Windows.Forms.Timer(this.components);
+            this.btnSolicitudStock = new System.Windows.Forms.Button();
             this.pnlTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRest)).BeginInit();
@@ -201,7 +202,7 @@
             this.btnAdministracion.ForeColor = System.Drawing.Color.White;
             this.btnAdministracion.Image = global::Pantallas.Properties.Resources.ajustes;
             this.btnAdministracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministracion.Location = new System.Drawing.Point(0, 1087);
+            this.btnAdministracion.Location = new System.Drawing.Point(0, 1127);
             this.btnAdministracion.Name = "btnAdministracion";
             this.btnAdministracion.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnAdministracion.Size = new System.Drawing.Size(323, 50);
@@ -218,7 +219,7 @@
             this.pnlReportes.Controls.Add(this.btnRCompras);
             this.pnlReportes.Controls.Add(this.btnRVentas);
             this.pnlReportes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlReportes.Location = new System.Drawing.Point(0, 967);
+            this.pnlReportes.Location = new System.Drawing.Point(0, 1007);
             this.pnlReportes.Name = "pnlReportes";
             this.pnlReportes.Size = new System.Drawing.Size(323, 120);
             this.pnlReportes.TabIndex = 11;
@@ -287,7 +288,7 @@
             this.btnReportes.ForeColor = System.Drawing.Color.White;
             this.btnReportes.Image = global::Pantallas.Properties.Resources.grafico_histograma;
             this.btnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReportes.Location = new System.Drawing.Point(0, 917);
+            this.btnReportes.Location = new System.Drawing.Point(0, 957);
             this.btnReportes.Name = "btnReportes";
             this.btnReportes.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnReportes.Size = new System.Drawing.Size(323, 50);
@@ -304,7 +305,7 @@
             this.pnlProveedores.Controls.Add(this.btnPSolicitudes);
             this.pnlProveedores.Controls.Add(this.btnPGestionar);
             this.pnlProveedores.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlProveedores.Location = new System.Drawing.Point(0, 797);
+            this.pnlProveedores.Location = new System.Drawing.Point(0, 837);
             this.pnlProveedores.Name = "pnlProveedores";
             this.pnlProveedores.Size = new System.Drawing.Size(323, 120);
             this.pnlProveedores.TabIndex = 9;
@@ -373,7 +374,7 @@
             this.btnProveedores.ForeColor = System.Drawing.Color.White;
             this.btnProveedores.Image = global::Pantallas.Properties.Resources.lado_del_camion;
             this.btnProveedores.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProveedores.Location = new System.Drawing.Point(0, 747);
+            this.btnProveedores.Location = new System.Drawing.Point(0, 787);
             this.btnProveedores.Name = "btnProveedores";
             this.btnProveedores.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnProveedores.Size = new System.Drawing.Size(323, 50);
@@ -389,7 +390,7 @@
             this.pnlClientes.Controls.Add(this.btnCGestionar);
             this.pnlClientes.Controls.Add(this.btnCBuscar);
             this.pnlClientes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlClientes.Location = new System.Drawing.Point(0, 667);
+            this.pnlClientes.Location = new System.Drawing.Point(0, 707);
             this.pnlClientes.Name = "pnlClientes";
             this.pnlClientes.Size = new System.Drawing.Size(323, 80);
             this.pnlClientes.TabIndex = 7;
@@ -440,7 +441,7 @@
             this.btnClientes.ForeColor = System.Drawing.Color.White;
             this.btnClientes.Image = global::Pantallas.Properties.Resources.usuarios_alt;
             this.btnClientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClientes.Location = new System.Drawing.Point(0, 617);
+            this.btnClientes.Location = new System.Drawing.Point(0, 657);
             this.btnClientes.Name = "btnClientes";
             this.btnClientes.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnClientes.Size = new System.Drawing.Size(323, 50);
@@ -453,12 +454,13 @@
             // 
             // pnlProductos
             // 
+            this.pnlProductos.Controls.Add(this.btnSolicitudStock);
             this.pnlProductos.Controls.Add(this.btnPConsultar);
             this.pnlProductos.Controls.Add(this.btnPBuscar);
             this.pnlProductos.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProductos.Location = new System.Drawing.Point(0, 537);
             this.pnlProductos.Name = "pnlProductos";
-            this.pnlProductos.Size = new System.Drawing.Size(323, 80);
+            this.pnlProductos.Size = new System.Drawing.Size(323, 120);
             this.pnlProductos.TabIndex = 5;
             // 
             // btnPConsultar
@@ -475,7 +477,7 @@
             this.btnPConsultar.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
             this.btnPConsultar.Size = new System.Drawing.Size(323, 40);
             this.btnPConsultar.TabIndex = 1;
-            this.btnPConsultar.Text = "Gestion Producto/Stock";
+            this.btnPConsultar.Text = "Gestion Productos";
             this.btnPConsultar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPConsultar.UseVisualStyleBackColor = false;
             this.btnPConsultar.Click += new System.EventHandler(this.btnPConsultar_Click);
@@ -635,7 +637,7 @@
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
             this.btnCerrarSesion.Image = global::Pantallas.Properties.Resources.salida_32x32;
             this.btnCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 1137);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 1177);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnCerrarSesion.Size = new System.Drawing.Size(323, 50);
@@ -797,6 +799,25 @@
             this.hora.Enabled = true;
             this.hora.Tick += new System.EventHandler(this.hora_Tick);
             // 
+            // btnSolicitudStock
+            // 
+            this.btnSolicitudStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
+            this.btnSolicitudStock.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSolicitudStock.FlatAppearance.BorderSize = 0;
+            this.btnSolicitudStock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.btnSolicitudStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSolicitudStock.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSolicitudStock.ForeColor = System.Drawing.Color.White;
+            this.btnSolicitudStock.Location = new System.Drawing.Point(0, 80);
+            this.btnSolicitudStock.Name = "btnSolicitudStock";
+            this.btnSolicitudStock.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.btnSolicitudStock.Size = new System.Drawing.Size(323, 40);
+            this.btnSolicitudStock.TabIndex = 2;
+            this.btnSolicitudStock.Text = "Solicitudes Stock";
+            this.btnSolicitudStock.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSolicitudStock.UseVisualStyleBackColor = false;
+            this.btnSolicitudStock.Click += new System.EventHandler(this.btnSolicitudStock_Click);
+            // 
             // FrmMenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -882,5 +903,6 @@
         private Button btnPBuscar;
         private Button btnSolicitudes;
         public Label lblHoraLogo;
+        private Button btnSolicitudStock;
     }
 }

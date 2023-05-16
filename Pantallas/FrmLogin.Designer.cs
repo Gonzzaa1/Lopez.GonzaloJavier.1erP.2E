@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pnlCarga = new System.Windows.Forms.Panel();
+            this.pcLogo = new System.Windows.Forms.PictureBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlTitle = new System.Windows.Forms.Panel();
             this.btnSalir = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -41,32 +41,34 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.btnIniciar = new System.Windows.Forms.Button();
             this.lblAdmin = new System.Windows.Forms.LinkLabel();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel2.SuspendLayout();
+            this.pnlLogin = new System.Windows.Forms.Panel();
+            this.pnlCarga.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcLogo)).BeginInit();
+            this.pnlTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.pnlLogin.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlCarga
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(125)))), ((int)(((byte)(204)))));
-            this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 291);
-            this.panel1.TabIndex = 0;
+            this.pnlCarga.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(125)))), ((int)(((byte)(204)))));
+            this.pnlCarga.Controls.Add(this.pcLogo);
+            this.pnlCarga.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlCarga.Location = new System.Drawing.Point(0, 0);
+            this.pnlCarga.Name = "pnlCarga";
+            this.pnlCarga.Size = new System.Drawing.Size(250, 292);
+            this.pnlCarga.TabIndex = 0;
             // 
-            // pictureBox1
+            // pcLogo
             // 
-            this.pictureBox1.Image = global::Pantallas.Properties.Resources.PCMaker_Logo_Vertical_Color;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(250, 291);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pcLogo.Image = global::Pantallas.Properties.Resources.PCMaker_Logo_Vertical_Color;
+            this.pcLogo.Location = new System.Drawing.Point(0, 0);
+            this.pcLogo.Name = "pcLogo";
+            this.pcLogo.Size = new System.Drawing.Size(250, 292);
+            this.pcLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pcLogo.TabIndex = 0;
+            this.pcLogo.TabStop = false;
             // 
             // txtUsuario
             // 
@@ -74,22 +76,22 @@
             this.txtUsuario.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtUsuario.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtUsuario.ForeColor = System.Drawing.Color.DimGray;
-            this.txtUsuario.Location = new System.Drawing.Point(320, 74);
+            this.txtUsuario.Location = new System.Drawing.Point(65, 38);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.PlaceholderText = "Usuario";
             this.txtUsuario.Size = new System.Drawing.Size(406, 32);
             this.txtUsuario.TabIndex = 1;
             // 
-            // panel2
+            // pnlTitle
             // 
-            this.panel2.BackColor = System.Drawing.Color.AliceBlue;
-            this.panel2.Controls.Add(this.btnSalir);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(250, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(514, 32);
-            this.panel2.TabIndex = 2;
+            this.pnlTitle.BackColor = System.Drawing.Color.AliceBlue;
+            this.pnlTitle.Controls.Add(this.btnSalir);
+            this.pnlTitle.Controls.Add(this.label1);
+            this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTitle.Location = new System.Drawing.Point(250, 0);
+            this.pnlTitle.Name = "pnlTitle";
+            this.pnlTitle.Size = new System.Drawing.Size(515, 32);
+            this.pnlTitle.TabIndex = 2;
             // 
             // btnSalir
             // 
@@ -122,7 +124,7 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.DimGray;
-            this.panel4.Location = new System.Drawing.Point(321, 105);
+            this.panel4.Location = new System.Drawing.Point(66, 69);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(405, 1);
             this.panel4.TabIndex = 3;
@@ -133,7 +135,7 @@
             this.txtContraseña.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtContraseña.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtContraseña.ForeColor = System.Drawing.Color.DimGray;
-            this.txtContraseña.Location = new System.Drawing.Point(321, 150);
+            this.txtContraseña.Location = new System.Drawing.Point(66, 114);
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.PasswordChar = '*';
             this.txtContraseña.PlaceholderText = "Contraseña";
@@ -143,7 +145,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.DimGray;
-            this.panel3.Location = new System.Drawing.Point(321, 181);
+            this.panel3.Location = new System.Drawing.Point(66, 145);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(405, 1);
             this.panel3.TabIndex = 3;
@@ -151,7 +153,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Pantallas.Properties.Resources.usuario;
-            this.pictureBox2.Location = new System.Drawing.Point(275, 74);
+            this.pictureBox2.Location = new System.Drawing.Point(20, 38);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(32, 32);
             this.pictureBox2.TabIndex = 4;
@@ -160,7 +162,7 @@
             // pictureBox3
             // 
             this.pictureBox3.Image = global::Pantallas.Properties.Resources.cerrar;
-            this.pictureBox3.Location = new System.Drawing.Point(275, 150);
+            this.pictureBox3.Location = new System.Drawing.Point(20, 114);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(32, 32);
             this.pictureBox3.TabIndex = 4;
@@ -173,7 +175,7 @@
             this.btnIniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIniciar.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnIniciar.ForeColor = System.Drawing.Color.White;
-            this.btnIniciar.Location = new System.Drawing.Point(421, 202);
+            this.btnIniciar.Location = new System.Drawing.Point(166, 166);
             this.btnIniciar.Name = "btnIniciar";
             this.btnIniciar.Size = new System.Drawing.Size(163, 40);
             this.btnIniciar.TabIndex = 5;
@@ -185,7 +187,7 @@
             // 
             this.lblAdmin.AutoSize = true;
             this.lblAdmin.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblAdmin.Location = new System.Drawing.Point(435, 257);
+            this.lblAdmin.Location = new System.Drawing.Point(180, 221);
             this.lblAdmin.Name = "lblAdmin";
             this.lblAdmin.Size = new System.Drawing.Size(140, 22);
             this.lblAdmin.TabIndex = 6;
@@ -193,52 +195,64 @@
             this.lblAdmin.Text = "Autocompletar";
             this.lblAdmin.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAdmin_LinkClicked);
             // 
+            // pnlLogin
+            // 
+            this.pnlLogin.Controls.Add(this.pictureBox2);
+            this.pnlLogin.Controls.Add(this.lblAdmin);
+            this.pnlLogin.Controls.Add(this.panel4);
+            this.pnlLogin.Controls.Add(this.pictureBox3);
+            this.pnlLogin.Controls.Add(this.txtUsuario);
+            this.pnlLogin.Controls.Add(this.panel3);
+            this.pnlLogin.Controls.Add(this.txtContraseña);
+            this.pnlLogin.Controls.Add(this.btnIniciar);
+            this.pnlLogin.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlLogin.Location = new System.Drawing.Point(251, 32);
+            this.pnlLogin.Name = "pnlLogin";
+            this.pnlLogin.Size = new System.Drawing.Size(514, 260);
+            this.pnlLogin.TabIndex = 7;
+            // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.ClientSize = new System.Drawing.Size(764, 291);
-            this.Controls.Add(this.lblAdmin);
-            this.Controls.Add(this.btnIniciar);
-            this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.txtContraseña);
-            this.Controls.Add(this.txtUsuario);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(765, 292);
+            this.Controls.Add(this.pnlLogin);
+            this.Controls.Add(this.pnlTitle);
+            this.Controls.Add(this.pnlCarga);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmLogin";
             this.Opacity = 0.9D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.Load += new System.EventHandler(this.FrmLogin_Load);
+            this.pnlCarga.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pcLogo)).EndInit();
+            this.pnlTitle.ResumeLayout(false);
+            this.pnlTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.pnlLogin.ResumeLayout(false);
+            this.pnlLogin.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private Panel panel1;
+        private Panel pnlCarga;
         private TextBox txtUsuario;
-        private Panel panel2;
+        private Panel pnlTitle;
         private Label label1;
         private Panel panel4;
         private TextBox txtContraseña;
         private Panel panel3;
-        private PictureBox pictureBox1;
+        private PictureBox pcLogo;
         private PictureBox pictureBox2;
         private PictureBox pictureBox3;
         private Button btnSalir;
         private Button btnIniciar;
         private LinkLabel lblAdmin;
+        private Panel pnlLogin;
     }
 }

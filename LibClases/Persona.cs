@@ -16,5 +16,7 @@
         public string Nombre { get => _nombre; set => _nombre = value; }
         public string Apellido { get => _apellido; set => _apellido = value; }
         public string Correo { get => _correo; set => _correo = value; }
+
+        public abstract string ParsearDatos();
     }
 }

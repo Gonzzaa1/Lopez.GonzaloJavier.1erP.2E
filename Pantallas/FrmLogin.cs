@@ -20,7 +20,6 @@ namespace Pantallas
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            BaseDatos.GuardarUsuario(Registro.Usuarios);
             Application.Exit();
         }
 
@@ -36,6 +35,7 @@ namespace Pantallas
             {
                 if (Registro.ConfirmarUsuario(txtUsuario.Text, txtContraseña.Text))
                 {
+                    PCMaker.Cargar();
                     FrmMenuPrincipal inicio = new FrmMenuPrincipal(txtUsuario.Text);
                     inicio.Show();
                     Hide();
@@ -45,6 +45,11 @@ namespace Pantallas
             {
                 MessageBox.Show(ex.Message, "Algo Salio Mal!");
             }
+        }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }

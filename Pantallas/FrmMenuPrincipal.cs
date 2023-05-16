@@ -35,6 +35,7 @@ namespace Pantallas
         {
             txtUsuario.Text = usuario.User;
             txtRol.Text = usuario.Rol.ToString();
+            ControlBotonesRol();
             OcularSubmenus();
         }
 
@@ -152,14 +153,21 @@ namespace Pantallas
         private void btnPBuscar_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmProducto producto = new FrmProducto(true);
+            FrmProducto producto = new FrmProducto(true,false,usuario);
             Abrirformulario(producto);
         }
 
         private void btnPConsultar_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmProducto producto = new FrmProducto(false);
+            FrmProducto producto = new FrmProducto(false,false,usuario);
+            Abrirformulario(producto);
+        }
+
+        private void btnSolicitudStock_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmProducto producto = new FrmProducto(false,true, usuario);
             Abrirformulario(producto);
         }
 
@@ -185,6 +193,20 @@ namespace Pantallas
             }
             else
                 submenu.Visible = false;
+        }
+        private void ControlBotonesRol()
+        {
+            if(usuario.Rol == ERoles.Empleado)
+            {
+                btnReportes.Visible = false;
+                btnProveedores.Visible = false;
+                btnSolicitudStock.Visible = false;
+                pnlProductos.Height = pnlProductos.Height - 40;
+                btnSolicitudes.Visible = false;
+                pnlVentas.Height = pnlVentas.Height - 40;
+                btnCGestionar.Visible = false;
+                pnlClientes.Height = pnlClientes.Height - 40;
+            }
         }
     }
 }
