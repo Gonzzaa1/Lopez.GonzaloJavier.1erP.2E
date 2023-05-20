@@ -52,6 +52,7 @@
             this.btnCBuscar = new System.Windows.Forms.Button();
             this.btnClientes = new System.Windows.Forms.Button();
             this.pnlProductos = new System.Windows.Forms.Panel();
+            this.btnSolicitudStock = new System.Windows.Forms.Button();
             this.btnPConsultar = new System.Windows.Forms.Button();
             this.btnPBuscar = new System.Windows.Forms.Button();
             this.btnProductos = new System.Windows.Forms.Button();
@@ -76,7 +77,6 @@
             this.lblMain2 = new System.Windows.Forms.Label();
             this.lblMain1 = new System.Windows.Forms.Label();
             this.hora = new System.Windows.Forms.Timer(this.components);
-            this.btnSolicitudStock = new System.Windows.Forms.Button();
             this.pnlTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRest)).BeginInit();
@@ -412,6 +412,7 @@
             this.btnCGestionar.Text = "Gestionar Cliente";
             this.btnCGestionar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCGestionar.UseVisualStyleBackColor = false;
+            this.btnCGestionar.Click += new System.EventHandler(this.btnCGestionar_Click);
             // 
             // btnCBuscar
             // 
@@ -430,6 +431,7 @@
             this.btnCBuscar.Text = "Buscar Cliente";
             this.btnCBuscar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCBuscar.UseVisualStyleBackColor = false;
+            this.btnCBuscar.Click += new System.EventHandler(this.btnCBuscar_Click);
             // 
             // btnClientes
             // 
@@ -462,6 +464,25 @@
             this.pnlProductos.Name = "pnlProductos";
             this.pnlProductos.Size = new System.Drawing.Size(323, 120);
             this.pnlProductos.TabIndex = 5;
+            // 
+            // btnSolicitudStock
+            // 
+            this.btnSolicitudStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
+            this.btnSolicitudStock.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSolicitudStock.FlatAppearance.BorderSize = 0;
+            this.btnSolicitudStock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.btnSolicitudStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSolicitudStock.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSolicitudStock.ForeColor = System.Drawing.Color.White;
+            this.btnSolicitudStock.Location = new System.Drawing.Point(0, 80);
+            this.btnSolicitudStock.Name = "btnSolicitudStock";
+            this.btnSolicitudStock.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.btnSolicitudStock.Size = new System.Drawing.Size(323, 40);
+            this.btnSolicitudStock.TabIndex = 2;
+            this.btnSolicitudStock.Text = "Solicitudes Stock";
+            this.btnSolicitudStock.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSolicitudStock.UseVisualStyleBackColor = false;
+            this.btnSolicitudStock.Click += new System.EventHandler(this.btnSolicitudStock_Click);
             // 
             // btnPConsultar
             // 
@@ -798,25 +819,6 @@
             // 
             this.hora.Enabled = true;
             this.hora.Tick += new System.EventHandler(this.hora_Tick);
-            // 
-            // btnSolicitudStock
-            // 
-            this.btnSolicitudStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
-            this.btnSolicitudStock.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnSolicitudStock.FlatAppearance.BorderSize = 0;
-            this.btnSolicitudStock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnSolicitudStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSolicitudStock.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSolicitudStock.ForeColor = System.Drawing.Color.White;
-            this.btnSolicitudStock.Location = new System.Drawing.Point(0, 80);
-            this.btnSolicitudStock.Name = "btnSolicitudStock";
-            this.btnSolicitudStock.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
-            this.btnSolicitudStock.Size = new System.Drawing.Size(323, 40);
-            this.btnSolicitudStock.TabIndex = 2;
-            this.btnSolicitudStock.Text = "Solicitudes Stock";
-            this.btnSolicitudStock.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSolicitudStock.UseVisualStyleBackColor = false;
-            this.btnSolicitudStock.Click += new System.EventHandler(this.btnSolicitudStock_Click);
             // 
             // FrmMenuPrincipal
             // 

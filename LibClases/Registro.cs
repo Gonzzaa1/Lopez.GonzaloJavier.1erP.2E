@@ -10,7 +10,7 @@ namespace LibClases
 {
     public static class Registro
     {
-        private static List<Usuario> usuarios = BaseDatos.CargarUsuario();
+        private static List<Usuario> usuarios = BaseDatos.CargarArchivoUsuario();
         private static Queue<Usuario> solicitudMod = new Queue<Usuario>();
 
         public static List<Usuario> Usuarios { get => usuarios; }

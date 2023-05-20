@@ -13,7 +13,7 @@ namespace LibClases
         private string _direccion;
         private List<Producto> _stock;
 
-        public Proveedor(string local,string telefeno,string direccion)
+        public Proveedor(string local, string telefeno, string direccion)
         {
             _local = local;
             _telefono = telefeno;
@@ -22,8 +22,9 @@ namespace LibClases
         }
 
         public string Local { get => _local; set => _local = value; }
-        public string Telefono { get => _telefono; set => _telefono = value;}
-        public string Direccion { get => _direccion; set => _direccion = value;}
+        
+        public string Telefono { get => _telefono; set => _telefono = value; }
+        public string Direccion { get => _direccion; set => _direccion = value; }
         public List<Producto> Stock { get => _stock; set => _stock = value; }
 
     }

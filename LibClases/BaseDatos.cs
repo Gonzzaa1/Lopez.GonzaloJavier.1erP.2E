@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,31 +13,60 @@ namespace LibClases
         
         public static void GuardarUsuario(List<Usuario> lista)
         {
+            string usuarios = ParseUsuarioToCsv(lista);
             if (!File.Exists("Usuarios.csv"))
             {
-                File.WriteAllText("Usuarios.csv", "Test");
+                File.WriteAllText("Usuarios.csv", usuarios);
             }
             else
             {
-                string usuarios = ParseArchivoUsuarioToCsv(lista);
 
                 File.WriteAllText("Usuarios.csv", usuarios);
             }
         }
         public static void GuardarArchivoProducto(List<Producto> lista)
         {
+            string producto = ParseProductoToCsv(lista);
             if (!File.Exists("Productos.csv"))
             {
-                File.WriteAllText("Productos.csv", "Test");
+                File.WriteAllText("Productos.csv", producto);
             }
             else
             {
-                string producto = ParseArchivoProductoToCsv(lista);
 
                 File.WriteAllText("Productos.csv", producto);
             }
         }
-        public static List<Usuario> CargarUsuario()
+        public static void GuardarArchivoCliente(List<Cliente>lista)
+        {
+            string clientes = ParseClienteToCsv(lista);
+
+            File.WriteAllText("Clientes.csv", clientes);
+        }
+        public static List<Cliente> CargarArchivoClientes()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+            using StreamReader archivo = new StreamReader("Clientes.csv");
+
+            string separador = ",";
+            string? cliente;
+
+            while((cliente = archivo.ReadLine()) != null)
+            {
+                string[] fila = cliente.Split(separador);
+                string nombre = fila[0];
+                string apellido = fila[1];
+                double dni = Convert.ToDouble(fila[2]);
+                int edad = Convert.ToInt16(fila[3]);
+                string direccion = fila[4];
+                string telefono = fila[5];
+                string correo = fila[6];
+
+                clientes.Add(new(nombre, apellido, dni, edad, direccion, telefono, correo));
+            }
+            return clientes;
+        }
+        public static List<Usuario> CargarArchivoUsuario()
         {
             List<Usuario> lista = new List<Usuario>();
 
@@ -134,24 +164,33 @@ namespace LibClases
                     return ERoles.Cliente;
             }
         }
-        private static string ParseArchivoUsuarioToCsv(List<Usuario> lista)
+        private static string ParseUsuarioToCsv(List<Usuario> lista)
         {
             StringBuilder sb = new StringBuilder();
-
             foreach (Usuario user in lista)
             {
-                sb.AppendLine(user.parseUsuario());
+                sb.AppendLine(user.ParsearDatos());
             }
 
             return sb.ToString();
         }
-        private static string ParseArchivoProductoToCsv(List<Producto>lista)
+        private static string ParseProductoToCsv(List<Producto>lista)
         {
             StringBuilder sb = new StringBuilder();
 
             foreach (Producto producto in lista)
             {
                 sb.AppendLine(producto.parseProducto());
+            }
+
+            return sb.ToString();
+        }
+        private static string ParseClienteToCsv(List<Cliente>lista)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (Cliente cliente in lista)
+            {
+                sb.AppendLine(cliente.ParsearDatos());
             }
 
             return sb.ToString();

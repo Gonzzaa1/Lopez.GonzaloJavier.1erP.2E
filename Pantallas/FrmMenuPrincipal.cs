@@ -170,6 +170,19 @@ namespace Pantallas
             FrmProducto producto = new FrmProducto(false,true, usuario);
             Abrirformulario(producto);
         }
+        private void btnCBuscar_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmClientes clientes = new FrmClientes(usuario, true);
+            Abrirformulario(clientes);
+        }
+
+        private void btnCGestionar_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmClientes clientes = new FrmClientes(usuario, false);
+            Abrirformulario(clientes);
+        }
 
         private void OcularSubmenus()
         {
@@ -184,6 +197,7 @@ namespace Pantallas
             if(pnlReportes.Visible == true)
                 pnlReportes.Visible = false;
         }
+
         private void MostrarSubmenus(Panel submenu)
         {
             if (submenu.Visible == false)
