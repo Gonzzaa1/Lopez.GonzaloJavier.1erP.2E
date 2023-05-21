@@ -15,7 +15,7 @@ namespace Pantallas
     {
         private Usuario _usuario;
         private bool _busqueda;
-        private string _dni;
+        private string? _dni;
         private bool _mod;
         private FrmClientes()
         {
@@ -122,8 +122,9 @@ namespace Pantallas
         {
             try
             {
-                if(_mod)
+                if(_mod && _dni != null)
                 {
+                    
                     Cliente cliente = PCMaker.BuscarCliente(_dni);
                     PCMaker.ModificarCliente(cliente, txtNombre.Text, txtApellido.Text, txtDni.Text, txtEdad.Text, txtDireccion.Text, txtTelefono.Text, txtCorreo.Text);
                     pnlDatos.Visible = false;
@@ -233,13 +234,16 @@ namespace Pantallas
             {
                 try
                 {
-                    PCMaker.BajaCliente(PCMaker.BuscarCliente(_dni));
-                    MessageBox.Show("Cliente eliminado");
-                    btnBaja.Visible = false;
-                    btnMod.Visible = false;
-                    ReestablecerDatos();
-                    dgvListado.DataSource = null;
-                    dgvListado.DataSource = PCMaker.Clientes;
+                    if(_dni != null)
+                    {
+                        PCMaker.BajaCliente(PCMaker.BuscarCliente(_dni));
+                        MessageBox.Show("Cliente eliminado");
+                        btnBaja.Visible = false;
+                        btnMod.Visible = false;
+                        ReestablecerDatos();
+                        dgvListado.DataSource = null;
+                        dgvListado.DataSource = PCMaker.Clientes;
+                    }
                 }
                 catch(Exception ex)
                 {

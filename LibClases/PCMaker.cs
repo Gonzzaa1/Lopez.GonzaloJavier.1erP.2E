@@ -18,7 +18,7 @@
             try
             {
                 _clientes = BaseDatos.CargarArchivoClientes();
-            }catch(Exception e)
+            }catch(Exception)
             {
 
             }
