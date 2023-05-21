@@ -15,7 +15,13 @@
         public static void Cargar()
         {
             _productos = BaseDatos.CargarArchivoProductos();
-            _clientes = BaseDatos.CargarArchivoClientes();
+            try
+            {
+                _clientes = BaseDatos.CargarArchivoClientes();
+            }catch(Exception e)
+            {
+
+            }
         }
         #region Control Clientes
         public static void AltaCliente(string nombre,string apellido,string dni,string edad, string direccion,string telefono,string correo)
@@ -45,7 +51,7 @@
 
                 foreach(Cliente cliente2 in _clientes)
                 {
-                    if( cliente2.Equals(cliente))
+                    if(cliente2.Equals(cliente))
                     {
                         auxCliente = cliente;
                     }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,17 +12,16 @@ namespace LibClases
 {
     public static class BaseDatos
     {
-        
         public static void GuardarUsuario(List<Usuario> lista)
         {
             string usuarios = ParseUsuarioToCsv(lista);
             if (!File.Exists("Usuarios.csv"))
             {
-                File.WriteAllText("Usuarios.csv", usuarios);
+                using (StreamWriter sw = File.CreateText("Usuarios.csv"))
+                    sw.WriteLine(usuarios);
             }
             else
             {
-
                 File.WriteAllText("Usuarios.csv", usuarios);
             }
         }
@@ -29,11 +30,11 @@ namespace LibClases
             string producto = ParseProductoToCsv(lista);
             if (!File.Exists("Productos.csv"))
             {
-                File.WriteAllText("Productos.csv", producto);
+                using (StreamWriter sw = File.CreateText("Productos.csv"))
+                    sw.WriteLine(producto);
             }
             else
             {
-
                 File.WriteAllText("Productos.csv", producto);
             }
         }
@@ -41,13 +42,21 @@ namespace LibClases
         {
             string clientes = ParseClienteToCsv(lista);
 
-            File.WriteAllText("Clientes.csv", clientes);
+            if (!File.Exists("Clientes.csv"))
+            {
+                using (StreamWriter sw = File.CreateText("Clientes.csv"))
+                    sw.WriteLine(clientes);
+            }
+            else
+            {
+                File.WriteAllText("Clientes.csv", clientes);
+            }
         }
         public static List<Cliente> CargarArchivoClientes()
         {
             List<Cliente> clientes = new List<Cliente>();
             using StreamReader archivo = new StreamReader("Clientes.csv");
-
+            
             string separador = ",";
             string? cliente;
 
