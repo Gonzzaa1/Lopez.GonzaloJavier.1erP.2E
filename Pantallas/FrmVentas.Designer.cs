@@ -2263,6 +2263,7 @@
             this.lblEstadoPresupuesto.Size = new System.Drawing.Size(80, 22);
             this.lblEstadoPresupuesto.TabIndex = 3;
             this.lblEstadoPresupuesto.Text = "label15";
+            this.lblEstadoPresupuesto.TextChanged += new System.EventHandler(this.lblEstadoPresupuesto_TextChanged);
             // 
             // label14
             // 

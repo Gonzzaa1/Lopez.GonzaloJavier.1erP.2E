@@ -35,7 +35,7 @@ namespace LibClases
 
         public override string ToString()
         {
-            return $"{PresupuestoId},{Cliente},{TarjetaNumero},{Cuotas},{Ganancia},{Usuario}";
+            return $"{PresupuestoId},{Cliente},{TarjetaNumero},{Cuotas},{Ganancia.Replace(",", ".")},{Usuario}";
         }
 
     }

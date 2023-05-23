@@ -552,6 +552,8 @@ namespace Pantallas
             rtbPresupuesto.Text = String.Empty;
             lblId.Text = String.Empty;
             lblEstadoPresupuesto.Text = String.Empty;
+
+            BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
         }
 
         private void btnAprobar_Click(object sender, EventArgs e)
@@ -735,7 +737,8 @@ namespace Pantallas
                     numero = "Sin tarjeta";
                 else
                     numero = txtNumeroTarjeta.Text;
-                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteNombre.Text, numero, _cuotas.ToString(), _precioFinal.ToString("0.##"), _usuario.User);
+
+                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteNombre.Text, numero, _cuotas.ToString(), _precioFinal.ToString("#.##"), _usuario.User);
 
                 _precioPresupuesto = 0;
                 pnlVenta.Visible = false;
@@ -756,6 +759,19 @@ namespace Pantallas
                 BaseDatos.GuardarArchivoProducto(PCMaker.Productos);
             }
             
+        }
+        private void lblEstadoPresupuesto_TextChanged(object sender, EventArgs e)
+        {
+            if (lblEstadoPresupuesto.Text == "Revision")
+            {
+                btnAprobar.Visible = true;
+                btnRechazar.Visible = true;
+            }
+            else
+            {
+                btnAprobar.Visible = false;
+                btnRechazar.Visible = false;
+            }
         }
     }
 }
