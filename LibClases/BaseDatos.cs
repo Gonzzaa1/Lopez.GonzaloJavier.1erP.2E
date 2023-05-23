@@ -25,6 +25,19 @@ namespace LibClases
                 File.WriteAllText("Usuarios.csv", usuarios);
             }
         }
+        public static void GuardarArchivoVentas(List<Venta> lista)
+        {
+            string ventas = ParseVentastoToCsv(lista);
+            if (!File.Exists("Ventas.csv"))
+            {
+                using (StreamWriter sw = File.CreateText("Ventas.csv"))
+                    sw.WriteLine(ventas);
+            }
+            else
+            {
+                File.WriteAllText("Ventas.csv", ventas);
+            }
+        }
         public static void GuardarArchivoProducto(List<Producto> lista)
         {
             string producto = ParseProductoToCsv(lista);
@@ -125,6 +138,32 @@ namespace LibClases
                 clientes.Add(new(nombre, apellido, dni, edad, direccion, telefono, correo));
             }
             return clientes;
+        }
+        public static List<Venta> CargarArchivoVentas()
+        {
+            List<Venta> lista = new List<Venta>();
+
+            using StreamReader archivo = new StreamReader("Ventas.csv");
+
+            string separador = ",";
+            string? ventas;
+
+            while ((ventas = archivo.ReadLine()) != null)
+            {
+                string[] fila = ventas.Split(separador);
+                if (fila[0] != "")
+                {
+                    string id = fila[0];
+                    string cliente = fila[1];
+                    string numeroTarjeta = fila[2];
+                    string cuotas = fila[3];
+                    string ganancia = fila[4];
+                    string usuario = fila[5];
+
+                    lista.Add(new(id, cliente, numeroTarjeta, cuotas, ganancia, usuario));
+                }   
+            }
+            return lista;
         }
         public static List<Usuario> CargarArchivoUsuario()
         {
@@ -277,6 +316,17 @@ namespace LibClases
             foreach (Presupuesto presupuesto in lista)
             {
                 sb.AppendLine(presupuesto.ToString());
+            }
+
+            return sb.ToString();
+        }
+        private static string ParseVentastoToCsv(List<Venta> lista)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Venta venta in lista)
+            {
+                sb.AppendLine(venta.ToString());
             }
 
             return sb.ToString();

@@ -108,11 +108,6 @@ namespace Pantallas
             MostrarSubmenus(pnlClientes);
         }
 
-        private void btnProveedores_Click(object sender, EventArgs e)
-        {
-            MostrarSubmenus(pnlProveedores);
-        }
-
         private void btnReportes_Click(object sender, EventArgs e)
         {
             MostrarSubmenus(pnlReportes);
@@ -186,7 +181,7 @@ namespace Pantallas
         private void btnVPresu_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmVentas ventas = new FrmVentas(true, false, false, false);
+            FrmVentas ventas = new FrmVentas(usuario,true, false, false, false);
             Abrirformulario(ventas);
         }
         private void OcularSubmenus()
@@ -197,8 +192,6 @@ namespace Pantallas
                 pnlProductos.Visible = false;
             if(pnlClientes.Visible == true)
                 pnlClientes.Visible = false;
-            if(pnlProveedores.Visible == true)
-                pnlProveedores.Visible = false;
             if(pnlReportes.Visible == true)
                 pnlReportes.Visible = false;
         }
@@ -206,22 +199,29 @@ namespace Pantallas
         private void btnSolicitudes_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmVentas ventas = new FrmVentas(false, false, false, true);
+            FrmVentas ventas = new FrmVentas(usuario, false, false, false, true);
             Abrirformulario(ventas);
         }
 
         private void btnVEstado_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmVentas ventas = new FrmVentas(false, false, true, false);
+            FrmVentas ventas = new FrmVentas(usuario, false, false, true, false);
             Abrirformulario(ventas);
         }
 
         private void btnVPedido_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmVentas ventas = new FrmVentas(false, true, false, false);
+            FrmVentas ventas = new FrmVentas(usuario, false, true, false, false);
             Abrirformulario(ventas);
+        }
+
+        private void btnRVentas_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmReportes reporte = new FrmReportes();
+            Abrirformulario(reporte);
         }
 
         private void MostrarSubmenus(Panel submenu)
@@ -239,7 +239,6 @@ namespace Pantallas
             if(usuario.Rol == ERoles.Empleado)
             {
                 btnReportes.Visible = false;
-                btnProveedores.Visible = false;
                 btnSolicitudStock.Visible = false;
                 pnlProductos.Height = pnlProductos.Height - 40;
                 btnSolicitudes.Visible = false;

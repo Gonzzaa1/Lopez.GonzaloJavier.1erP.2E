@@ -10,19 +10,31 @@ namespace LibClases
         private static List<Cliente> _clientes = new List<Cliente>();
         private static List<Producto> _presupuesto = new List<Producto>();
         private static List<Presupuesto> _solicitudPresupuesto = new List<Presupuesto>();
+        private static List<Venta> _ventas = new List<Venta>();
 
         public static List<Producto> Productos { get => _productos; }
         public static List<Producto> Solicitudes { get => _solcitudes; }
         public static List<Cliente> Clientes { get => _clientes; }
         public static List<Producto> Presupuesto { get => _presupuesto; }
         public static List<Presupuesto> SolPresupuesto { get => _solicitudPresupuesto; }
+        public static List <Venta> Ventas { get => _ventas; }
 
         public static void Cargar()
         {
             _productos = BaseDatos.CargarArchivoProductos();
             _clientes = BaseDatos.CargarArchivoClientes();
             _solicitudPresupuesto = BaseDatos.CargarArchivoPresupuesto();
+            _ventas = BaseDatos.CargarArchivoVentas();
         }
+        #region Control Venta
+        public static void CrearVenta(string presuId,string cliente,string numeroTarjeta, string cuotas,string precioFinal,string usuario)
+        {
+            if(!String.IsNullOrEmpty(presuId) && !String.IsNullOrEmpty(cliente) && !String.IsNullOrEmpty(numeroTarjeta) && !String.IsNullOrEmpty(cuotas) && !String.IsNullOrEmpty(precioFinal) && !String.IsNullOrEmpty(usuario))
+            {
+                _ventas.Add(new(presuId, cliente, numeroTarjeta,cuotas, precioFinal, usuario));
+            }
+        }
+        #endregion
         #region Control Presupuesto
         public static Presupuesto BuscarPresupuesto(string id)
         {
@@ -50,7 +62,7 @@ namespace LibClases
                     precio += producto.Precio;
                     sb.AppendLine($"{producto.Nombre} - ${producto.Precio}");
                 }
-                sb.AppendLine($"\n\n Total     ------    ${precio}");
+                sb.AppendLine($"\n\n Total     ------------------------    ${precio}");
             }
 
             return sb.ToString();

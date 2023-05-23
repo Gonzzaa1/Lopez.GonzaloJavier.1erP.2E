@@ -10,16 +10,20 @@ namespace Pantallas
         private bool _estado;
         private bool _solicitudes;
         private double _precioPresupuesto = 0;
+        private Usuario? _usuario;
+        private double _precioFinal;
+        private int _cuotas;
         private FrmVentas()
         {
             InitializeComponent();
         }
-        public FrmVentas(bool presupuesto,bool venta, bool estado,bool solicitudes):this()
+        public FrmVentas(Usuario usuario,bool presupuesto,bool venta, bool estado,bool solicitudes):this()
         {
             _presupuesto = presupuesto;
             _venta = venta;
             _estado = estado;
             _solicitudes = solicitudes;
+            _usuario = usuario;
         }
 
         private void FrmVentas_Load(object sender, EventArgs e)
@@ -481,14 +485,23 @@ namespace Pantallas
                 Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(id);
                 if(_venta)
                 {
-                    btnPresupuesto.Visible = false;
-                    pnDatosCVenta.Visible = false;
-                    pnCliente.Visible = true;
-                    pnBuscarPresupuesto.Visible = false;
-                    lblPresupuestoID.Text = txtBuscarPVenta.Text;
-                    lblIdPresupuesto.Text = lblPresupuestoID.Text;
-                    rtbVentaProducto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
-                    _precioPresupuesto = presupuestoSeleccionado.Precio;
+                    if(presupuestoSeleccionado.Estado == EEstados.Aprobado)
+                    {
+                        btnPresupuesto.Visible = false;
+                        pnDatosCVenta.Visible = false;
+                        pnCliente.Visible = true;
+                        pnBuscarPresupuesto.Visible = false;
+                        lblPresupuestoID.Text = txtBuscarPVenta.Text;
+                        lblIdPresupuesto.Text = lblPresupuestoID.Text;
+                        rtbVentaProducto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
+                        rtbFactura.Text = rtbVentaProducto.Text;
+                        _precioPresupuesto = presupuestoSeleccionado.Precio;
+                    }
+                    else
+                    {
+                        throw new Exception("Presupuesto no aprobado");
+                    }
+                    
                 }
                 else
                 {
@@ -508,11 +521,6 @@ namespace Pantallas
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Algo salio mal");
-                if(_venta)
-                {
-                    btnPresupuesto.Visible = true;
-                    pnBuscarPresupuesto.Visible = false;
-                }
             }
         }
 
@@ -584,10 +592,14 @@ namespace Pantallas
                 lblPrecioEfectivo.Text = _precioPresupuesto.ToString();
                 lblDescuentoEfectivo.Text = descuento.ToString();
                 lblPrecioFEfectivo.Text = precioFinal.ToString();
+                _cuotas = 1;
+                _precioFinal = precioFinal;
+                pnlFinal.Visible = true;
             }
             else
             {
-                pnlEfectivo.Visible = false; ;
+                pnlEfectivo.Visible = false; 
+                pnlFinal.Visible = false;
             }
         }
         private void ListarTarjetas()
@@ -608,6 +620,8 @@ namespace Pantallas
                 lblPrecioDebito.Text = _precioPresupuesto.ToString();
                 lblDescuentoDebito.Text = descuento.ToString();
                 lblPrecioFDebito.Text = precioFinal.ToString();
+                _cuotas = 1;
+                _precioFinal = precioFinal;
 
                 pnlDatosTarjeta.Visible = true;
                 pnlCuotas.Visible = false;
@@ -631,6 +645,8 @@ namespace Pantallas
                 lblPrecioCredito.Text = _precioPresupuesto.ToString();
                 lblRecargoCredito.Text = recargo.ToString();
                 lblPrecioFCredito.Text = precioFinal.ToString();
+                _cuotas = 1;
+                _precioFinal = precioFinal;
 
                 pnlDatosTarjeta.Visible = true;
                 pnlCuotas.Visible = false;
@@ -647,6 +663,10 @@ namespace Pantallas
             if(txtCodTarjeta.Text.Length >= 3)
             {
                 pnlCuotas.Visible = true;
+                if(rbDebito.Checked)
+                    pnlFinal.Visible = true;
+                else
+                    pnlFinal.Visible = false;
             }
         }
 
@@ -657,6 +677,10 @@ namespace Pantallas
                 double precioFinal = _precioPresupuesto * 1.15;
 
                 lblMontoEnCuotas.Text = precioFinal.ToString();
+                _cuotas = 1;
+                _precioFinal = precioFinal;
+
+                pnlFinal.Visible = true;
             }
         }
 
@@ -668,6 +692,9 @@ namespace Pantallas
                 double cuotas = precioFinal / 3;
 
                 lblMontoEnCuotas.Text = cuotas.ToString();
+                pnlFinal.Visible = true;
+                _cuotas = 3;
+                _precioFinal = cuotas;
             }
         }
 
@@ -679,6 +706,9 @@ namespace Pantallas
                 double cuotas = precioFinal / 6;
 
                 lblMontoEnCuotas.Text = cuotas.ToString();
+                pnlFinal.Visible = true;
+                _cuotas = 6;
+                _precioFinal = cuotas;
             }
         }
 
@@ -690,7 +720,32 @@ namespace Pantallas
                 double cuotas = precioFinal / 12;
 
                 lblMontoEnCuotas.Text = cuotas.ToString();
+                pnlFinal.Visible = true;
+                _cuotas = 12;
+                _precioFinal = cuotas;
             }
+        }
+
+        private void btnRealizarVenta_Click(object sender, EventArgs e)
+        {
+            if(_usuario != null)
+            {
+                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteNombre.Text, txtNumeroTarjeta.Text, _cuotas.ToString(), _precioFinal.ToString(), _usuario.User);
+
+                _precioPresupuesto = 0;
+                pnlVenta.Visible = false;
+                pnlFactura.Visible = true;
+
+                lblFacturaMontoFinal.Text = $" Cuotas:{_cuotas} x {_precioFinal}";
+
+                Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(lblIdPresupuesto.Text);
+
+                presupuestoSeleccionado.Estado = EEstados.Finalizado;
+
+                BaseDatos.GuardarArchivoVentas(PCMaker.Ventas);
+                BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
+            }
+            
         }
     }
 }

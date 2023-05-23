@@ -114,7 +114,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.txtBuscarPVenta = new System.Windows.Forms.TextBox();
             this.pnlFinal = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnRealizarVenta = new System.Windows.Forms.Button();
             this.pnlDatosVenta = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlDatosTarjeta = new System.Windows.Forms.Panel();
@@ -190,6 +190,8 @@
             this.pnlFactura = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.gbFactura = new System.Windows.Forms.GroupBox();
+            this.lblFacturaMontoFinal = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
             this.lblFacturaCorreo = new System.Windows.Forms.Label();
             this.lblFacturaDni = new System.Windows.Forms.Label();
             this.lblFacturaTelefono = new System.Windows.Forms.Label();
@@ -1159,22 +1161,23 @@
             // 
             // pnlFinal
             // 
-            this.pnlFinal.Controls.Add(this.button2);
+            this.pnlFinal.Controls.Add(this.btnRealizarVenta);
             this.pnlFinal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFinal.Location = new System.Drawing.Point(0, 609);
             this.pnlFinal.Name = "pnlFinal";
             this.pnlFinal.Size = new System.Drawing.Size(1083, 62);
             this.pnlFinal.TabIndex = 2;
             // 
-            // button2
+            // btnRealizarVenta
             // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(898, 9);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(176, 42);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "Confirmar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnRealizarVenta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRealizarVenta.Location = new System.Drawing.Point(898, 9);
+            this.btnRealizarVenta.Name = "btnRealizarVenta";
+            this.btnRealizarVenta.Size = new System.Drawing.Size(176, 42);
+            this.btnRealizarVenta.TabIndex = 0;
+            this.btnRealizarVenta.Text = "Confirmar";
+            this.btnRealizarVenta.UseVisualStyleBackColor = true;
+            this.btnRealizarVenta.Click += new System.EventHandler(this.btnRealizarVenta_Click);
             // 
             // pnlDatosVenta
             // 
@@ -1930,6 +1933,8 @@
             // 
             // gbFactura
             // 
+            this.gbFactura.Controls.Add(this.lblFacturaMontoFinal);
+            this.gbFactura.Controls.Add(this.label24);
             this.gbFactura.Controls.Add(this.lblFacturaCorreo);
             this.gbFactura.Controls.Add(this.lblFacturaDni);
             this.gbFactura.Controls.Add(this.lblFacturaTelefono);
@@ -1956,6 +1961,24 @@
             this.gbFactura.Size = new System.Drawing.Size(1068, 726);
             this.gbFactura.TabIndex = 0;
             this.gbFactura.TabStop = false;
+            // 
+            // lblFacturaMontoFinal
+            // 
+            this.lblFacturaMontoFinal.AutoSize = true;
+            this.lblFacturaMontoFinal.Location = new System.Drawing.Point(760, 689);
+            this.lblFacturaMontoFinal.Name = "lblFacturaMontoFinal";
+            this.lblFacturaMontoFinal.Size = new System.Drawing.Size(80, 22);
+            this.lblFacturaMontoFinal.TabIndex = 26;
+            this.lblFacturaMontoFinal.Text = "label25";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(534, 689);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(220, 22);
+            this.label24.TabIndex = 25;
+            this.label24.Text = "Monto Final:        $";
             // 
             // lblFacturaCorreo
             // 
@@ -2015,9 +2038,10 @@
             // 
             this.rtbFactura.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.rtbFactura.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbFactura.ForeColor = System.Drawing.Color.White;
             this.rtbFactura.Location = new System.Drawing.Point(21, 368);
             this.rtbFactura.Name = "rtbFactura";
-            this.rtbFactura.Size = new System.Drawing.Size(1014, 352);
+            this.rtbFactura.Size = new System.Drawing.Size(1014, 305);
             this.rtbFactura.TabIndex = 23;
             this.rtbFactura.Text = "";
             // 
@@ -2485,7 +2509,7 @@
         private Panel pnBuscarPresupuesto;
         private Panel pnlFinal;
         private Panel pnlDatosVenta;
-        private Button button2;
+        private Button btnRealizarVenta;
         private Panel panel1;
         private Panel pnlDatosTarjeta;
         private TextBox txtCodTarjeta;
@@ -2579,5 +2603,7 @@
         private RichTextBox rtbFactura;
         private Label label23;
         private Label lblIdPresupuesto;
+        private Label lblFacturaMontoFinal;
+        private Label label24;
     }
 }

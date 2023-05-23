@@ -38,15 +38,8 @@
             this.pnlBotonera = new System.Windows.Forms.Panel();
             this.btnAdministracion = new System.Windows.Forms.Button();
             this.pnlReportes = new System.Windows.Forms.Panel();
-            this.btnRGenerales = new System.Windows.Forms.Button();
-            this.btnRCompras = new System.Windows.Forms.Button();
             this.btnRVentas = new System.Windows.Forms.Button();
             this.btnReportes = new System.Windows.Forms.Button();
-            this.pnlProveedores = new System.Windows.Forms.Panel();
-            this.btnPFacturacion = new System.Windows.Forms.Button();
-            this.btnPSolicitudes = new System.Windows.Forms.Button();
-            this.btnPGestionar = new System.Windows.Forms.Button();
-            this.btnProveedores = new System.Windows.Forms.Button();
             this.pnlClientes = new System.Windows.Forms.Panel();
             this.btnCGestionar = new System.Windows.Forms.Button();
             this.btnCBuscar = new System.Windows.Forms.Button();
@@ -85,7 +78,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlBotonera.SuspendLayout();
             this.pnlReportes.SuspendLayout();
-            this.pnlProveedores.SuspendLayout();
             this.pnlClientes.SuspendLayout();
             this.pnlProductos.SuspendLayout();
             this.pnlVentas.SuspendLayout();
@@ -176,8 +168,6 @@
             this.pnlBotonera.Controls.Add(this.btnAdministracion);
             this.pnlBotonera.Controls.Add(this.pnlReportes);
             this.pnlBotonera.Controls.Add(this.btnReportes);
-            this.pnlBotonera.Controls.Add(this.pnlProveedores);
-            this.pnlBotonera.Controls.Add(this.btnProveedores);
             this.pnlBotonera.Controls.Add(this.pnlClientes);
             this.pnlBotonera.Controls.Add(this.btnClientes);
             this.pnlBotonera.Controls.Add(this.pnlProductos);
@@ -202,7 +192,7 @@
             this.btnAdministracion.ForeColor = System.Drawing.Color.White;
             this.btnAdministracion.Image = global::Pantallas.Properties.Resources.ajustes;
             this.btnAdministracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministracion.Location = new System.Drawing.Point(0, 1127);
+            this.btnAdministracion.Location = new System.Drawing.Point(0, 877);
             this.btnAdministracion.Name = "btnAdministracion";
             this.btnAdministracion.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnAdministracion.Size = new System.Drawing.Size(323, 50);
@@ -215,50 +205,12 @@
             // 
             // pnlReportes
             // 
-            this.pnlReportes.Controls.Add(this.btnRGenerales);
-            this.pnlReportes.Controls.Add(this.btnRCompras);
             this.pnlReportes.Controls.Add(this.btnRVentas);
             this.pnlReportes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlReportes.Location = new System.Drawing.Point(0, 1007);
+            this.pnlReportes.Location = new System.Drawing.Point(0, 837);
             this.pnlReportes.Name = "pnlReportes";
-            this.pnlReportes.Size = new System.Drawing.Size(323, 120);
+            this.pnlReportes.Size = new System.Drawing.Size(323, 40);
             this.pnlReportes.TabIndex = 11;
-            // 
-            // btnRGenerales
-            // 
-            this.btnRGenerales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
-            this.btnRGenerales.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnRGenerales.FlatAppearance.BorderSize = 0;
-            this.btnRGenerales.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnRGenerales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRGenerales.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRGenerales.ForeColor = System.Drawing.Color.White;
-            this.btnRGenerales.Location = new System.Drawing.Point(0, 80);
-            this.btnRGenerales.Name = "btnRGenerales";
-            this.btnRGenerales.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
-            this.btnRGenerales.Size = new System.Drawing.Size(323, 40);
-            this.btnRGenerales.TabIndex = 2;
-            this.btnRGenerales.Text = "Estadisticas Generales";
-            this.btnRGenerales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRGenerales.UseVisualStyleBackColor = false;
-            // 
-            // btnRCompras
-            // 
-            this.btnRCompras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
-            this.btnRCompras.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnRCompras.FlatAppearance.BorderSize = 0;
-            this.btnRCompras.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnRCompras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRCompras.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRCompras.ForeColor = System.Drawing.Color.White;
-            this.btnRCompras.Location = new System.Drawing.Point(0, 40);
-            this.btnRCompras.Name = "btnRCompras";
-            this.btnRCompras.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
-            this.btnRCompras.Size = new System.Drawing.Size(323, 40);
-            this.btnRCompras.TabIndex = 1;
-            this.btnRCompras.Text = "Estadisticas Compras";
-            this.btnRCompras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRCompras.UseVisualStyleBackColor = false;
             // 
             // btnRVentas
             // 
@@ -277,6 +229,7 @@
             this.btnRVentas.Text = "Estadisticas Ventas";
             this.btnRVentas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRVentas.UseVisualStyleBackColor = false;
+            this.btnRVentas.Click += new System.EventHandler(this.btnRVentas_Click);
             // 
             // btnReportes
             // 
@@ -288,7 +241,7 @@
             this.btnReportes.ForeColor = System.Drawing.Color.White;
             this.btnReportes.Image = global::Pantallas.Properties.Resources.grafico_histograma;
             this.btnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReportes.Location = new System.Drawing.Point(0, 957);
+            this.btnReportes.Location = new System.Drawing.Point(0, 787);
             this.btnReportes.Name = "btnReportes";
             this.btnReportes.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnReportes.Size = new System.Drawing.Size(323, 50);
@@ -298,92 +251,6 @@
             this.btnReportes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnReportes.UseVisualStyleBackColor = true;
             this.btnReportes.Click += new System.EventHandler(this.btnReportes_Click);
-            // 
-            // pnlProveedores
-            // 
-            this.pnlProveedores.Controls.Add(this.btnPFacturacion);
-            this.pnlProveedores.Controls.Add(this.btnPSolicitudes);
-            this.pnlProveedores.Controls.Add(this.btnPGestionar);
-            this.pnlProveedores.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlProveedores.Location = new System.Drawing.Point(0, 837);
-            this.pnlProveedores.Name = "pnlProveedores";
-            this.pnlProveedores.Size = new System.Drawing.Size(323, 120);
-            this.pnlProveedores.TabIndex = 9;
-            // 
-            // btnPFacturacion
-            // 
-            this.btnPFacturacion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
-            this.btnPFacturacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPFacturacion.FlatAppearance.BorderSize = 0;
-            this.btnPFacturacion.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnPFacturacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPFacturacion.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnPFacturacion.ForeColor = System.Drawing.Color.White;
-            this.btnPFacturacion.Location = new System.Drawing.Point(0, 80);
-            this.btnPFacturacion.Name = "btnPFacturacion";
-            this.btnPFacturacion.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
-            this.btnPFacturacion.Size = new System.Drawing.Size(323, 40);
-            this.btnPFacturacion.TabIndex = 2;
-            this.btnPFacturacion.Text = "Facturacion";
-            this.btnPFacturacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPFacturacion.UseVisualStyleBackColor = false;
-            // 
-            // btnPSolicitudes
-            // 
-            this.btnPSolicitudes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
-            this.btnPSolicitudes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPSolicitudes.FlatAppearance.BorderSize = 0;
-            this.btnPSolicitudes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnPSolicitudes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPSolicitudes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnPSolicitudes.ForeColor = System.Drawing.Color.White;
-            this.btnPSolicitudes.Location = new System.Drawing.Point(0, 40);
-            this.btnPSolicitudes.Name = "btnPSolicitudes";
-            this.btnPSolicitudes.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
-            this.btnPSolicitudes.Size = new System.Drawing.Size(323, 40);
-            this.btnPSolicitudes.TabIndex = 1;
-            this.btnPSolicitudes.Text = "Solicitudes";
-            this.btnPSolicitudes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPSolicitudes.UseVisualStyleBackColor = false;
-            // 
-            // btnPGestionar
-            // 
-            this.btnPGestionar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
-            this.btnPGestionar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPGestionar.FlatAppearance.BorderSize = 0;
-            this.btnPGestionar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnPGestionar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPGestionar.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnPGestionar.ForeColor = System.Drawing.Color.White;
-            this.btnPGestionar.Location = new System.Drawing.Point(0, 0);
-            this.btnPGestionar.Name = "btnPGestionar";
-            this.btnPGestionar.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
-            this.btnPGestionar.Size = new System.Drawing.Size(323, 40);
-            this.btnPGestionar.TabIndex = 0;
-            this.btnPGestionar.Text = "Gestionar Proveedores";
-            this.btnPGestionar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPGestionar.UseVisualStyleBackColor = false;
-            // 
-            // btnProveedores
-            // 
-            this.btnProveedores.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnProveedores.FlatAppearance.BorderSize = 0;
-            this.btnProveedores.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.btnProveedores.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProveedores.Font = new System.Drawing.Font("Consolas", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnProveedores.ForeColor = System.Drawing.Color.White;
-            this.btnProveedores.Image = global::Pantallas.Properties.Resources.lado_del_camion;
-            this.btnProveedores.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProveedores.Location = new System.Drawing.Point(0, 787);
-            this.btnProveedores.Name = "btnProveedores";
-            this.btnProveedores.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnProveedores.Size = new System.Drawing.Size(323, 50);
-            this.btnProveedores.TabIndex = 8;
-            this.btnProveedores.Text = "PROVEEDORES";
-            this.btnProveedores.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProveedores.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnProveedores.UseVisualStyleBackColor = true;
-            this.btnProveedores.Click += new System.EventHandler(this.btnProveedores_Click);
             // 
             // pnlClientes
             // 
@@ -662,7 +529,7 @@
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
             this.btnCerrarSesion.Image = global::Pantallas.Properties.Resources.salida_32x32;
             this.btnCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 1177);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 927);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnCerrarSesion.Size = new System.Drawing.Size(323, 50);
@@ -846,7 +713,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlBotonera.ResumeLayout(false);
             this.pnlReportes.ResumeLayout(false);
-            this.pnlProveedores.ResumeLayout(false);
             this.pnlClientes.ResumeLayout(false);
             this.pnlProductos.ResumeLayout(false);
             this.pnlVentas.ResumeLayout(false);
@@ -886,8 +752,6 @@
         private Button btnAdministracion;
         private Panel pnlReportes;
         private Button btnReportes;
-        private Panel pnlProveedores;
-        private Button btnProveedores;
         private Panel pnlClientes;
         private Button btnClientes;
         private Panel pnlProductos;
@@ -897,12 +761,7 @@
         private Button btnVEstado;
         private Button btnVPedido;
         private Button btnVPresu;
-        private Button btnRGenerales;
-        private Button btnRCompras;
         private Button btnRVentas;
-        private Button btnPFacturacion;
-        private Button btnPSolicitudes;
-        private Button btnPGestionar;
         private Button btnCGestionar;
         private Button btnCBuscar;
         private Button btnPConsultar;
