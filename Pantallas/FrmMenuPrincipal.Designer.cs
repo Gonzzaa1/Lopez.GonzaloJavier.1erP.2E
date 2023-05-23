@@ -572,6 +572,7 @@
             this.btnSolicitudes.Text = "Solicitudes";
             this.btnSolicitudes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSolicitudes.UseVisualStyleBackColor = false;
+            this.btnSolicitudes.Click += new System.EventHandler(this.btnSolicitudes_Click);
             // 
             // btnVEstado
             // 
@@ -626,6 +627,7 @@
             this.btnVPresu.Text = "Generar Presupuesto";
             this.btnVPresu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnVPresu.UseVisualStyleBackColor = false;
+            this.btnVPresu.Click += new System.EventHandler(this.btnVPresu_Click);
             // 
             // btnVentas
             // 

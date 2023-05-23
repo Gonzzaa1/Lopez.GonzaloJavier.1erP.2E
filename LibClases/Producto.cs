@@ -43,6 +43,7 @@ namespace LibClases
             sb.AppendLine($"-----------  Producto --------------\n");
             sb.AppendLine($" ID        = {Id}\n");
             sb.AppendLine($" Categoria = {Categoria}\n");
+            sb.AppendLine($" Marca = {Marca}\n");
             sb.AppendLine($" Nombre    = {Nombre}\n");
             sb.AppendLine($" Precio    = ${Precio}.-");
             sb.AppendLine($"\n-----------------------------------");

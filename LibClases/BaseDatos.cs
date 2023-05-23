@@ -52,6 +52,56 @@ namespace LibClases
                 File.WriteAllText("Clientes.csv", clientes);
             }
         }
+        public static void GuardarArchivoPresupuesto(List<Presupuesto> lista)
+        {
+            string presupuesto = ParsePresupuestoToCsv(lista);
+
+            if (!File.Exists("Presupuestos.csv"))
+            {
+                using (StreamWriter sw = File.CreateText("Presupuestos.csv"))
+                    sw.WriteLine(presupuesto);
+            }
+            else
+            {
+                File.WriteAllText("Presupuestos.csv", presupuesto);
+            }
+        }
+        public static List<Presupuesto> CargarArchivoPresupuesto()
+        {
+            List<Presupuesto> presupuesto = new List<Presupuesto>();
+            using StreamReader archivo = new StreamReader("Presupuestos.csv");
+
+            string separador = ",";
+            string? _presupuesto;
+
+            while ((_presupuesto = archivo.ReadLine()) != null)
+            {
+
+                string[] fila = _presupuesto.Split(separador);
+                if(fila[0] != "")
+                {
+                    List<Producto> productos = new List<Producto>();
+                    Presupuesto aux;
+                    string id = fila[0];
+                    string producto = fila[1];
+                    string estado = fila[2];
+
+                    string[] productosId = producto.Split(".");
+
+                    foreach (string _id in productosId)
+                    {
+                        if(_id != "")
+                            productos.Add(PCMaker.BuscarProductoId(_id));
+                    }
+                    aux = new(id, productos);
+                    aux.Estado = ParsearEstados(estado);
+
+                    presupuesto.Add(aux);
+                }
+                
+            }
+            return presupuesto;
+        }
         public static List<Cliente> CargarArchivoClientes()
         {
             List<Cliente> clientes = new List<Cliente>();
@@ -173,6 +223,21 @@ namespace LibClases
                     return ERoles.Cliente;
             }
         }
+        public static EEstados ParsearEstados(string estado)
+        {
+            switch(estado)
+            {
+                case "Aprobado":
+                    return EEstados.Aprobado;
+                case "Rechazado":
+                    return EEstados.Rechazado;
+                case "Finalizado":
+                    return EEstados.Finalizado;
+                default:
+                    return EEstados.Revision;
+                    
+            }
+        }
         private static string ParseUsuarioToCsv(List<Usuario> lista)
         {
             StringBuilder sb = new StringBuilder();
@@ -200,6 +265,17 @@ namespace LibClases
             foreach (Cliente cliente in lista)
             {
                 sb.AppendLine(cliente.ParsearDatos());
+            }
+
+            return sb.ToString();
+        }
+        private static string ParsePresupuestoToCsv(List<Presupuesto> lista)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Presupuesto presupuesto in lista)
+            {
+                sb.AppendLine(presupuesto.ToString());
             }
 
             return sb.ToString();

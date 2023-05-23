@@ -1,28 +1,91 @@
-﻿namespace LibClases
+﻿
+using System.Text;
+
+namespace LibClases
 {
     public static class PCMaker
     {
-
         private static List<Producto> _productos = new List<Producto>();
         private static List<Producto> _solcitudes = new List<Producto>();
         private static List<Cliente> _clientes = new List<Cliente>();
+        private static List<Producto> _presupuesto = new List<Producto>();
+        private static List<Presupuesto> _solicitudPresupuesto = new List<Presupuesto>();
 
         public static List<Producto> Productos { get => _productos; }
         public static List<Producto> Solicitudes { get => _solcitudes; }
         public static List<Cliente> Clientes { get => _clientes; }
-
+        public static List<Producto> Presupuesto { get => _presupuesto; }
+        public static List<Presupuesto> SolPresupuesto { get => _solicitudPresupuesto; }
 
         public static void Cargar()
         {
             _productos = BaseDatos.CargarArchivoProductos();
-            try
+            _clientes = BaseDatos.CargarArchivoClientes();
+            _solicitudPresupuesto = BaseDatos.CargarArchivoPresupuesto();
+        }
+        #region Control Presupuesto
+        public static Presupuesto BuscarPresupuesto(string id)
+        {
+            if(!String.IsNullOrEmpty(id))
             {
-                _clientes = BaseDatos.CargarArchivoClientes();
-            }catch(Exception)
+                foreach(Presupuesto presupuesto in _solicitudPresupuesto)
+                {
+                    if(presupuesto.Id == id)
+                    { 
+                        return presupuesto; 
+                    }
+                }
+            }
+            throw new Exception("Presupuesto no encontrado");
+        }
+        public static string MostrarProductosPresupuesto(List<Producto> lista)
+        {
+            StringBuilder sb = new StringBuilder();
+            if(lista != null)
             {
+                double precio = 0;
 
+                foreach(Producto producto in lista)
+                {
+                    precio += producto.Precio;
+                    sb.AppendLine($"{producto.Nombre} - ${producto.Precio}");
+                }
+                sb.AppendLine($"\n\n Total     ------    ${precio}");
+            }
+
+            return sb.ToString();
+        }
+        public static void AgregarProductoAlPresupuesto(Producto producto)
+        {
+            if (producto != null)
+                _presupuesto.Add(producto);
+        }
+        public static string CrearPresupuesto()
+        {
+            Presupuesto nuevoPresupuesto = new Presupuesto(GeneradorId("numero"), _presupuesto);
+            _solicitudPresupuesto.Add(nuevoPresupuesto);
+
+            return nuevoPresupuesto.Id;
+        }
+        public static void EliminarProductoPresupuesto(Producto producto)
+        {
+
+            if(producto != null)
+            {
+                Producto productoEliminar = null!;
+
+                foreach(Producto auxProducto in _presupuesto)
+                {
+                    if(auxProducto.Equals(producto))
+                    {
+                        productoEliminar = auxProducto;
+                    }
+                }
+                if(productoEliminar != null)
+                    _presupuesto.Remove(productoEliminar);
             }
         }
+        #endregion
         #region Control Clientes
         public static void AltaCliente(string nombre,string apellido,string dni,string edad, string direccion,string telefono,string correo)
         {
@@ -102,6 +165,44 @@
         }
         #endregion
         #region Control Productos
+        public static Producto BuscarProductoId(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                Producto productoBuscado = null!;
+                foreach (Producto producto in _productos)
+                {
+                    if (producto.Id == id)
+                    {
+                        productoBuscado = producto;
+                    }
+                }
+                return productoBuscado;
+            }
+            else
+            {
+                throw new Exception("Producto no encontrado");
+            }
+        }
+        public static Producto BuscarProducto(string nombre)
+        {
+            if(!String.IsNullOrEmpty(nombre))
+            {
+                Producto productoBuscado = null!;
+                foreach(Producto producto in _productos)
+                {
+                    if(producto.Nombre == nombre)
+                    {
+                        productoBuscado = producto;
+                    }
+                }
+                return productoBuscado;
+            }
+            else
+            {
+                throw new Exception("Producto no encontrado");
+            }
+        }
         public static List<Producto> FiltrarProductos(string categoria)
         {
             List<Producto> productosFiltrados = new List<Producto>();
@@ -121,7 +222,7 @@
             {
                 if(double.TryParse(precio, out double price) && int.TryParse(stock, out int stockCantidad))
                 {
-                    return new Producto(GeneradorId(), nombre, marca, price, BaseDatos.ParsearCategoria(categoria), stockCantidad);
+                    return new Producto(GeneradorId("alfanumerico"), nombre, marca, price, BaseDatos.ParsearCategoria(categoria), stockCantidad);
                 }
                 else
                 {
@@ -204,15 +305,27 @@
             }
         }
         #endregion
-        private static string GeneradorId()
+        private static string GeneradorId(string tipo)
         {
             Random random = new Random();
             string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            string numeros = "0123456789";
             var clave = new char[16];
 
-            for (int i = 0; i < clave.Length; i++)
+            switch(tipo)
             {
-                clave[i] = caracteres[random.Next(caracteres.Length)];
+                case "alfanumerico":
+                    for (int i = 0; i < clave.Length; i++)
+                    {
+                        clave[i] = caracteres[random.Next(caracteres.Length)];
+                    }
+                    break;
+                case "numero":
+                    for (int i = 0; i < clave.Length; i++)
+                    {
+                        clave[i] = numeros[random.Next(numeros.Length)];
+                    }
+                    break;
             }
 
             string resultado = new string(clave);

@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibClases
 {
+    public enum EEstados
+    {
+        Revision,
+        Aprobado,
+        Rechazado,
+        Finalizado
+    }
 
     public enum ERoles
     {
