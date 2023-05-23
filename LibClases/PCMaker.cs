@@ -264,6 +264,20 @@ namespace LibClases
                     throw new Exception("Producto ya existe en listado");
             }
         }
+        public static void SacarStockProducto(Producto producto)
+        {
+            if (producto != null)
+            {
+                
+                foreach (Producto item in _productos)
+                {
+                    if(item == producto)
+                    {
+                        item.Stock -= 1;
+                    }
+                }
+            }
+        }
         public static void EliminarProducto(string id)
         {
             if(!String.IsNullOrEmpty(id))

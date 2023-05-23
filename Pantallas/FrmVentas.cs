@@ -746,9 +746,14 @@ namespace Pantallas
                 Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(lblIdPresupuesto.Text);
 
                 presupuestoSeleccionado.Estado = EEstados.Finalizado;
+                foreach(Producto producto in presupuestoSeleccionado.Productos)
+                {
+                    PCMaker.SacarStockProducto(producto);
+                }
 
                 BaseDatos.GuardarArchivoVentas(PCMaker.Ventas);
                 BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
+                BaseDatos.GuardarArchivoProducto(PCMaker.Productos);
             }
             
         }
