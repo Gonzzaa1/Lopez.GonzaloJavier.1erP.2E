@@ -735,7 +735,7 @@ namespace Pantallas
                     numero = "Sin tarjeta";
                 else
                     numero = txtNumeroTarjeta.Text;
-                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteNombre.Text, numero, _cuotas.ToString(), _precioFinal.ToString(), _usuario.User);
+                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteNombre.Text, numero, _cuotas.ToString(), _precioFinal.ToString("0.##"), _usuario.User);
 
                 _precioPresupuesto = 0;
                 pnlVenta.Visible = false;
