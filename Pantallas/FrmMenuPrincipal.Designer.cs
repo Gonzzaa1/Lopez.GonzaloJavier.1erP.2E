@@ -591,6 +591,7 @@
             this.btnVEstado.Text = "Consultar Estado";
             this.btnVEstado.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnVEstado.UseVisualStyleBackColor = false;
+            this.btnVEstado.Click += new System.EventHandler(this.btnVEstado_Click);
             // 
             // btnVPedido
             // 
@@ -609,6 +610,7 @@
             this.btnVPedido.Text = "Generar Pedido";
             this.btnVPedido.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnVPedido.UseVisualStyleBackColor = false;
+            this.btnVPedido.Click += new System.EventHandler(this.btnVPedido_Click);
             // 
             // btnVPresu
             // 

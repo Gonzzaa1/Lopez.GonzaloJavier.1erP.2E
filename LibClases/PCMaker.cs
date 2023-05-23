@@ -60,9 +60,9 @@ namespace LibClases
             if (producto != null)
                 _presupuesto.Add(producto);
         }
-        public static string CrearPresupuesto()
+        public static string CrearPresupuesto(double precio)
         {
-            Presupuesto nuevoPresupuesto = new Presupuesto(GeneradorId("numero"), _presupuesto);
+            Presupuesto nuevoPresupuesto = new Presupuesto(GeneradorId("numero"), _presupuesto,precio);
             _solicitudPresupuesto.Add(nuevoPresupuesto);
 
             return nuevoPresupuesto.Id;

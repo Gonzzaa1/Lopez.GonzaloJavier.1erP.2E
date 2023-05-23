@@ -9,6 +9,7 @@ namespace Pantallas
         private bool _venta;
         private bool _estado;
         private bool _solicitudes;
+        private double _precioPresupuesto = 0;
         private FrmVentas()
         {
             InitializeComponent();
@@ -27,7 +28,7 @@ namespace Pantallas
             if(_presupuesto)
             {
                 pnlVenta.Visible = false;
-                pnlEstado.Visible = false;
+                pnlFactura.Visible = false;
                 pnlSolicitudes.Visible = false;
                 pnPerifericos.Visible = false;
                 lblCategoria.Text = "Microprocesador";
@@ -38,21 +39,30 @@ namespace Pantallas
             {
                 pnPresupuesto.Visible = false;
                 pnlVenta.Visible = true;
-                pnlEstado.Visible = false;
+                pnlFactura.Visible = false;
                 pnlSolicitudes.Visible = false;
+                pnlDatosVenta.Visible = false;
+                pnDatosCVenta.Visible = false;
+                pnlFinal.Visible = false;
+                ListarTarjetas();
+                lblMontoEnCuotas.Text = String.Empty;
+
             }
             else if(_estado)
             {
                 pnPresupuesto.Visible = false;
                 pnlVenta.Visible = false;
-                pnlEstado.Visible = true;
-                pnlSolicitudes.Visible = false;
+                pnlFactura.Visible = false;
+                pnlSolicitudes.Visible = true;
+                btnAprobar.Visible = false;
+                btnRechazar.Visible = false;
+                dgvSolicitudes.Visible = false;
             }
             else if(_solicitudes)
             {
                 pnPresupuesto.Visible = false;
                 pnlVenta.Visible = false;
-                pnlEstado.Visible = false;
+                pnlFactura.Visible = false;
                 pnlSolicitudes.Visible = true;
                 lblId.Text = String.Empty;
                 lblEstadoPresupuesto.Text = String.Empty;
@@ -234,8 +244,8 @@ namespace Pantallas
                 Producto producto = PCMaker.BuscarProducto(cbLista.Text.ToString());
                 dgvProductos.Rows.Add(producto.Nombre);
                 PCMaker.AgregarProductoAlPresupuesto(producto);
-                precio += producto.Precio;
-                lblMonto.Text = precio.ToString();
+                _precioPresupuesto += producto.Precio;
+                lblMonto.Text = _precioPresupuesto.ToString();
                 cbLista.Text = String.Empty;
                 dgvProductos.ClearSelection();
             }
@@ -306,8 +316,8 @@ namespace Pantallas
                 double precio = Convert.ToDouble(lblMonto.Text);
                 string nombre = (string)dgvProductos.CurrentCell.Value;
                 Producto aux = PCMaker.BuscarProducto(nombre);
-                precio -= aux.Precio;
-                lblMonto.Text = precio.ToString();
+                _precioPresupuesto -= aux.Precio;
+                lblMonto.Text = _precioPresupuesto.ToString();
                 dgvProductos.Rows.RemoveAt(producto);
                 PCMaker.EliminarProductoPresupuesto(aux);
                 dgvProductos.ClearSelection();
@@ -325,8 +335,9 @@ namespace Pantallas
         {
             if(dgvProductos.Rows.Count != 0)
             {
-                lblPresupuestoID.Text =  PCMaker.CrearPresupuesto();
+                lblPresupuestoID.Text =  PCMaker.CrearPresupuesto(_precioPresupuesto);
                 dgvProductos.Rows.Clear();
+                _precioPresupuesto = 0;
                 lblMonto.Text = "0";
                 MessageBox.Show($"Presupuesto N° {lblPresupuestoID.Text} Creado");
                 pnPresupuesto.Visible = false;
@@ -346,10 +357,36 @@ namespace Pantallas
                 try
                 {
                     Cliente clienteBuscado = PCMaker.BuscarCliente(txtBuscarCliente.Text);
-                    lblNombre.Text = clienteBuscado.Nombre;
-                    lblApellido.Text = clienteBuscado.Apellido;
-                    lblCorreo.Text = clienteBuscado.Correo;
-                    pnEnviar.Visible = true;
+                    if(_presupuesto)
+                    {
+                        lblNombre.Text = clienteBuscado.Nombre;
+                        lblApellido.Text = clienteBuscado.Apellido;
+                        lblCorreo.Text = clienteBuscado.Correo;
+                        pnEnviar.Visible = true;
+                    }
+                    else if(_venta)
+                    {
+                        lblClienteNombre.Text = clienteBuscado.Nombre;
+                        lblClienteApellido.Text = clienteBuscado.Apellido;
+                        lblClienteCorreo.Text = clienteBuscado.Correo;
+                        lblClienteEdad.Text = clienteBuscado.Edad.ToString();
+                        lblClienteDomicilio.Text = clienteBuscado.Direccion;
+                        lblClienteTelefono.Text = clienteBuscado.Telefono.ToString();
+                        lblClienteDni.Text = clienteBuscado.Dni.ToString();
+
+                        lblFacturaNombre.Text = lblClienteNombre.Text;
+                        lblFacturaApellido.Text = lblClienteApellido.Text;
+                        lblFacturaDni.Text = lblClienteDni.Text;
+                        lblFacturaTelefono.Text = lblClienteTelefono.Text;
+                        lblFacturaDomicilio.Text = lblClienteDomicilio.Text;
+                        lblFacturaCorreo.Text = lblClienteCorreo.Text;
+
+                        pnDatosCVenta.Visible = true;
+                        pnCliente.Visible = false;
+                        pnlDatosVenta.Visible = true;
+
+                    }
+                    
                 }
                 catch(Exception ex)
                 {
@@ -383,12 +420,40 @@ namespace Pantallas
             try
             {
                 PCMaker.AltaCliente(txtNombre.Text, txtApellido.Text, txtDni.Text, txtEdad.Text, txtDomicilio.Text, txtTelefono.Text, txtCorreo.Text);
-                lblApellido.Text = txtApellido.Text;
-                lblNombre.Text = txtNombre.Text;
-                lblCorreo.Text = txtCorreo.Text;
-                pnlBuscarCliente.Visible = true;
-                pnlDatosCliente.Visible = false;
-                pnEnviar.Visible = true;
+                if(_solicitudes)
+                {
+                    lblApellido.Text = txtApellido.Text;
+                    lblNombre.Text = txtNombre.Text;
+                    lblCorreo.Text = txtCorreo.Text;
+                    pnlBuscarCliente.Visible = true;
+                    pnlDatosCliente.Visible = false;
+                    pnEnviar.Visible = true;
+                }
+                else if(_venta)
+                {
+                    lblClienteNombre.Text = txtNombre.Text;
+                    lblClienteApellido.Text = txtApellido.Text;
+                    lblClienteCorreo.Text = txtCorreo.Text;
+                    lblClienteEdad.Text = txtEdad.Text.ToString();
+                    lblClienteDomicilio.Text = txtDomicilio.Text;
+                    lblClienteTelefono.Text = txtTelefono.Text.ToString();
+                    lblClienteDni.Text = txtDni.Text.ToString();
+
+                    lblFacturaNombre.Text = lblClienteNombre.Text;
+                    lblFacturaApellido.Text = lblClienteApellido.Text;
+                    lblFacturaDni.Text = lblClienteDni.Text;
+                    lblFacturaTelefono.Text = lblClienteTelefono.Text;
+                    lblFacturaDomicilio.Text = lblClienteDomicilio.Text;
+                    lblFacturaCorreo.Text = lblClienteCorreo.Text;
+
+                    pnDatosCVenta.Visible = true;
+                    pnCliente.Visible = false;
+                    pnlDatosVenta.Visible = true;
+
+                    Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(lblIdPresupuesto.Text);
+                    rtbVentaProducto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
+                }
+                
                 txtApellido.Text = String.Empty;
                 txtCorreo.Text = String.Empty;
                 txtNombre.Text = String.Empty;
@@ -414,21 +479,40 @@ namespace Pantallas
             try
             {
                 Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(id);
-
-                lblId.Text = presupuestoSeleccionado.Id;
-                lblEstadoPresupuesto.Text = presupuestoSeleccionado.Estado.ToString();
-
-                rtbPresupuesto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
-
-                if(presupuestoSeleccionado.Estado != EEstados.Revision)
+                if(_venta)
                 {
-                    btnAprobar.Visible = false;
-                    btnRechazar.Visible = false;
+                    btnPresupuesto.Visible = false;
+                    pnDatosCVenta.Visible = false;
+                    pnCliente.Visible = true;
+                    pnBuscarPresupuesto.Visible = false;
+                    lblPresupuestoID.Text = txtBuscarPVenta.Text;
+                    lblIdPresupuesto.Text = lblPresupuestoID.Text;
+                    rtbVentaProducto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
+                    _precioPresupuesto = presupuestoSeleccionado.Precio;
+                }
+                else
+                {
+                
+                    lblId.Text = presupuestoSeleccionado.Id;
+                    lblEstadoPresupuesto.Text = presupuestoSeleccionado.Estado.ToString();
+
+                    rtbPresupuesto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
+                   
+                    if (presupuestoSeleccionado.Estado != EEstados.Revision && _solicitudes)
+                    {
+                        btnAprobar.Visible = false;
+                        btnRechazar.Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Algo salio mal");
+                if(_venta)
+                {
+                    btnPresupuesto.Visible = true;
+                    pnBuscarPresupuesto.Visible = false;
+                }
             }
         }
 
@@ -444,6 +528,11 @@ namespace Pantallas
             {
                 BuscarPresupuesto(txtBuscarNPresupuesto.Text);
                 txtBuscarNPresupuesto.Text = String.Empty;
+            }
+            if(_venta)
+            {
+                BuscarPresupuesto(txtBuscarPVenta.Text);
+                txtBuscarPVenta.Text = String.Empty;
             }
         }
 
@@ -465,6 +554,143 @@ namespace Pantallas
             rtbPresupuesto.Text = String.Empty;
             lblId.Text = String.Empty;
             lblEstadoPresupuesto.Text = String.Empty;
+
+            BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
+        }
+
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btnPresupuesto_Click(object sender, EventArgs e)
+        {
+            btnPresupuesto.Visible = false;
+            pnlVenta.Visible = false;
+            pnPresupuesto.Visible = true;
+            pnPerifericos.Visible = false;
+            lblCategoria.Text = "Microprocesador";
+            rtbInfo.Text = "Tu procesador es la pieza central del rendimiento de los programas. Para saber si un procesador es potente lo que tenés que medir es la frecuencia, el ancho de bus, la memoria caché y los núcleos e hilos de procesamiento.";
+            LlenarLista(lblCategoria.Text, "Intel");
+        }
+        private void rbEfectivo_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rbEfectivo.Checked)
+            {
+                double descuento = _precioPresupuesto * 0.15;
+                double precioFinal = _precioPresupuesto - descuento;
+
+                pnlEfectivo.Visible = true;
+                lblPrecioEfectivo.Text = _precioPresupuesto.ToString();
+                lblDescuentoEfectivo.Text = descuento.ToString();
+                lblPrecioFEfectivo.Text = precioFinal.ToString();
+            }
+            else
+            {
+                pnlEfectivo.Visible = false; ;
+            }
+        }
+        private void ListarTarjetas()
+        {
+            cbTipoTarjeta.Items.Add("Visa");
+            cbTipoTarjeta.Items.Add("MasterCard");
+            cbTipoTarjeta.Items.Add("American Express");
+        }
+
+        private void rbDebito_CheckedChanged(object sender, EventArgs e)
+        {
+            if( rbDebito.Checked)
+            {
+                double descuento = _precioPresupuesto * 0.05;
+                double precioFinal = _precioPresupuesto - descuento;
+
+                pnlDebito.Visible = true;
+                lblPrecioDebito.Text = _precioPresupuesto.ToString();
+                lblDescuentoDebito.Text = descuento.ToString();
+                lblPrecioFDebito.Text = precioFinal.ToString();
+
+                pnlDatosTarjeta.Visible = true;
+                pnlCuotas.Visible = false;
+
+            }
+            else
+            {
+                pnlDebito.Visible = false;
+                pnlDatosTarjeta.Visible = false;
+            }
+        }
+
+        private void rbCredito_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rbCredito.Checked)
+            {
+                double recargo = _precioPresupuesto * 0.15;
+                double precioFinal = _precioPresupuesto + recargo;
+
+                pnlCredito.Visible = true;
+                lblPrecioCredito.Text = _precioPresupuesto.ToString();
+                lblRecargoCredito.Text = recargo.ToString();
+                lblPrecioFCredito.Text = precioFinal.ToString();
+
+                pnlDatosTarjeta.Visible = true;
+                pnlCuotas.Visible = false;
+            }
+            else
+            {
+                pnlCredito.Visible = false;
+                pnlDatosTarjeta.Visible = false;
+            }
+        }
+
+        private void txtCodTarjeta_TextChanged(object sender, EventArgs e)
+        {
+            if(txtCodTarjeta.Text.Length >= 3)
+            {
+                pnlCuotas.Visible = true;
+            }
+        }
+
+        private void rbCuotas1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rbCuotas1.Checked)
+            {
+                double precioFinal = _precioPresupuesto * 1.15;
+
+                lblMontoEnCuotas.Text = precioFinal.ToString();
+            }
+        }
+
+        private void rbCuotas3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCuotas3.Checked)
+            {
+                double precioFinal = _precioPresupuesto * 1.15;
+                double cuotas = precioFinal / 3;
+
+                lblMontoEnCuotas.Text = cuotas.ToString();
+            }
+        }
+
+        private void rbCuotas6_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCuotas6.Checked)
+            {
+                double precioFinal = _precioPresupuesto * 1.15;
+                double cuotas = precioFinal / 6;
+
+                lblMontoEnCuotas.Text = cuotas.ToString();
+            }
+        }
+
+        private void rbCuotas12_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCuotas12.Checked)
+            {
+                double precioFinal = _precioPresupuesto * 1.15;
+                double cuotas = precioFinal / 12;
+
+                lblMontoEnCuotas.Text = cuotas.ToString();
+            }
         }
     }
 }

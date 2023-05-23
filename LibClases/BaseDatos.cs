@@ -85,6 +85,7 @@ namespace LibClases
                     string id = fila[0];
                     string producto = fila[1];
                     string estado = fila[2];
+                    double precio = Convert.ToDouble(fila[3]);
 
                     string[] productosId = producto.Split(".");
 
@@ -93,7 +94,7 @@ namespace LibClases
                         if(_id != "")
                             productos.Add(PCMaker.BuscarProductoId(_id));
                     }
-                    aux = new(id, productos);
+                    aux = new(id, productos,precio);
                     aux.Estado = ParsearEstados(estado);
 
                     presupuesto.Add(aux);

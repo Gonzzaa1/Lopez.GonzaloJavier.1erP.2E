@@ -11,17 +11,20 @@ namespace LibClases
         private string _id;
         private List<Producto> _productos;
         private EEstados _estado;
+        private double _precio;
 
-        public Presupuesto(string id, List<Producto> productos)
+        public Presupuesto(string id, List<Producto> productos,double precio)
         {
             _id = id;
             _productos = productos;
             _estado = EEstados.Revision;
+            _precio = precio;
         }
 
         public string Id { get => _id; }
         public List<Producto> Productos { get => _productos; }
         public EEstados Estado { get => _estado; set => _estado = value; }
+        public double Precio { get => _precio; set => _precio = value; }    
 
         private string ListarProductos()
         {
@@ -34,7 +37,7 @@ namespace LibClases
         }
         public override string ToString()
         {
-            return $"{Id},{ListarProductos()},{Estado}";
+            return $"{Id},{ListarProductos()},{Estado},{Precio}";
         }
     }
 }

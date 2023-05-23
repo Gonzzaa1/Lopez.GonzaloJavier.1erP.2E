@@ -210,6 +210,20 @@ namespace Pantallas
             Abrirformulario(ventas);
         }
 
+        private void btnVEstado_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmVentas ventas = new FrmVentas(false, false, true, false);
+            Abrirformulario(ventas);
+        }
+
+        private void btnVPedido_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            FrmVentas ventas = new FrmVentas(false, true, false, false);
+            Abrirformulario(ventas);
+        }
+
         private void MostrarSubmenus(Panel submenu)
         {
             if (submenu.Visible == false)
