@@ -1,7 +1,9 @@
-﻿using System;
+﻿using System.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,6 +14,162 @@ namespace LibClases
 {
     public static class BaseDatos
     {
+        private static SqlConnection _connection;
+        private static SqlCommand _command;
+        private static string _connectionString;
+        
+        static BaseDatos()
+        {
+            _connectionString = @"Server = DESKTOP-U0AEOQ5; Database = PCMarkerDB; Trusted_Connection = True;";
+            _connection = new SqlConnection(_connectionString);
+            _command = new SqlCommand();
+            _command.Connection = _connection;
+            _command.CommandType = CommandType.Text;
+        }
+
+
+        public static List<Usuario> ObtenerUsuarios()
+        {
+            List<Usuario> lista = new List<Usuario>();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Usuarios";
+
+            SqlDataReader reader = _command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                string nombre = reader.GetString(0);
+                string apellido = reader.GetString(1); 
+                string usuario = reader.GetString(2);
+                string contraseña = reader.GetString(3);
+                ERoles rol = (ERoles) Enum.Parse(typeof(ERoles), reader.GetString(4), true);
+                string correo = reader.GetString(5);
+
+                lista.Add(new(nombre, apellido, usuario, contraseña, rol, correo));
+            }
+
+            if(_connection.State == ConnectionState.Open)
+            {
+                _connection.Close(); 
+            }
+            return lista;
+        }
+        public static  List<Producto> ObtenerProductos()
+        {
+            List<Producto> lista = new List<Producto>();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Productos";
+            SqlDataReader reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string id = reader.GetDecimal(0).ToString();
+                string nombre = reader.GetString(1);
+                string marca = reader.GetString(2);
+                double precio = Convert.ToDouble(reader.GetDecimal(3));
+                ECategoria categoria = (ECategoria)Enum.Parse(typeof(ECategoria), reader.GetString(4), true);
+                int stock = reader.GetInt32(5);
+
+                lista.Add(new(id, nombre, marca, precio, categoria, stock));
+            }
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+            return lista;
+        }
+        public static List<Cliente> ObtenerClientes()
+        {
+            List<Cliente> lista = new List<Cliente>();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Clientes";
+            SqlDataReader reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                
+                string nombre = reader.GetString(0);
+                string apellido = reader.GetString(1);
+                double dni = Convert.ToDouble(reader.GetDecimal(2));
+                int edad = reader.GetInt32(3);
+                string direccion = reader.GetString(4);
+                string telefono = reader.GetString(5);
+                string correo = reader.GetString(6);
+
+
+                lista.Add(new(nombre,apellido,dni,edad,direccion,telefono,correo));
+            }
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            return lista;
+        }
+        public static List<Presupuesto> ObtenerPresupuestos()
+        {
+            List<Presupuesto> lista = new List<Presupuesto>();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Presupuestos";
+
+            SqlDataReader reader = _command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                Presupuesto presupuestoActual;
+
+                string id = reader.GetString(0);
+                List<Producto> productos = ObtenerProductos(decimal.Parse(id));
+                double precio = Convert.ToDouble(reader.GetDecimal(3));
+
+                presupuestoActual = new(id, productos, precio);
+                presupuestoActual.Estado = (EEstados)Enum.Parse(typeof(EEstados), reader.GetString(2), true);
+
+                lista.Add(presupuestoActual);
+            }
+
+            return lista;
+        }
+        public static List<Producto> ObtenerProductos(decimal presupuestoID)
+        {
+            List<Producto> lista = new List<Producto>();
+
+            _connection.Open();
+
+            _command.CommandText = "SELECT * FROM Productos P" +
+                                   "INNER JOIN PresupuestoProducto PP ON P.Producto_ID = PP.Producto_ID" +
+                                   "WHERE PP.Presupuesto_ID = @Presupuesto_ID";
+
+            _command.Parameters.AddWithValue("@Presupuesto_ID", presupuestoID);
+
+            SqlDataReader reader = _command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                string id = reader.GetDecimal(0).ToString();
+                string nombre = reader.GetString(1);
+                string marca = reader.GetString(2);
+                double precio = Convert.ToDouble(reader.GetDecimal(3));
+                ECategoria categoria = (ECategoria)Enum.Parse(typeof(ECategoria), reader.GetString(4), true);
+                int stock = reader.GetInt32(5);
+
+                lista.Add(new(id, nombre, marca, precio, categoria, stock));
+            }
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            return lista;
+        }
+        #region Aarchivo
         public static void GuardarUsuario(List<Usuario> lista)
         {
             string usuarios = ParseUsuarioToCsv(lista);
@@ -79,66 +237,43 @@ namespace LibClases
                 File.WriteAllText("Presupuestos.csv", presupuesto);
             }
         }
-        public static List<Presupuesto> CargarArchivoPresupuesto()
-        {
-            List<Presupuesto> presupuesto = new List<Presupuesto>();
-            using StreamReader archivo = new StreamReader("Presupuestos.csv");
+        //public static List<Presupuesto> CargarArchivoPresupuesto()
+        //{
+        //    List<Presupuesto> presupuesto = new List<Presupuesto>();
+        //    using StreamReader archivo = new StreamReader("Presupuestos.csv");
 
-            string separador = ",";
-            string? _presupuesto;
+        //    string separador = ",";
+        //    string? _presupuesto;
 
-            while ((_presupuesto = archivo.ReadLine()) != null)
-            {
+        //    while ((_presupuesto = archivo.ReadLine()) != null)
+        //    {
 
-                string[] fila = _presupuesto.Split(separador);
-                if(fila[0] != "")
-                {
-                    List<Producto> productos = new List<Producto>();
-                    Presupuesto aux;
-                    string id = fila[0];
-                    string producto = fila[1];
-                    string estado = fila[2];
-                    double precio = Convert.ToDouble(fila[3]);
+        //        string[] fila = _presupuesto.Split(separador);
+        //        if(fila[0] != "")
+        //        {
+        //            List<Producto> productos = new List<Producto>();
+        //            Presupuesto aux;
+        //            string id = fila[0];
+        //            string producto = fila[1];
+        //            string estado = fila[2];
+        //            double precio = Convert.ToDouble(fila[3]);
 
-                    string[] productosId = producto.Split(".");
+        //            string[] productosId = producto.Split(".");
 
-                    foreach (string _id in productosId)
-                    {
-                        if(_id != "")
-                            productos.Add(PCMaker.BuscarProductoId(_id));
-                    }
-                    aux = new(id, productos,precio);
-                    aux.Estado = ParsearEstados(estado);
+        //            foreach (string _id in productosId)
+        //            {
+        //                if(_id != "")
+        //                    productos.Add(PCMaker.BuscarProductoId(_id));
+        //            }
+        //            aux = new(id, productos,precio);
+        //            aux.Estado = ParsearEstados(estado);
 
-                    presupuesto.Add(aux);
-                }
+        //            presupuesto.Add(aux);
+        //        }
                 
-            }
-            return presupuesto;
-        }
-        public static List<Cliente> CargarArchivoClientes()
-        {
-            List<Cliente> clientes = new List<Cliente>();
-            using StreamReader archivo = new StreamReader("Clientes.csv");
-            
-            string separador = ",";
-            string? cliente;
-
-            while((cliente = archivo.ReadLine()) != null)
-            {
-                string[] fila = cliente.Split(separador);
-                string nombre = fila[0];
-                string apellido = fila[1];
-                double dni = Convert.ToDouble(fila[2]);
-                int edad = Convert.ToInt16(fila[3]);
-                string direccion = fila[4];
-                string telefono = fila[5];
-                string correo = fila[6];
-
-                clientes.Add(new(nombre, apellido, dni, edad, direccion, telefono, correo));
-            }
-            return clientes;
-        }
+        //    }
+        //    return presupuesto;
+        //}
         public static List<Venta> CargarArchivoVentas()
         {
             List<Venta> lista = new List<Venta>();
@@ -164,119 +299,6 @@ namespace LibClases
                 }   
             }
             return lista;
-        }
-        public static List<Usuario> CargarArchivoUsuario()
-        {
-            List<Usuario> lista = new List<Usuario>();
-
-            using StreamReader archivo = new StreamReader("Usuarios.csv");
-
-            string separador = ",";
-            string? usuario;
-
-            while ((usuario = archivo.ReadLine()) != null)
-            {
-                string[] fila = usuario.Split(separador);
-                string nombre = fila[0];
-                string apellido = fila[1];
-                string user = fila[2];
-                string contraseña = fila[3];
-                string rol = fila[4];
-                string correo = fila[5];
-
-                lista.Add(new(nombre, apellido, user, contraseña, ParsearRol(rol), correo));
-            }
-
-            return lista;
-        }
-        public static List<Producto> CargarArchivoProductos()
-        {
-            List<Producto> lista = new List<Producto>();
-
-            using StreamReader archivo = new StreamReader("Productos.csv");
-
-            string separador = ",";
-            string? producto;
-
-            while ((producto = archivo.ReadLine()) != null)
-            {
-                string[] fila = producto.Split(separador);
-                string id = fila[0];
-                string nombre = fila[1];
-                string marca = fila[2];
-                double precio = Convert.ToDouble(fila[3]);
-                ECategoria categoria = ParsearCategoria(fila[4]);
-                int stock = Convert.ToInt16(fila[5]);
-
-                lista.Add(new(id, nombre, marca, precio, categoria,stock));
-            }
-
-            return lista;
-        }
-        public static ECategoria ParsearCategoria(string categoria)
-        {
-            switch(categoria)
-            {
-                case "Microprocesador":
-                    return ECategoria.Microprocesador;
-                case "Motherboard":
-                    return ECategoria.Motherboard;
-                case "MemoriaRam":
-                    return ECategoria.MemoriaRam;
-                case "Disco":
-                    return ECategoria.Disco;
-                case "GPU":
-                    return ECategoria.GPU;
-                case "Gabinete":
-                    return ECategoria.Gabinete;
-                case "Fuente":
-                    return ECategoria.Fuente;
-                case "Cooler":
-                    return ECategoria.Cooler;    
-                case "Mouse":
-                    return ECategoria.Mouse;
-                case "Teclado":
-                    return ECategoria.Teclado;
-                case "Auriculares":
-                    return ECategoria.Auriculares;
-                case "Parlantes":
-                    return ECategoria.Parlantes;
-                case "Microfono":
-                    return ECategoria.Microfono;
-                case "Monitor":
-                    return ECategoria.Monitor;
-                default:
-                    return ECategoria.CamaraWeb;
-            }
-        }
-        public static ERoles ParsearRol(string rol)
-        {
-            switch(rol)
-            {
-                case "Administrador":
-                    return ERoles.Administrador;
-                case "Gerente":
-                    return ERoles.Gerente;
-                case "Empleado":
-                    return ERoles.Empleado;
-                default:
-                    return ERoles.Cliente;
-            }
-        }
-        public static EEstados ParsearEstados(string estado)
-        {
-            switch(estado)
-            {
-                case "Aprobado":
-                    return EEstados.Aprobado;
-                case "Rechazado":
-                    return EEstados.Rechazado;
-                case "Finalizado":
-                    return EEstados.Finalizado;
-                default:
-                    return EEstados.Revision;
-                    
-            }
         }
         private static string ParseUsuarioToCsv(List<Usuario> lista)
         {
@@ -331,5 +353,8 @@ namespace LibClases
 
             return sb.ToString();
         }
+        #endregion
     }
 }
+
+

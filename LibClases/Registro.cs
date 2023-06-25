@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace LibClases
 {
     public static class Registro
     {
-        private static List<Usuario> usuarios = BaseDatos.CargarArchivoUsuario();
+        private static List<Usuario> usuarios = BaseDatos.ObtenerUsuarios();
         private static Queue<Usuario> solicitudMod = new Queue<Usuario>();
 
         public static List<Usuario> Usuarios { get => usuarios; }
@@ -94,12 +95,15 @@ namespace LibClases
             }
             return false;
         }
-        public static void CrearUsuario(string nombre, string apellido, string usuario, string contraseña, ERoles rol, string correo)
+        public static void CrearUsuario(string nombre, string apellido, string usuario, string contraseña, string rol, string correo)
         {
             if (!BuscarUsuario(usuario, contraseña))
             {
-                if(!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(correo))
-                    usuarios.Add(new(nombre, apellido, usuario, contraseña, rol, correo));
+                if (!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(correo) && !String.IsNullOrEmpty(rol))
+                {
+                    ERoles _rol = (ERoles)Enum.Parse(typeof(ERoles), rol, true);
+                    usuarios.Add(new(nombre, apellido, usuario, contraseña, _rol, correo));
+                }
                 else
                     throw new Exception("Datos incompletos");
             }
@@ -154,13 +158,15 @@ namespace LibClases
                 }
             }
         }
-        public static void CambiarRolUsuario(string usuario, ERoles rol)
+        public static void CambiarRolUsuario(string usuario, string rol)
         {
+            ERoles _rol = (ERoles)Enum.Parse(typeof(ERoles), rol, true);
+
             foreach (Usuario user in usuarios)
             {
                 if (user.User == usuario)
                 {
-                    user.Rol = rol;
+                    user.Rol = _rol;
                 }
             }  
         }
@@ -185,11 +191,12 @@ namespace LibClases
 
             return false;
         }
-        public static void SolicitarMod (string usuario,string contraseña,ERoles rol,string nombre,string apellido,string correo)
+        public static void SolicitarMod (string usuario,string contraseña,string rol,string nombre,string apellido,string correo)
         {
             if(solicitudMod != null)
             {
-                solicitudMod.Enqueue(new Usuario(nombre, apellido, usuario, contraseña, rol, correo));
+                ERoles _rol = (ERoles)Enum.Parse(typeof(ERoles), rol, true);
+                solicitudMod.Enqueue(new Usuario(nombre, apellido, usuario, contraseña, _rol, correo));
             }
         }
         public static string MostrarSolicitud()

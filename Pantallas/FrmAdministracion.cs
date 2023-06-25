@@ -210,7 +210,7 @@ namespace Pantallas
         private void btnConfirmSol_Click(object sender, EventArgs e)
         {
             
-            Registro.SolicitarMod(txtUsuario.Text,txtContraseña.Text,BaseDatos.ParsearRol(cbRoles.Text),txtNombre.Text,txtApellido.Text,txtCorreo.Text);
+            Registro.SolicitarMod(txtUsuario.Text,txtContraseña.Text,cbRoles.Text,txtNombre.Text,txtApellido.Text,txtCorreo.Text);
             VolverViejosDatos();
             MessageBox.Show("Solicitud Enviado Correctamente");
 
@@ -260,7 +260,7 @@ namespace Pantallas
                 {
                     try
                     {
-                        Registro.CambiarRolUsuario(auxUser, BaseDatos.ParsearRol(cbRoles.Text));
+                        Registro.CambiarRolUsuario(auxUser, cbRoles.Text);
                         Registro.ModificarUsuario(auxUser, auxPass, txtContraseña.Text);
                         Registro.ModificarUsuario(auxUser,txtNombre.Text,txtApellido.Text,txtCorreo.Text);
                         Registro.ModificarUsuario(auxUser, txtUsuario.Text);
@@ -283,7 +283,7 @@ namespace Pantallas
             {
                 try
                 {
-                    Registro.CrearUsuario(txtNombre.Text, txtApellido.Text, txtUsuario.Text, txtContraseña.Text, BaseDatos.ParsearRol(cbRoles.Text), txtCorreo.Text);
+                    Registro.CrearUsuario(txtNombre.Text, txtApellido.Text, txtUsuario.Text, txtContraseña.Text, cbRoles.Text, txtCorreo.Text);
                     DeshabilitarBoxes();
                     VaciarDatosUsuario();
                     pnlBotonera.Enabled = true;

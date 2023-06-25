@@ -1,4 +1,5 @@
 ﻿
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace LibClases
@@ -21,9 +22,9 @@ namespace LibClases
 
         public static void Cargar()
         {
-            _productos = BaseDatos.CargarArchivoProductos();
-            _clientes = BaseDatos.CargarArchivoClientes();
-            _solicitudPresupuesto = BaseDatos.CargarArchivoPresupuesto();
+            _productos = BaseDatos.ObtenerProductos();
+            _clientes = BaseDatos.ObtenerClientes();
+            _solicitudPresupuesto = BaseDatos.ObtenerPresupuestos();
             _ventas = BaseDatos.CargarArchivoVentas();
         }
         #region Control Venta
@@ -232,9 +233,10 @@ namespace LibClases
         {
             if(!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(marca) && !String.IsNullOrEmpty(precio) && !String.IsNullOrEmpty(stock) && !String.IsNullOrEmpty(categoria))
             {
-                if(double.TryParse(precio, out double price) && int.TryParse(stock, out int stockCantidad))
+                ECategoria _categoria = (ECategoria)Enum.Parse(typeof(ECategoria), categoria, true);
+                if (double.TryParse(precio, out double price) && int.TryParse(stock, out int stockCantidad))
                 {
-                    return new Producto(GeneradorId("alfanumerico"), nombre, marca, price, BaseDatos.ParsearCategoria(categoria), stockCantidad);
+                    return new Producto(GeneradorId("alfanumerico"), nombre, marca, price, _categoria, stockCantidad);
                 }
                 else
                 {
