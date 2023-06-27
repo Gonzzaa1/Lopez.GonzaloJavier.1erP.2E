@@ -56,7 +56,7 @@ namespace Pantallas
 
             if (result == DialogResult.Yes)
             {
-                CrearMensajeRegistro($"El usuario {usuario} cerro la aplicacion sin cerrar secion.");
+                CrearMensajeRegistro($"El usuario {usuario.User} cerro la aplicacion sin cerrar secion.");
                 Application.Exit();
             }
         }

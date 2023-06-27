@@ -1,10 +1,8 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Reflection;
-using System.Reflection.PortableExecutable;
 using System.Text;
-using System.Xml;
 using Formatting = Newtonsoft.Json.Formatting;
+
 
 namespace LibClases
 {
@@ -18,7 +16,7 @@ namespace LibClases
 
         public static List<Producto> Productos { get => _productos; }
         public static List<Producto> Solicitudes { get => _solcitudes; }
-        public static List <Venta> Ventas { get => _ventas; }
+        public static List<Venta> Ventas { get => _ventas; }
 
         public static void Cargar()
         {
@@ -26,7 +24,7 @@ namespace LibClases
             _solicitudPresupuesto = BaseDatos.ObtenerPresupuestos();
             _ventas = BaseDatos.ObtenerVentas();
         }
-        public static void ExportarJSON<T>(string nombreArchivo,List<T> lista)
+        public static void ExportarJSON<T>(string nombreArchivo, List<T> lista)
         {
             string json = JsonConvert.SerializeObject(lista, Formatting.Indented);
             File.WriteAllText(nombreArchivo + ".json", json);
@@ -36,7 +34,7 @@ namespace LibClases
             if (lista == null || lista.Count == 0)
                 return;
 
-            using (StreamWriter writer = new StreamWriter(nombreArchivo+".csv", false, Encoding.UTF8))
+            using (StreamWriter writer = new StreamWriter(nombreArchivo + ".csv", false, Encoding.UTF8))
             {
                 if (typeof(T) == typeof(string))
                 {
@@ -62,11 +60,11 @@ namespace LibClases
             }
         }
         #region Control Venta
-        public static void CrearVenta(string presuId,string cliente,string numeroTarjeta, string cuotas,string precioFinal,string usuario)
+        public static void CrearVenta(string presuId, string cliente, string numeroTarjeta, string cuotas, string precioFinal, string usuario)
         {
-            if(!String.IsNullOrEmpty(presuId) && !String.IsNullOrEmpty(cliente) && !String.IsNullOrEmpty(numeroTarjeta) && !String.IsNullOrEmpty(cuotas) && !String.IsNullOrEmpty(precioFinal) && !String.IsNullOrEmpty(usuario))
+            if (!String.IsNullOrEmpty(presuId) && !String.IsNullOrEmpty(cliente) && !String.IsNullOrEmpty(numeroTarjeta) && !String.IsNullOrEmpty(cuotas) && !String.IsNullOrEmpty(precioFinal) && !String.IsNullOrEmpty(usuario))
             {
-                BaseDatos.AgregarVenta(new(presuId, cliente, numeroTarjeta,cuotas, precioFinal, usuario));
+                BaseDatos.AgregarVenta(new(presuId, cliente, numeroTarjeta, cuotas, precioFinal, usuario));
                 _ventas = BaseDatos.ObtenerVentas();
             }
         }
@@ -74,19 +72,19 @@ namespace LibClases
         #region Control Presupuesto
         public static Presupuesto BuscarPresupuesto(string id)
         {
-            if(!String.IsNullOrEmpty(id))
+            if (!String.IsNullOrEmpty(id))
                 return BaseDatos.BuscarPresupuesto(id);
             throw new Exception("Presupuesto no encontrado");
-  
+
         }
         public static string MostrarProductosPresupuesto(List<Producto> lista)
         {
             StringBuilder sb = new StringBuilder();
-            if(lista != null)
+            if (lista != null)
             {
                 double precio = 0;
 
-                foreach(Producto producto in lista)
+                foreach (Producto producto in lista)
                 {
                     precio += producto.Precio;
                     sb.AppendLine($"{producto.Nombre} - ${producto.Precio}");
@@ -113,24 +111,24 @@ namespace LibClases
         public static void EliminarProductoPresupuesto(Producto producto)
         {
 
-            if(producto != null)
+            if (producto != null)
             {
                 Producto productoEliminar = null!;
 
-                foreach(Producto auxProducto in _presupuesto)
+                foreach (Producto auxProducto in _presupuesto)
                 {
-                    if(auxProducto.Equals(producto))
+                    if (auxProducto.Equals(producto))
                     {
                         productoEliminar = auxProducto;
                     }
                 }
-                if(productoEliminar != null)
+                if (productoEliminar != null)
                     _presupuesto.Remove(productoEliminar);
             }
         }
         #endregion
         #region Control Clientes
-        public static void AltaCliente(string nombre,string apellido,string dni,string edad, string direccion,string telefono,string correo)
+        public static void AltaCliente(string nombre, string apellido, string dni, string edad, string direccion, string telefono, string correo)
         {
             if (!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(direccion) && !String.IsNullOrEmpty(telefono) && !String.IsNullOrEmpty(correo))
             {
@@ -152,13 +150,13 @@ namespace LibClases
         public static void BajaCliente(string dni)
         {
             Cliente CBuscado = BaseDatos.BuscarCliente(dni);
-            BaseDatos.EliminarCliente(CBuscado); 
+            BaseDatos.EliminarCliente(CBuscado);
         }
-        public static void ModificarCliente(Cliente clienteViejo,string nombre, string apellido, string dni, string edad, string direccion, string telefono, string correo)
+        public static void ModificarCliente(Cliente clienteViejo, string nombre, string apellido, string dni, string edad, string direccion, string telefono, string correo)
         {
-            if(clienteViejo != null && !String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(direccion) && !String.IsNullOrEmpty(telefono) && !String.IsNullOrEmpty(correo) && double.TryParse(dni, out double _dni) && int.TryParse(edad, out int _edad))
+            if (clienteViejo != null && !String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(direccion) && !String.IsNullOrEmpty(telefono) && !String.IsNullOrEmpty(correo) && double.TryParse(dni, out double _dni) && int.TryParse(edad, out int _edad))
             {
-                Cliente clienteMod = new(nombre, apellido, _dni, _edad, direccion, telefono,correo);
+                Cliente clienteMod = new(nombre, apellido, _dni, _edad, direccion, telefono, correo);
                 BaseDatos.ModificarCliente(clienteMod, clienteViejo.Dni.ToString());
             }
             else
@@ -170,7 +168,7 @@ namespace LibClases
         #region Control Productos
         public static Producto BuscarProducto(string nombre)
         {
-            if(!String.IsNullOrEmpty(nombre))
+            if (!String.IsNullOrEmpty(nombre))
             {
                 return BaseDatos.BuscarProducto(nombre);
             }
@@ -185,16 +183,16 @@ namespace LibClases
 
             foreach (Producto producto in _productos)
             {
-                if(producto.Categoria.ToString() == categoria)
+                if (producto.Categoria.ToString() == categoria)
                 {
                     productosFiltrados.Add(producto);
                 }
             }
             return productosFiltrados;
         }
-        public static Producto CrearProducto(string nombre,string marca,string precio, string categoria,string stock)
+        public static Producto CrearProducto(string nombre, string marca, string precio, string categoria, string stock)
         {
-            if(!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(marca) && !String.IsNullOrEmpty(precio) && !String.IsNullOrEmpty(stock) && !String.IsNullOrEmpty(categoria))
+            if (!String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(marca) && !String.IsNullOrEmpty(precio) && !String.IsNullOrEmpty(stock) && !String.IsNullOrEmpty(categoria))
             {
                 ECategoria _categoria = (ECategoria)Enum.Parse(typeof(ECategoria), categoria, true);
                 if (double.TryParse(precio, out double price) && int.TryParse(stock, out int stockCantidad))
@@ -215,15 +213,15 @@ namespace LibClases
         {
             bool check = false;
 
-            if(producto != null)
+            if (producto != null)
             {
-                foreach(Producto item in _productos)
+                foreach (Producto item in _productos)
                 {
-                    if(item != producto)
+                    if (item != producto)
                         check = true;
                 }
 
-                if(check)
+                if (check)
                 {
                     BaseDatos.AgregarProducto(producto);
                     _productos = BaseDatos.ObtenerProductos();
@@ -242,7 +240,7 @@ namespace LibClases
         }
         public static void EliminarProducto(string nombre)
         {
-            if(!String.IsNullOrEmpty(nombre))
+            if (!String.IsNullOrEmpty(nombre))
             {
                 Producto productoEliminado = BaseDatos.BuscarProducto(nombre);
                 BaseDatos.EliminarProducto(productoEliminado);
@@ -273,9 +271,9 @@ namespace LibClases
             {
                 Producto producto = BaseDatos.BuscarProducto(nombre);
                 BaseDatos.ModificarStockProducto(producto, cantidad);
-                foreach(Producto p in _solcitudes)
+                foreach (Producto p in _solcitudes)
                 {
-                    if(p.Nombre == producto.Nombre)
+                    if (p.Nombre == producto.Nombre)
                     {
                         _solcitudes.Remove(p);
                         break;
@@ -288,5 +286,5 @@ namespace LibClases
             }
         }
         #endregion
-    }
+    }   
 }

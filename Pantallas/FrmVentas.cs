@@ -580,7 +580,7 @@ namespace Pantallas
             lblEstadoPresupuesto.Text = String.Empty;
 
             BaseDatos.ModificarEstadoPresupuesto(presupuesto);
-            CrearMensajeRegistro($"El usuario {_usuario?.User} rechazo el presupuesto N° {lblId.Text}.");
+            CrearMensajeRegistro($"El usuario {_usuario?.User} rechazo el presupuesto N° {presupuesto.Id}.");
         }
 
         private void btnAprobar_Click(object sender, EventArgs e)
@@ -593,7 +593,7 @@ namespace Pantallas
             lblEstadoPresupuesto.Text = String.Empty;
 
             BaseDatos.ModificarEstadoPresupuesto(presupuesto);
-            CrearMensajeRegistro($"El usuario {_usuario?.User} aprobo el presupuesto N° {lblId.Text}.");
+            CrearMensajeRegistro($"El usuario {_usuario?.User} aprobo el presupuesto N° {presupuesto.Id}.");
         }
 
         private void btnSalir_Click(object sender, EventArgs e)

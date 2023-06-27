@@ -480,6 +480,7 @@ namespace LibClases
             }
             reader.Close();
 
+            _command.Parameters.Clear();
             if (_connection.State == ConnectionState.Open)
             {
                 _connection.Close();
