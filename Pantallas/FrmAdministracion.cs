@@ -17,14 +17,20 @@ namespace Pantallas
         private string? auxUser;
         private string? auxPass;
         private bool modOn = false;
+        Logs log = new Logs();
         private FrmAdministracion()
         {
             InitializeComponent();
             user = null!;
+            log.logEvento += BaseDatos.CrearRegistro;
         }
         public FrmAdministracion(Usuario usuario) : this()
         {
             user = usuario;
+        }
+        public void CrearMensajeRegistro(string mensaje)
+        {
+            log.Log($"{DateTime.Now} : {mensaje}");
         }
         private void FrmAdministracion_Load(object sender, EventArgs e)
         {
@@ -41,8 +47,7 @@ namespace Pantallas
                 pnlBotonera.Visible = true;
                 btnEditPass.Visible = false;
                 btnSolicitarCambios.Visible = false;
-                dgvUsers.DataSource = null;
-                dgvUsers.DataSource = Registro.Usuarios;
+                ActualizarListado();
                 txtContraseña.PasswordChar = '\0';
             }
             else
@@ -96,6 +101,10 @@ namespace Pantallas
         {
             gbAdministracion.Visible = false;
             pnlCambiarContraseña.Visible = true;
+            txtLastPass.PasswordChar = '*';
+            txtNewPass.PasswordChar = '*';
+            txtNewPassRep.PasswordChar = '*';
+            CrearMensajeRegistro($"El usuario {user.User} ingreso a modificar su contraseña.");
         }
 
         private void cbShowPass_CheckedChanged(object sender, EventArgs e)
@@ -120,6 +129,7 @@ namespace Pantallas
             cbShowPass.Checked = false;
             pnlCambiarContraseña.Visible = false;
             gbAdministracion.Visible = true;
+            CrearMensajeRegistro($"El usuario {user.User} cancelo el cambio de contraseña.");
         }
 
         private void txtNewPassRep_TextChanged(object sender, EventArgs e)
@@ -162,16 +172,24 @@ namespace Pantallas
             txtLastPass.Text = String.Empty;
             txtNewPass.Text = String.Empty;
         }
+        private void ActualizarListado()
+        {
+            dgvUsers.DataSource = null;
+            dgvUsers.DataSource = BaseDatos.ObtenerUsuarios();
+        }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
             try
             {
-                Registro.ModificarUsuario(txtUsuario.Text, txtLastPass.Text, txtNewPassRep.Text);
+                BaseDatos.ModificarUsuario(txtUsuario.Text, txtNewPassRep.Text);
                 VaciarTextBox();
                 pnlCambiarContraseña.Visible = false;
                 cbShowPass.Checked = false;
+                gbAdministracion.Visible = true;
                 MessageBox.Show("Contraseña cambiada con exito!");
+                CrearMensajeRegistro($"El usuario {user.User} cambio con exito su contraseña.");
+                ActualizarListado();
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.Message,"Algo Salio Mal!");
@@ -186,8 +204,10 @@ namespace Pantallas
             txtApellido.Enabled = true;
             txtCorreo.Enabled = true;
             btnSolicitarCambios.Visible = false;
+            btnEditPass.Visible = false;
             btnConfirmSol.Visible = true;
             btnCancelSol.Visible = true;
+            CrearMensajeRegistro($"El usuario {user.User} ingreso a la seccion de solicitud de modificacion de datos de usuarios.");
         }
         private void VolverViejosDatos()
         {
@@ -205,6 +225,8 @@ namespace Pantallas
         private void btnCancelSol_Click(object sender, EventArgs e)
         {
             VolverViejosDatos();
+            btnEditPass.Visible = true;
+            CrearMensajeRegistro($"El usuario {user.User} cancelo la solicitud de modificacion de datos de usuario.");
         }
 
         private void btnConfirmSol_Click(object sender, EventArgs e)
@@ -212,7 +234,9 @@ namespace Pantallas
             
             Registro.SolicitarMod(txtUsuario.Text,txtContraseña.Text,cbRoles.Text,txtNombre.Text,txtApellido.Text,txtCorreo.Text);
             VolverViejosDatos();
+            btnEditPass.Visible = true;
             MessageBox.Show("Solicitud Enviado Correctamente");
+            CrearMensajeRegistro($"El usuario {user.User} realizo una solicitud de modificacion de datos de usuarios.");
 
         }
 
@@ -223,10 +247,13 @@ namespace Pantallas
             if(respuesta == DialogResult.Yes)
             {
                 Registro.ConfirmarSolicitudMod();
+                CrearMensajeRegistro($"El usuario {user.User} confirmo la modificacion solicitada de un usuario.");
+                ActualizarListado();
             }
             else
             {
                 Registro.CancelarSolicitud();
+                CrearMensajeRegistro($"El usuario {user.User} rechazo la modificacion solicitada de un usuario.");
             }
             txtSolicitudesMod.Text = Registro.Solicitudes.Count.ToString();
         }
@@ -250,6 +277,7 @@ namespace Pantallas
             btnOk.Visible = true;
             btnNo.Visible = true;
             modOn = true;
+            CrearMensajeRegistro($"El usuario {user.User} ingreso a modificar un usuario.");
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -260,20 +288,20 @@ namespace Pantallas
                 {
                     try
                     {
-                        Registro.CambiarRolUsuario(auxUser, cbRoles.Text);
-                        Registro.ModificarUsuario(auxUser, auxPass, txtContraseña.Text);
-                        Registro.ModificarUsuario(auxUser,txtNombre.Text,txtApellido.Text,txtCorreo.Text);
-                        Registro.ModificarUsuario(auxUser, txtUsuario.Text);
+                        ERoles rol = (ERoles)Enum.Parse(typeof(ERoles), cbRoles.Text, true);
+                        Usuario usuarioMod = new(txtNombre.Text, txtApellido.Text, txtUsuario.Text, txtContraseña.Text, rol, txtCorreo.Text);
+                        BaseDatos.ModificarUsuario(usuarioMod, auxUser);
                         DeshabilitarBoxes();
                         VaciarDatosUsuario();
                         pnlBotonera.Enabled = true;
                         btnOk.Visible = false;
                         btnNo.Visible = false;
                         MessageBox.Show("Modificacion Exitosa");
-                        dgvUsers.DataSource = null;
-                        dgvUsers.DataSource = Registro.Usuarios;
+                        CrearMensajeRegistro($"El usuario {user.User} modifico exitosamente al usuario {auxUser}.");
+                        ActualizarListado();
 
-                    }catch(Exception ex)
+                    }
+                    catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message,"Algo Salio Mal");
                     }
@@ -283,15 +311,16 @@ namespace Pantallas
             {
                 try
                 {
-                    Registro.CrearUsuario(txtNombre.Text, txtApellido.Text, txtUsuario.Text, txtContraseña.Text, cbRoles.Text, txtCorreo.Text);
+                    Usuario nuevoUsuario = Registro.VerificarUsuario(txtNombre.Text, txtApellido.Text, txtUsuario.Text, txtContraseña.Text, cbRoles.Text, txtCorreo.Text);
+                    BaseDatos.AgregarUsuario(nuevoUsuario);
                     DeshabilitarBoxes();
                     VaciarDatosUsuario();
                     pnlBotonera.Enabled = true;
                     btnOk.Visible = false;
                     btnNo.Visible = false;
                     MessageBox.Show("Alta exitosa");
-                    dgvUsers.DataSource = null;
-                    dgvUsers.DataSource = Registro.Usuarios;
+                    CrearMensajeRegistro($"El usuario {user.User} dio de alta al usuario {txtUsuario.Text}.");
+                    ActualizarListado();
                 }
                 catch (Exception ex)
                 {
@@ -334,6 +363,7 @@ namespace Pantallas
             btnOk.Visible = true;
             btnNo.Visible = true;
             modOn = false;
+            CrearMensajeRegistro($"El usuario {user.User} ingreso a dar de alta un usuario nuevo.");
         }
 
         private void btnNo_Click(object sender, EventArgs e)
@@ -343,6 +373,7 @@ namespace Pantallas
             pnlBotonera.Enabled = true;
             btnOk.Visible = false;
             btnNo.Visible = false;
+            CrearMensajeRegistro($"El usuario {user.User} cancelo el alta de un usuario.");
         }
 
         private void btnBaja_Click(object sender, EventArgs e)
@@ -351,32 +382,26 @@ namespace Pantallas
 
             if (respuesta == DialogResult.Yes)
             {
-                Registro.EliminarUsuario(txtUsuario.Text);
-                dgvUsers.DataSource = null;
-                dgvUsers.DataSource = Registro.Usuarios;
-                VaciarDatosUsuario();
-                MessageBox.Show("Usuario dado de baja");
+                try
+                {
+                    Usuario usuarioEliminar = BaseDatos.BuscarUsuario(txtUsuario.Text);
+                    BaseDatos.EliminarUsuario(usuarioEliminar);
+                    ActualizarListado();
+                    VaciarDatosUsuario();
+                    MessageBox.Show("Usuario dado de baja");
+                    CrearMensajeRegistro($"El usuario {user.User} dio de baja al usuario {txtUsuario.Text}.");
+                }
+                catch (Exception ex)
+                { 
+                    MessageBox.Show(ex.Message, "Algo Salio Mal!"); 
+                }
             }
         }
-
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            DialogResult respuesta = MessageBox.Show("Desea Guardar?","GUARDAR",MessageBoxButtons.YesNo);
-            if(respuesta == DialogResult.Yes)
-            {
-                BaseDatos.GuardarUsuario(Registro.Usuarios);
-                MessageBox.Show("Guardado exitoso");
-                Close();
-            }
-            
-        }
-
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             if (txtBuscar.Text == String.Empty)
             {
-                dgvUsers.DataSource = null;
-                dgvUsers.DataSource = Registro.Usuarios;
+                ActualizarListado();
             }
         }
 
@@ -385,7 +410,8 @@ namespace Pantallas
             List<Usuario> usuarioBuscado = new();
             try
             {
-                Usuario auxUser = Registro.BuscarUsuario(txtBuscar.Text);
+                Usuario auxUser = BaseDatos.BuscarUsuario(txtBuscar.Text);
+                CrearMensajeRegistro($"El usuario {user.User} realizo la busqueda del usuario {txtBuscar.Text}.");
                 usuarioBuscado.Add(new(auxUser.Nombre, auxUser.Apellido, auxUser.User, auxUser.Contraseña, auxUser.Rol, auxUser.Correo));
                 dgvUsers.DataSource = null;
                 dgvUsers.DataSource = usuarioBuscado;

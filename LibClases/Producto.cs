@@ -15,14 +15,18 @@ namespace LibClases
         private ECategoria _categoria;
         private int _stock;
 
-        public Producto(string id,string nombre, string marca, double precio, ECategoria categoria, int stock)
+        public Producto (string nombre, string marca, double precio, ECategoria categoria, int stock)
         {
-            _id = id;
+            _id = String.Empty;
             _nombre = nombre;
             _marca = marca;
             _precio = precio;
             _categoria = categoria;
             _stock = stock;
+        }
+        public Producto(string id,string nombre, string marca, double precio, ECategoria categoria, int stock):this(nombre,marca,precio,categoria,stock)
+        {
+            _id = id;
         }
         public string Id { get => _id;  set => _id = value;  }
         public string Nombre { get => _nombre; set => _nombre = value; } 

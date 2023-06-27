@@ -1,13 +1,15 @@
 using LibClases;
+
 namespace Pantallas
 {
     public partial class FrmLogin : Form
     {
+        private Logs log = new Logs();
+        
         public FrmLogin()
         {
             InitializeComponent();
         }
-
         private void btnSalir_MouseEnter(object sender, EventArgs e)
         {
             btnSalir.ForeColor = Color.Red;
@@ -37,6 +39,10 @@ namespace Pantallas
                 {
                     PCMaker.Cargar();
                     FrmMenuPrincipal inicio = new FrmMenuPrincipal(txtUsuario.Text);
+
+                    log.logEvento += BaseDatos.CrearRegistro;
+                    log.Log($"{DateTime.Now} : El usuario {txtUsuario.Text} inicio Secion");
+
                     inicio.Show();
                     Hide();
                 }

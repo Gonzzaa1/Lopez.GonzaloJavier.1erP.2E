@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Microsoft.VisualBasic.Logging;
 
 namespace Pantallas
 {
@@ -19,17 +20,24 @@ namespace Pantallas
         private FrmLogin login = new();
         private Usuario usuario;
         private Form formularioActual = new();
+        private Logs logs = new();
+
 
         private FrmMenuPrincipal()
         {
             InitializeComponent();
             usuario = null!;
-            
+            logs.logEvento += BaseDatos.CrearRegistro;
+
+        }
+        private void CrearMensajeRegistro(string mensaje)
+        {
+            logs.Log($"{DateTime.Now} : {mensaje}");
         }
 
         public FrmMenuPrincipal(string user):this()
         {
-            usuario = Registro.BuscarUsuario(user);
+            usuario = BaseDatos.BuscarUsuario(user);
         }
         private void FrmMenuPrincipal_Load(object sender, EventArgs e)
         {
@@ -48,6 +56,7 @@ namespace Pantallas
 
             if (result == DialogResult.Yes)
             {
+                CrearMensajeRegistro($"El usuario {usuario} cerro la aplicacion sin cerrar secion.");
                 Application.Exit();
             }
         }
@@ -116,6 +125,7 @@ namespace Pantallas
         private void btnAdministracion_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Administracion.");
             FrmAdministracion administracion = new FrmAdministracion(usuario);
             Abrirformulario(administracion);
             
@@ -124,6 +134,7 @@ namespace Pantallas
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             Close();
+            CrearMensajeRegistro($"El usuario {usuario.User} cerro sesion.");
             login.Show();
         }
 
@@ -148,6 +159,7 @@ namespace Pantallas
         private void btnPBuscar_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Buscar Producto.");
             FrmProducto producto = new FrmProducto(true,false,usuario);
             Abrirformulario(producto);
         }
@@ -155,6 +167,7 @@ namespace Pantallas
         private void btnPConsultar_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Consultar Producto.");
             FrmProducto producto = new FrmProducto(false,false,usuario);
             Abrirformulario(producto);
         }
@@ -162,12 +175,14 @@ namespace Pantallas
         private void btnSolicitudStock_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Solicitudes Stock.");
             FrmProducto producto = new FrmProducto(false,true, usuario);
             Abrirformulario(producto);
         }
         private void btnCBuscar_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Buscar Cliente.");
             FrmClientes clientes = new FrmClientes(usuario, true);
             Abrirformulario(clientes);
         }
@@ -175,12 +190,14 @@ namespace Pantallas
         private void btnCGestionar_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Gestionar Cliente.");
             FrmClientes clientes = new FrmClientes(usuario, false);
             Abrirformulario(clientes);
         }
         private void btnVPresu_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Generar Presupuesto.");
             FrmVentas ventas = new FrmVentas(usuario,true, false, false, false);
             Abrirformulario(ventas);
         }
@@ -199,6 +216,7 @@ namespace Pantallas
         private void btnSolicitudes_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Solicitudes de Presupuesto.");
             FrmVentas ventas = new FrmVentas(usuario, false, false, false, true);
             Abrirformulario(ventas);
         }
@@ -206,6 +224,7 @@ namespace Pantallas
         private void btnVEstado_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Consultar Estado de Presupuesto.");
             FrmVentas ventas = new FrmVentas(usuario, false, false, true, false);
             Abrirformulario(ventas);
         }
@@ -213,6 +232,7 @@ namespace Pantallas
         private void btnVPedido_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Generar Pedido de Venta.");
             FrmVentas ventas = new FrmVentas(usuario, false, true, false, false);
             Abrirformulario(ventas);
         }
@@ -220,7 +240,16 @@ namespace Pantallas
         private void btnRVentas_Click(object sender, EventArgs e)
         {
             OcularSubmenus();
-            FrmReportes reporte = new FrmReportes();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de Reportes de ventas.");
+            FrmReportes reporte = new FrmReportes(usuario,true,false);
+            Abrirformulario(reporte);
+        }
+
+        private void btnInformes_Click(object sender, EventArgs e)
+        {
+            OcularSubmenus();
+            CrearMensajeRegistro($"El usuario {usuario.User} ingreso a la seccion de exportar informes.");
+            FrmReportes reporte = new FrmReportes(usuario, false, true);
             Abrirformulario(reporte);
         }
 

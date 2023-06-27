@@ -1,14 +1,6 @@
 ﻿using System.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LibClases
 {
@@ -17,6 +9,9 @@ namespace LibClases
         private static SqlConnection _connection;
         private static SqlCommand _command;
         private static string _connectionString;
+        private static SqlDataReader? reader;
+
+        private static List<string> _presupuestosProductosID = new List<string>();
         
         static BaseDatos()
         {
@@ -26,42 +21,335 @@ namespace LibClases
             _command.Connection = _connection;
             _command.CommandType = CommandType.Text;
         }
-
-
-        public static List<Usuario> ObtenerUsuarios()
+        #region Logs        
+        public static void CrearRegistro(string mensaje)
         {
-            List<Usuario> lista = new List<Usuario>();
+            
+            try
+            {
+                _connection.Open();
+                _command.CommandText = "INSERT INTO Logs (Registro) VALUES (@mensaje)";
+
+                _command.Parameters.AddWithValue("@mensaje", mensaje);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static List<string> ObtenerRegistros()
+        {
+            List<string> lista = new List<string>();
 
             _connection.Open();
-            _command.CommandText = "SELECT * FROM Usuarios";
+            _command.CommandText = "SELECT * FROM Logs";
 
-            SqlDataReader reader = _command.ExecuteReader();
+            reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string registro = reader.GetString(0);
+
+                lista.Add(new(registro));
+            }
+
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            return lista;
+        }
+        #endregion
+        #region Presupuestos
+        public static void ObtenerIDPresupuestos()
+        {
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM PresupuestoProducto";
+            reader = _command.ExecuteReader();
+
+            _presupuestosProductosID.Clear();
+
+            while (reader.Read())
+            {
+                int presupuestoID = reader.GetInt32(0);
+                int productoID = reader.GetInt32(1);
+
+                _presupuestosProductosID.Add($"{presupuestoID},{productoID}");
+            }
+
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+        }
+        public static List<Presupuesto> ObtenerPresupuestos()
+        {
+            List<Presupuesto> lista = new List<Presupuesto>();
+
+            ObtenerIDPresupuestos();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Presupuestos";
+
+            reader = _command.ExecuteReader();
 
             while(reader.Read())
             {
-                string nombre = reader.GetString(0);
-                string apellido = reader.GetString(1); 
-                string usuario = reader.GetString(2);
-                string contraseña = reader.GetString(3);
-                ERoles rol = (ERoles) Enum.Parse(typeof(ERoles), reader.GetString(4), true);
-                string correo = reader.GetString(5);
+                Presupuesto presupuestoActual;
+                List<Producto> productos = new List<Producto>();
 
-                lista.Add(new(nombre, apellido, usuario, contraseña, rol, correo));
+                string id = reader.GetInt32(0).ToString();
+
+                foreach (string ids in _presupuestosProductosID)
+                {
+                    string[] columna = ids.Split(",");
+
+                    string presupuestoID = columna[0];
+                    string productoID = columna[1];
+
+                    if(presupuestoID.ToString() == id)
+                    {
+                        foreach(Producto p in PCMaker.Productos)
+                        {
+                            if(p.Id == productoID.ToString())
+                            {
+                                productos.Add(new(p.Id, p.Nombre, p.Marca, p.Precio, p.Categoria, p.Stock));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                double precio = Convert.ToDouble(reader.GetDecimal(2));
+
+                presupuestoActual = new(id,productos, precio);
+                presupuestoActual.Estado = (EEstados)Enum.Parse(typeof(EEstados), reader.GetString(1), true);
+
+                lista.Add(presupuestoActual);
             }
+            reader.Close();
 
-            if(_connection.State == ConnectionState.Open)
+            if (_connection.State == ConnectionState.Open)
             {
-                _connection.Close(); 
+                _connection.Close();
             }
             return lista;
         }
-        public static  List<Producto> ObtenerProductos()
+        public static Presupuesto BuscarPresupuesto(string id)
+        {
+            try
+            {
+                
+                string presupuestoId = "";
+                EEstados estado = EEstados.Revision;
+                double precio = 0;
+                List<Producto> productosPresupuesto = new List<Producto>();
+
+                _connection.Open();
+                _command.CommandText = "SELECT P.*, Pr.* " +
+                                       "FROM PresupuestoProducto PP, Presupuestos P, Productos PR " +
+                                       "WHERE P.Presupuesto_ID = PP.Presupuesto_ID " +
+                                       $"and PR.Producto_ID = PP.Producto_ID and PP.Presupuesto_ID = @id";
+
+                _command.Parameters.AddWithValue("@id", id);
+
+                reader = _command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    presupuestoId = reader.GetInt32(0).ToString();
+                    estado = (EEstados)Enum.Parse(typeof(EEstados), reader.GetString(1), true);
+                    precio = Convert.ToDouble(reader.GetDecimal(2));
+
+                    string productoId = reader.GetDecimal(3).ToString();
+                    string nombre = reader.GetString(4);
+                    string marca = reader.GetString(5);
+                    double productoPrecio = Convert.ToDouble(reader.GetDecimal(6));
+                    ECategoria categoria = (ECategoria)Enum.Parse(typeof(ECategoria), reader.GetString(7), true);
+                    int stock = reader.GetInt32(8);
+
+                    productosPresupuesto.Add(new(productoId, nombre, marca, productoPrecio, categoria, stock));
+                }
+
+                reader.Close();
+                Presupuesto presupuesto = new(presupuestoId, productosPresupuesto, precio);
+                presupuesto.Estado = estado;
+
+                return presupuesto;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }            
+        }
+        public static void ModificarEstadoPresupuesto(Presupuesto presupuesto)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = "UPDATE Presupuestos SET Estado = @estado " +
+                                       "WHERE Presupuesto_ID = @id";
+
+                _command.Parameters.AddWithValue("@estado", presupuesto.Estado);
+                _command.Parameters.AddWithValue("@id", presupuesto.Id);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static int AgregarPresupuestoNuevo(Presupuesto presupuesto)
+        {
+            try
+            {
+                _connection.Open();
+
+                string queryPresupuesto = "INSERT INTO Presupuestos (Estado, Precio) " +
+                                          "VALUES (@Estado, @Precio);" +
+                                          "SELECT SCOPE_IDENTITY();";
+
+                SqlCommand commandPresupuesto = new SqlCommand(queryPresupuesto, _connection);
+                commandPresupuesto.Parameters.AddWithValue("@Estado", presupuesto.Estado.ToString());
+                commandPresupuesto.Parameters.AddWithValue("@Precio", presupuesto.Precio);
+
+                int presupuestoID = Convert.ToInt32(commandPresupuesto.ExecuteScalar());
+
+                string queryProducto = "INSERT INTO PresupuestoProducto (Presupuesto_ID, Producto_ID) " +
+                                       "VALUES (@PresupuestoID, @ProductoID)";
+
+                SqlCommand commandProducto = new SqlCommand(queryProducto, _connection);
+
+                foreach (Producto producto in presupuesto.Productos)
+                {
+                    commandProducto.Parameters.Clear();
+                    commandProducto.Parameters.AddWithValue("@PresupuestoID", presupuestoID);
+                    commandProducto.Parameters.AddWithValue("@ProductoID", producto.Id);
+                    commandProducto.ExecuteNonQuery();
+                }
+
+                return presupuestoID;
+            } 
+            catch(Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        #endregion
+        #region Ventas
+        public static List<Venta> ObtenerVentas()
+        {
+            List<Venta> lista = new List<Venta>();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Ventas";
+            reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string presuID = reader.GetInt32(0).ToString();
+                string clienteDNI = reader.GetDecimal(1).ToString();
+                string tarjetaNumero = reader.GetString(2);
+                string cuotas = reader.GetString(3);
+                string ganancias = reader.GetString(4);
+                string usuario = reader.GetString(5);
+
+                lista.Add(new(presuID, clienteDNI, tarjetaNumero, cuotas, ganancias, usuario));
+            }
+
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            return lista;
+        }
+        public static void AgregarVenta(Venta venta)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = "INSERT INTO Ventas (Presupuesto_ID, Cliente_DNI, TarjetaNumero, Cuotas, Ganancia, Usuario_User) "+
+                                       "VALUES (@PresupuestoID, @ClienteDNI, @NumeroTarjeta, @Cuotas, @Ganancias,@Usuario)";
+
+                _command.Parameters.AddWithValue("@PresupuestoID", Convert.ToInt32(venta.PresupuestoId));
+                _command.Parameters.AddWithValue("@ClienteDNI", Convert.ToDecimal(venta.Cliente));
+                _command.Parameters.AddWithValue("@NumeroTarjeta", venta.TarjetaNumero);
+                _command.Parameters.AddWithValue("@Cuotas", venta.Cuotas);
+                _command.Parameters.AddWithValue("@Ganancias", venta.Ganancia);
+                _command.Parameters.AddWithValue("@Usuario", venta.Usuario);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        #endregion
+        #region Productos ABM
+        public static List<Producto> ObtenerProductos()
         {
             List<Producto> lista = new List<Producto>();
 
             _connection.Open();
             _command.CommandText = "SELECT * FROM Productos";
-            SqlDataReader reader = _command.ExecuteReader();
+            reader = _command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -75,23 +363,359 @@ namespace LibClases
                 lista.Add(new(id, nombre, marca, precio, categoria, stock));
             }
 
+            reader.Close();
+
             if (_connection.State == ConnectionState.Open)
             {
                 _connection.Close();
             }
             return lista;
         }
+        public static void AgregarProducto(Producto producto)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = "INSERT INTO Productos (Nombre, Marca, Precio, categoria, Stock) "+
+                                       "VALUES (@nombre, @marca, @precio, @categoria, @stock)";
+
+                _command.Parameters.AddWithValue("@nombre", producto.Nombre);
+                _command.Parameters.AddWithValue("@marca", producto.Marca);
+                _command.Parameters.AddWithValue("@precio", producto.Precio);
+                _command.Parameters.AddWithValue("@categoria", producto.Categoria.ToString());
+                _command.Parameters.AddWithValue("@stock", producto.Stock);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static void EliminarProducto(Producto producto)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = $"DELETE Productos WHERE Producto_ID = {producto.Id}";
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static void ModificarStockProducto(Producto producto, int stock)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = $"UPDATE Productos SET Stock = @stock WHERE Producto_ID = @id";
+
+                _command.Parameters.AddWithValue("@stock", stock);
+                _command.Parameters.AddWithValue("@id", producto.Id);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+            
+        }
+        public static Producto BuscarProducto(string nombre)
+        {
+            Producto productoBuscado = null!;
+
+            _connection.Open();
+            _command.CommandText = $"SELECT * FROM Productos WHERE Nombre = @nombre";
+            _command.Parameters.AddWithValue("@nombre", nombre);
+
+            reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string id = reader.GetDecimal(0).ToString();
+                string _nombre = reader.GetString(1);
+                string marca = reader.GetString(2);
+                double precio = Convert.ToDouble(reader.GetDecimal(3));
+                ECategoria categoria = (ECategoria)Enum.Parse(typeof(ECategoria), reader.GetString(4), true);
+                int stock = reader.GetInt32(5);
+
+                if(_nombre == nombre)
+                {
+                    productoBuscado = new(id, _nombre, marca, precio, categoria, stock);
+                    break;
+                }
+            }
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            return productoBuscado;
+        }
+        #endregion
+        #region Usuarios ABM
+        public static List<Usuario> ObtenerUsuarios()
+        {
+            List<Usuario> lista = new List<Usuario>();
+
+            _connection.Open();
+            _command.CommandText = "SELECT * FROM Usuarios";
+
+            reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string nombre = reader.GetString(0);
+                string apellido = reader.GetString(1);
+                string usuario = reader.GetString(2);
+                string contraseña = reader.GetString(3);
+                ERoles rol = (ERoles)Enum.Parse(typeof(ERoles), reader.GetString(4), true);
+                string correo = reader.GetString(5);
+
+                lista.Add(new(nombre, apellido, usuario, contraseña, rol, correo));
+            }
+
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+            return lista;
+        }
+        public static void AgregarUsuario(Usuario usuarioNuevo)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = "INSERT INTO Usuarios (Nombre, Apellido, Usuario, Contraseña, Rol, Correo) "+ 
+                                       "VALUES (@nombre, @Apellido, @usuario, @contraseña, @rol, @correo)";
+
+                _command.Parameters.AddWithValue("@nombre", usuarioNuevo.Nombre);
+                _command.Parameters.AddWithValue("@Apellido", usuarioNuevo.Apellido);
+                _command.Parameters.AddWithValue("@usuario", usuarioNuevo.User);
+                _command.Parameters.AddWithValue("@contraseña", usuarioNuevo.Contraseña);
+                _command.Parameters.AddWithValue("@rol", usuarioNuevo.Rol.ToString());
+                _command.Parameters.AddWithValue("@correo", usuarioNuevo.Correo);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static void EliminarUsuario(Usuario usuario)
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandText = "DELETE Usuarios WHERE Usuario = @usuario";
+
+                _command.Parameters.AddWithValue("@usuario", usuario.User);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static Usuario BuscarUsuario(string usuario)
+        {
+            Usuario usuarioBuscado = null!;
+
+            _connection.Open();
+
+            _command.CommandText = "SELECT * FROM Usuarios";
+            reader = _command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string nombre = reader.GetString(0);
+                string apellido = reader.GetString(1);
+                string user = reader.GetString(2);
+                string contraseña = reader.GetString(3);
+                ERoles rol = (ERoles)Enum.Parse(typeof(ERoles), reader.GetString(4), true);
+                string correo = reader.GetString(5);
+
+                if(user == usuario)
+                {
+                    usuarioBuscado = new(nombre, apellido, user, contraseña, rol, correo);
+                    break;
+                }
+            }
+
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            if (usuarioBuscado != null)
+                return usuarioBuscado;
+            else
+                throw new Exception("Usuario no encontrado");
+        }
+        public static void ModificarUsuario(Usuario usuarioMod, string usuario)
+        {
+            try
+            {
+
+                _connection.Open();
+
+                _command.CommandText = "UPDATE Usuarios SET Nombre = @nombre, Apellido = @apellido, Correo = @correo, Usuario = @nuevoUser, " +
+                                       "Contraseña = @contraseña, Rol = @rol WHERE Usuario = @usuario";
+
+                _command.Parameters.AddWithValue("@nombre", usuarioMod.Nombre);
+                _command.Parameters.AddWithValue("@Apellido", usuarioMod.Apellido);
+                _command.Parameters.AddWithValue("@correo", usuarioMod.Correo);
+                _command.Parameters.AddWithValue("@nuevoUser", usuarioMod.User);
+                _command.Parameters.AddWithValue("@contraseña", usuarioMod.Contraseña);
+                _command.Parameters.AddWithValue("@rol", usuarioMod.Rol.ToString());
+
+                _command.Parameters.AddWithValue("@usuario", usuario);
+
+                _command.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static void ModificarUsuario(Usuario usuario)
+        {
+            try
+            {
+                _connection.Open();
+
+                _command.CommandText = "UPDATE Usuarios SET Nombre = @nombre, Apellido = @apellido, Correo = @correo WHERE Usuario = @usuario";
+
+                _command.Parameters.AddWithValue("@nombre", usuario.Nombre);
+                _command.Parameters.AddWithValue("@Apellido", usuario.Apellido);;
+                _command.Parameters.AddWithValue("@correo", usuario.Correo);
+                _command.Parameters.AddWithValue("@usuario", usuario.User);
+
+                _command.ExecuteNonQuery();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        public static void ModificarUsuario(string usuario, string nuevaContraseña)
+        {
+            try
+            {
+                _connection.Open();
+
+                _command.CommandText = "UPDATE Usuarios SET Contraseña = @contraseña WHERE Usuario = @usuario";
+
+                _command.Parameters.AddWithValue("@contraseña", nuevaContraseña);
+                _command.Parameters.AddWithValue("@usuario", usuario);
+                _command.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
+        }
+        #endregion
+        #region Clientes ABM
         public static List<Cliente> ObtenerClientes()
         {
             List<Cliente> lista = new List<Cliente>();
 
             _connection.Open();
             _command.CommandText = "SELECT * FROM Clientes";
-            SqlDataReader reader = _command.ExecuteReader();
+            reader = _command.ExecuteReader();
 
             while (reader.Read())
             {
-                
+
                 string nombre = reader.GetString(0);
                 string apellido = reader.GetString(1);
                 double dni = Convert.ToDouble(reader.GetDecimal(2));
@@ -101,8 +725,10 @@ namespace LibClases
                 string correo = reader.GetString(6);
 
 
-                lista.Add(new(nombre,apellido,dni,edad,direccion,telefono,correo));
+                lista.Add(new(nombre, apellido, dni, edad, direccion, telefono, correo));
             }
+
+            reader.Close();
 
             if (_connection.State == ConnectionState.Open)
             {
@@ -111,247 +737,138 @@ namespace LibClases
 
             return lista;
         }
-        public static List<Presupuesto> ObtenerPresupuestos()
+        public static void AgregarCliente(Cliente cliente)
         {
-            List<Presupuesto> lista = new List<Presupuesto>();
-
-            _connection.Open();
-            _command.CommandText = "SELECT * FROM Presupuestos";
-
-            SqlDataReader reader = _command.ExecuteReader();
-
-            while(reader.Read())
+            try
             {
-                Presupuesto presupuestoActual;
+                _connection.Open();
+                _command.CommandText = "INSERT INTO Clientes (Nombre, Apellido, Dni, Edad, Direccion, Telefono, Correo) "+
+                                       "VALUES (@nombre, @Apellido,@Dni, @Edad, @Direccion, @Telefono, @correo)";
 
-                string id = reader.GetString(0);
-                List<Producto> productos = ObtenerProductos(decimal.Parse(id));
-                double precio = Convert.ToDouble(reader.GetDecimal(3));
+                _command.Parameters.AddWithValue("@nombre", cliente.Nombre);
+                _command.Parameters.AddWithValue("@Apellido", cliente.Apellido);
+                _command.Parameters.AddWithValue("@Dni", cliente.Dni);
+                _command.Parameters.AddWithValue("@Edad", cliente.Edad);
+                _command.Parameters.AddWithValue("@Direccion", cliente.Direccion);
+                _command.Parameters.AddWithValue("@Telefono", cliente.Telefono);
+                _command.Parameters.AddWithValue("@correo", cliente.Correo);
 
-                presupuestoActual = new(id, productos, precio);
-                presupuestoActual.Estado = (EEstados)Enum.Parse(typeof(EEstados), reader.GetString(2), true);
+                _command.ExecuteNonQuery();
 
-                lista.Add(presupuestoActual);
             }
-
-            return lista;
-        }
-        public static List<Producto> ObtenerProductos(decimal presupuestoID)
-        {
-            List<Producto> lista = new List<Producto>();
-
-            _connection.Open();
-
-            _command.CommandText = "SELECT * FROM Productos P" +
-                                   "INNER JOIN PresupuestoProducto PP ON P.Producto_ID = PP.Producto_ID" +
-                                   "WHERE PP.Presupuesto_ID = @Presupuesto_ID";
-
-            _command.Parameters.AddWithValue("@Presupuesto_ID", presupuestoID);
-
-            SqlDataReader reader = _command.ExecuteReader();
-
-            while(reader.Read())
+            catch (Exception)
             {
-                string id = reader.GetDecimal(0).ToString();
-                string nombre = reader.GetString(1);
-                string marca = reader.GetString(2);
-                double precio = Convert.ToDouble(reader.GetDecimal(3));
-                ECategoria categoria = (ECategoria)Enum.Parse(typeof(ECategoria), reader.GetString(4), true);
-                int stock = reader.GetInt32(5);
-
-                lista.Add(new(id, nombre, marca, precio, categoria, stock));
+                throw;
             }
-
-            if (_connection.State == ConnectionState.Open)
+            finally
             {
-                _connection.Close();
-            }
+                _command.Parameters.Clear();
 
-            return lista;
-        }
-        #region Aarchivo
-        public static void GuardarUsuario(List<Usuario> lista)
-        {
-            string usuarios = ParseUsuarioToCsv(lista);
-            if (!File.Exists("Usuarios.csv"))
-            {
-                using (StreamWriter sw = File.CreateText("Usuarios.csv"))
-                    sw.WriteLine(usuarios);
-            }
-            else
-            {
-                File.WriteAllText("Usuarios.csv", usuarios);
-            }
-        }
-        public static void GuardarArchivoVentas(List<Venta> lista)
-        {
-            string ventas = ParseVentastoToCsv(lista);
-            if (!File.Exists("Ventas.csv"))
-            {
-                using (StreamWriter sw = File.CreateText("Ventas.csv"))
-                    sw.WriteLine(ventas);
-            }
-            else
-            {
-                File.WriteAllText("Ventas.csv", ventas);
-            }
-        }
-        public static void GuardarArchivoProducto(List<Producto> lista)
-        {
-            string producto = ParseProductoToCsv(lista);
-            if (!File.Exists("Productos.csv"))
-            {
-                using (StreamWriter sw = File.CreateText("Productos.csv"))
-                    sw.WriteLine(producto);
-            }
-            else
-            {
-                File.WriteAllText("Productos.csv", producto);
-            }
-        }
-        public static void GuardarArchivoCliente(List<Cliente>lista)
-        {
-            string clientes = ParseClienteToCsv(lista);
-
-            if (!File.Exists("Clientes.csv"))
-            {
-                using (StreamWriter sw = File.CreateText("Clientes.csv"))
-                    sw.WriteLine(clientes);
-            }
-            else
-            {
-                File.WriteAllText("Clientes.csv", clientes);
-            }
-        }
-        public static void GuardarArchivoPresupuesto(List<Presupuesto> lista)
-        {
-            string presupuesto = ParsePresupuestoToCsv(lista);
-
-            if (!File.Exists("Presupuestos.csv"))
-            {
-                using (StreamWriter sw = File.CreateText("Presupuestos.csv"))
-                    sw.WriteLine(presupuesto);
-            }
-            else
-            {
-                File.WriteAllText("Presupuestos.csv", presupuesto);
-            }
-        }
-        //public static List<Presupuesto> CargarArchivoPresupuesto()
-        //{
-        //    List<Presupuesto> presupuesto = new List<Presupuesto>();
-        //    using StreamReader archivo = new StreamReader("Presupuestos.csv");
-
-        //    string separador = ",";
-        //    string? _presupuesto;
-
-        //    while ((_presupuesto = archivo.ReadLine()) != null)
-        //    {
-
-        //        string[] fila = _presupuesto.Split(separador);
-        //        if(fila[0] != "")
-        //        {
-        //            List<Producto> productos = new List<Producto>();
-        //            Presupuesto aux;
-        //            string id = fila[0];
-        //            string producto = fila[1];
-        //            string estado = fila[2];
-        //            double precio = Convert.ToDouble(fila[3]);
-
-        //            string[] productosId = producto.Split(".");
-
-        //            foreach (string _id in productosId)
-        //            {
-        //                if(_id != "")
-        //                    productos.Add(PCMaker.BuscarProductoId(_id));
-        //            }
-        //            aux = new(id, productos,precio);
-        //            aux.Estado = ParsearEstados(estado);
-
-        //            presupuesto.Add(aux);
-        //        }
-                
-        //    }
-        //    return presupuesto;
-        //}
-        public static List<Venta> CargarArchivoVentas()
-        {
-            List<Venta> lista = new List<Venta>();
-
-            using StreamReader archivo = new StreamReader("Ventas.csv");
-
-            string separador = ",";
-            string? ventas;
-
-            while ((ventas = archivo.ReadLine()) != null)
-            {
-                string[] fila = ventas.Split(separador);
-                if (fila[0] != "")
+                if (_connection.State == ConnectionState.Open)
                 {
-                    string id = fila[0];
-                    string cliente = fila[1];
-                    string numeroTarjeta = fila[2];
-                    string cuotas = fila[3];
-                    string ganancia = fila[4];
-                    string usuario = fila[5];
-
-                    lista.Add(new(id, cliente, numeroTarjeta, cuotas, ganancia, usuario));
-                }   
+                    _connection.Close();
+                }
             }
-            return lista;
         }
-        private static string ParseUsuarioToCsv(List<Usuario> lista)
+        public static Cliente BuscarCliente(string dni)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (Usuario user in lista)
+            Cliente clienteBuscado = null!;
+
+            _connection.Open();
+
+            _command.CommandText = "SELECT * FROM Clientes";
+            reader = _command.ExecuteReader();
+
+            while (reader.Read())
             {
-                sb.AppendLine(user.ParsearDatos());
+                string nombre = reader.GetString(0);
+                string apellido = reader.GetString(1);
+                double _dni = Convert.ToDouble(reader.GetDecimal(2));
+                int edad = reader.GetInt32(3);
+                string direccion = reader.GetString(4);
+                string telefono = reader.GetString(5);
+                string correo = reader.GetString(6);
+
+                if (_dni.ToString() == dni)
+                {
+                    clienteBuscado = new(nombre, apellido, _dni, edad, direccion,telefono, correo);
+                    break;
+                }
             }
 
-            return sb.ToString();
+            reader.Close();
+
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            if (clienteBuscado != null)
+                return clienteBuscado;
+            else
+                throw new Exception("Usuario no encontrado");
         }
-        private static string ParseProductoToCsv(List<Producto>lista)
+        public static void EliminarCliente(Cliente cliente)
         {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (Producto producto in lista)
+            try
             {
-                sb.AppendLine(producto.parseProducto());
-            }
+                _connection.Open();
+                _command.CommandText = "DELETE Clientes WHERE Dni = @dni";
 
-            return sb.ToString();
+                _command.Parameters.AddWithValue("@dni", cliente.Dni);
+
+                _command.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _command.Parameters.Clear();
+
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
         }
-        private static string ParseClienteToCsv(List<Cliente>lista)
+        public static void ModificarCliente(Cliente cliente,string dni)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (Cliente cliente in lista)
+            try
             {
-                sb.AppendLine(cliente.ParsearDatos());
+                _connection.Open();
+                _command.CommandText = "UPDATE Clientes SET Nombre = @nombre, Apellido = @Apellido,Dni = @Dni, Edad = @Edad, "+
+                                       "Direccion = @Direccion, Telefono = @Telefono, Correo = @correo " +
+                                       $"WHERE Dni = @_dni";
+
+                _command.Parameters.AddWithValue("@nombre", cliente.Nombre);
+                _command.Parameters.AddWithValue("@Apellido", cliente.Apellido);
+                _command.Parameters.AddWithValue("@Dni", cliente.Dni);
+                _command.Parameters.AddWithValue("@Edad", cliente.Edad);
+                _command.Parameters.AddWithValue("@Direccion", cliente.Direccion);
+                _command.Parameters.AddWithValue("@Telefono", cliente.Telefono);
+                _command.Parameters.AddWithValue("@correo", cliente.Correo);
+
+                _command.Parameters.AddWithValue("@_dni", dni);
+
+                _command.ExecuteNonQuery();
+
             }
-
-            return sb.ToString();
-        }
-        private static string ParsePresupuestoToCsv(List<Presupuesto> lista)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (Presupuesto presupuesto in lista)
+            catch (Exception)
             {
-                sb.AppendLine(presupuesto.ToString());
+                throw;
             }
-
-            return sb.ToString();
-        }
-        private static string ParseVentastoToCsv(List<Venta> lista)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (Venta venta in lista)
+            finally
             {
-                sb.AppendLine(venta.ToString());
-            }
+                _command.Parameters.Clear();
 
-            return sb.ToString();
+                if (_connection.State == ConnectionState.Open)
+                {
+                    _connection.Close();
+                }
+            }
         }
         #endregion
     }

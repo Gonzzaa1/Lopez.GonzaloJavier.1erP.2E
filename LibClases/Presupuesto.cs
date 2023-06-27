@@ -13,16 +13,22 @@ namespace LibClases
         private EEstados _estado;
         private double _precio;
 
-        public Presupuesto(string id, List<Producto> productos,double precio)
+        public Presupuesto(List<Producto> productos, double precio)
         {
-            _id = id;
+            _id = String.Empty;
             _productos = productos;
             _estado = EEstados.Revision;
             _precio = precio;
+
+        }
+        public Presupuesto(string id, List<Producto> productos,double precio):this(productos,precio)
+        {
+            _id = id;
+            _estado = EEstados.Revision;
         }
 
         public string Id { get => _id; }
-        public List<Producto> Productos { get => _productos; }
+        public List<Producto> Productos { get => _productos; set => _productos = value; }
         public EEstados Estado { get => _estado; set => _estado = value; }
         public double Precio { get => _precio; set => _precio = value; }    
 

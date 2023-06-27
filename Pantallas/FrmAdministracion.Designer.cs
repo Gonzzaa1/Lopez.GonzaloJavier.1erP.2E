@@ -33,7 +33,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlTitle = new System.Windows.Forms.Panel();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.gbAdministracion = new System.Windows.Forms.GroupBox();
             this.btnCancelSol = new System.Windows.Forms.Button();
@@ -97,7 +96,6 @@
             // 
             // pnlTitle
             // 
-            this.pnlTitle.Controls.Add(this.btnGuardar);
             this.pnlTitle.Controls.Add(this.button1);
             this.pnlTitle.Controls.Add(this.label1);
             this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
@@ -105,24 +103,6 @@
             this.pnlTitle.Name = "pnlTitle";
             this.pnlTitle.Size = new System.Drawing.Size(1100, 83);
             this.pnlTitle.TabIndex = 1;
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGuardar.FlatAppearance.BorderSize = 0;
-            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardar.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Image = global::Pantallas.Properties.Resources.disco;
-            this.btnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGuardar.Location = new System.Drawing.Point(945, 12);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(130, 56);
-            this.btnGuardar.TabIndex = 1;
-            this.btnGuardar.Text = "GUARDAR";
-            this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // button1
             // 
@@ -704,7 +684,6 @@
         private Button btnConfirmSol;
         private Button btnNo;
         private Button btnOk;
-        private Button btnGuardar;
         private Button button1;
     }
 }

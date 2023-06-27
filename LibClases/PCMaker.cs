@@ -1,6 +1,10 @@
 ﻿
+using Newtonsoft.Json;
+using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Xml;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace LibClases
 {
@@ -8,31 +12,62 @@ namespace LibClases
     {
         private static List<Producto> _productos = new List<Producto>();
         private static List<Producto> _solcitudes = new List<Producto>();
-        private static List<Cliente> _clientes = new List<Cliente>();
         private static List<Producto> _presupuesto = new List<Producto>();
         private static List<Presupuesto> _solicitudPresupuesto = new List<Presupuesto>();
         private static List<Venta> _ventas = new List<Venta>();
 
         public static List<Producto> Productos { get => _productos; }
         public static List<Producto> Solicitudes { get => _solcitudes; }
-        public static List<Cliente> Clientes { get => _clientes; }
-        public static List<Producto> Presupuesto { get => _presupuesto; }
-        public static List<Presupuesto> SolPresupuesto { get => _solicitudPresupuesto; }
         public static List <Venta> Ventas { get => _ventas; }
 
         public static void Cargar()
         {
             _productos = BaseDatos.ObtenerProductos();
-            _clientes = BaseDatos.ObtenerClientes();
             _solicitudPresupuesto = BaseDatos.ObtenerPresupuestos();
-            _ventas = BaseDatos.CargarArchivoVentas();
+            _ventas = BaseDatos.ObtenerVentas();
+        }
+        public static void ExportarJSON<T>(string nombreArchivo,List<T> lista)
+        {
+            string json = JsonConvert.SerializeObject(lista, Formatting.Indented);
+            File.WriteAllText(nombreArchivo + ".json", json);
+        }
+        public static void ExportarCSV<T>(string nombreArchivo, List<T> lista)
+        {
+            if (lista == null || lista.Count == 0)
+                return;
+
+            using (StreamWriter writer = new StreamWriter(nombreArchivo+".csv", false, Encoding.UTF8))
+            {
+                if (typeof(T) == typeof(string))
+                {
+                    foreach (T item in lista)
+                    {
+                        writer.WriteLine(item);
+                    }
+                }
+                else
+                {
+                    Type tipoObjeto = typeof(T);
+                    PropertyInfo[] propiedades = tipoObjeto.GetProperties();
+
+                    string encabezados = string.Join(",", propiedades.Select(p => p.Name));
+                    writer.WriteLine(encabezados);
+
+                    foreach (T objeto in lista)
+                    {
+                        string linea = string.Join(",", propiedades.Select(p => p.GetValue(objeto)?.ToString() ?? ""));
+                        writer.WriteLine(linea);
+                    }
+                }
+            }
         }
         #region Control Venta
         public static void CrearVenta(string presuId,string cliente,string numeroTarjeta, string cuotas,string precioFinal,string usuario)
         {
             if(!String.IsNullOrEmpty(presuId) && !String.IsNullOrEmpty(cliente) && !String.IsNullOrEmpty(numeroTarjeta) && !String.IsNullOrEmpty(cuotas) && !String.IsNullOrEmpty(precioFinal) && !String.IsNullOrEmpty(usuario))
             {
-                _ventas.Add(new(presuId, cliente, numeroTarjeta,cuotas, precioFinal, usuario));
+                BaseDatos.AgregarVenta(new(presuId, cliente, numeroTarjeta,cuotas, precioFinal, usuario));
+                _ventas = BaseDatos.ObtenerVentas();
             }
         }
         #endregion
@@ -40,16 +75,9 @@ namespace LibClases
         public static Presupuesto BuscarPresupuesto(string id)
         {
             if(!String.IsNullOrEmpty(id))
-            {
-                foreach(Presupuesto presupuesto in _solicitudPresupuesto)
-                {
-                    if(presupuesto.Id == id)
-                    { 
-                        return presupuesto; 
-                    }
-                }
-            }
+                return BaseDatos.BuscarPresupuesto(id);
             throw new Exception("Presupuesto no encontrado");
+  
         }
         public static string MostrarProductosPresupuesto(List<Producto> lista)
         {
@@ -75,10 +103,12 @@ namespace LibClases
         }
         public static string CrearPresupuesto(double precio)
         {
-            Presupuesto nuevoPresupuesto = new Presupuesto(GeneradorId("numero"), _presupuesto,precio);
+            Presupuesto nuevoPresupuesto = new Presupuesto(_presupuesto, precio);
             _solicitudPresupuesto.Add(nuevoPresupuesto);
 
-            return nuevoPresupuesto.Id;
+            int id = BaseDatos.AgregarPresupuestoNuevo(nuevoPresupuesto);
+
+            return id.ToString();
         }
         public static void EliminarProductoPresupuesto(Producto producto)
         {
@@ -106,7 +136,8 @@ namespace LibClases
             {
                 if (double.TryParse(dni, out double _dni) && int.TryParse(edad, out int _edad))
                 {
-                    _clientes.Add(new(nombre, apellido, _dni, _edad, direccion, telefono,correo));
+                    Cliente nuevoCliente = new(nombre, apellido, _dni, _edad, direccion, telefono, correo);
+                    BaseDatos.AgregarCliente(nuevoCliente);
                 }
                 else
                 {
@@ -118,98 +149,30 @@ namespace LibClases
                 throw new Exception("Datos incorrectos o mal cargados");
             }
         }
-        public static void BajaCliente(Cliente cliente)
+        public static void BajaCliente(string dni)
         {
-            if(cliente != null)
-            {
-
-                Cliente auxCliente =null!;
-
-                foreach(Cliente cliente2 in _clientes)
-                {
-                    if(cliente2.Equals(cliente))
-                    {
-                        auxCliente = cliente;
-                    }
-                }
-                _clientes.Remove(auxCliente);
-            }
+            Cliente CBuscado = BaseDatos.BuscarCliente(dni);
+            BaseDatos.EliminarCliente(CBuscado); 
         }
         public static void ModificarCliente(Cliente clienteViejo,string nombre, string apellido, string dni, string edad, string direccion, string telefono, string correo)
         {
             if(clienteViejo != null && !String.IsNullOrEmpty(nombre) && !String.IsNullOrEmpty(apellido) && !String.IsNullOrEmpty(direccion) && !String.IsNullOrEmpty(telefono) && !String.IsNullOrEmpty(correo) && double.TryParse(dni, out double _dni) && int.TryParse(edad, out int _edad))
-            {     
-                foreach (Cliente cliente in _clientes)
-                {
-                    if(cliente.Equals(clienteViejo))
-                    {
-                        cliente.Nombre = nombre;
-                        cliente.Apellido = apellido;
-                        cliente.Dni = _dni;
-                        cliente.Edad = _edad;
-                        cliente.Direccion = direccion;
-                        cliente.Telefono = telefono;
-                        cliente.Correo = correo;
-                    }
-                }
+            {
+                Cliente clienteMod = new(nombre, apellido, _dni, _edad, direccion, telefono,correo);
+                BaseDatos.ModificarCliente(clienteMod, clienteViejo.Dni.ToString());
             }
             else
             {
                 throw new Exception("Datos incorrecto o mal cargados");
             }
         }
-        public static Cliente BuscarCliente(string dni)
-        {
-            if(int.TryParse(dni, out int _dni))
-            {
-                foreach(Cliente cliente in _clientes)
-                {
-                    if(cliente.Dni == _dni)
-                    {
-                        return cliente;
-                    }
-                }
-                throw new Exception("Cliente no encontrado");
-            }
-            else
-            {
-                throw new Exception("Cliente no encontrado");
-            }
-        }
         #endregion
         #region Control Productos
-        public static Producto BuscarProductoId(string id)
-        {
-            if (!String.IsNullOrEmpty(id))
-            {
-                Producto productoBuscado = null!;
-                foreach (Producto producto in _productos)
-                {
-                    if (producto.Id == id)
-                    {
-                        productoBuscado = producto;
-                    }
-                }
-                return productoBuscado;
-            }
-            else
-            {
-                throw new Exception("Producto no encontrado");
-            }
-        }
         public static Producto BuscarProducto(string nombre)
         {
             if(!String.IsNullOrEmpty(nombre))
             {
-                Producto productoBuscado = null!;
-                foreach(Producto producto in _productos)
-                {
-                    if(producto.Nombre == nombre)
-                    {
-                        productoBuscado = producto;
-                    }
-                }
-                return productoBuscado;
+                return BaseDatos.BuscarProducto(nombre);
             }
             else
             {
@@ -236,7 +199,7 @@ namespace LibClases
                 ECategoria _categoria = (ECategoria)Enum.Parse(typeof(ECategoria), categoria, true);
                 if (double.TryParse(precio, out double price) && int.TryParse(stock, out int stockCantidad))
                 {
-                    return new Producto(GeneradorId("alfanumerico"), nombre, marca, price, _categoria, stockCantidad);
+                    return new Producto(nombre, marca, price, _categoria, stockCantidad);
                 }
                 else
                 {
@@ -261,7 +224,10 @@ namespace LibClases
                 }
 
                 if(check)
-                    _productos.Add(producto);
+                {
+                    BaseDatos.AgregarProducto(producto);
+                    _productos = BaseDatos.ObtenerProductos();
+                }
                 else
                     throw new Exception("Producto ya existe en listado");
             }
@@ -270,60 +236,49 @@ namespace LibClases
         {
             if (producto != null)
             {
-                
-                foreach (Producto item in _productos)
-                {
-                    if(item == producto)
-                    {
-                        item.Stock -= 1;
-                    }
-                }
+                int stock = producto.Stock - 1;
+                BaseDatos.ModificarStockProducto(producto, stock);
             }
         }
-        public static void EliminarProducto(string id)
+        public static void EliminarProducto(string nombre)
         {
-            if(!String.IsNullOrEmpty(id))
+            if(!String.IsNullOrEmpty(nombre))
             {
-                Producto productoEliminado = null!;
-
-                foreach(Producto item in _productos)
-                {
-                    if(item.Id == id)
-                    {
-                        productoEliminado = item;
-                    }
-                }
-
+                Producto productoEliminado = BaseDatos.BuscarProducto(nombre);
+                BaseDatos.EliminarProducto(productoEliminado);
                 _productos.Remove(productoEliminado);
+
             }
             else
             {
-                throw new Exception("ID incorrecto");
+                throw new Exception("Producto no encontrado");
             }
         }
-        public static void SolicitarStock(string id)
+        public static void SolicitarStock(string nombre)
         {
-            if (!String.IsNullOrEmpty(id))
+            if (!String.IsNullOrEmpty(nombre))
             {
                 foreach (Producto producto in _productos)
                 {
-                    if (producto.Id == id)
+                    if (producto.Nombre == nombre)
                     {
                         _solcitudes.Add(producto);
                     }
                 }
             }
         }
-        public static void AgregarStock(string id, string stock)
+        public static void AgregarStock(string nombre, string stock)
         {
-            if (!String.IsNullOrEmpty(id) && int.TryParse(stock, out int cantidad))
+            if (!String.IsNullOrEmpty(nombre) && int.TryParse(stock, out int cantidad))
             {
-
-                foreach(Producto producto in _productos)
+                Producto producto = BaseDatos.BuscarProducto(nombre);
+                BaseDatos.ModificarStockProducto(producto, cantidad);
+                foreach(Producto p in _solcitudes)
                 {
-                    if(producto.Id == id)
+                    if(p.Nombre == producto.Nombre)
                     {
-                        producto.Stock = cantidad;
+                        _solcitudes.Remove(p);
+                        break;
                     }
                 }
             }
@@ -333,33 +288,5 @@ namespace LibClases
             }
         }
         #endregion
-        private static string GeneradorId(string tipo)
-        {
-            Random random = new Random();
-            string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            string numeros = "0123456789";
-            var clave = new char[16];
-
-            switch(tipo)
-            {
-                case "alfanumerico":
-                    for (int i = 0; i < clave.Length; i++)
-                    {
-                        clave[i] = caracteres[random.Next(caracteres.Length)];
-                    }
-                    break;
-                case "numero":
-                    for (int i = 0; i < clave.Length; i++)
-                    {
-                        clave[i] = numeros[random.Next(numeros.Length)];
-                    }
-                    break;
-            }
-
-            string resultado = new string(clave);
-
-            return resultado;
-        }
-
     }
 }

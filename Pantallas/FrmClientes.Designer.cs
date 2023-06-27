@@ -30,7 +30,6 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlTitle = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.pnlBotonera = new System.Windows.Forms.Panel();
@@ -67,7 +66,6 @@
             // 
             // pnlTitle
             // 
-            this.pnlTitle.Controls.Add(this.button2);
             this.pnlTitle.Controls.Add(this.label1);
             this.pnlTitle.Controls.Add(this.button1);
             this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
@@ -75,19 +73,6 @@
             this.pnlTitle.Name = "pnlTitle";
             this.pnlTitle.Size = new System.Drawing.Size(1100, 122);
             this.pnlTitle.TabIndex = 0;
-            // 
-            // button2
-            // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = global::Pantallas.Properties.Resources.disco;
-            this.button2.Location = new System.Drawing.Point(932, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(156, 82);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "GUARDAR";
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
@@ -422,7 +407,6 @@
         private Panel pnlTitle;
         private Label label1;
         private Button button1;
-        private Button button2;
         private Panel pnlBotonera;
         private Panel pnlDatos;
         private Label label5;

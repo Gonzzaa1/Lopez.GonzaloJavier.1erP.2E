@@ -70,6 +70,7 @@
             this.lblMain2 = new System.Windows.Forms.Label();
             this.lblMain1 = new System.Windows.Forms.Label();
             this.hora = new System.Windows.Forms.Timer(this.components);
+            this.btnInformes = new System.Windows.Forms.Button();
             this.pnlTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRest)).BeginInit();
@@ -192,7 +193,7 @@
             this.btnAdministracion.ForeColor = System.Drawing.Color.White;
             this.btnAdministracion.Image = global::Pantallas.Properties.Resources.ajustes;
             this.btnAdministracion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministracion.Location = new System.Drawing.Point(0, 877);
+            this.btnAdministracion.Location = new System.Drawing.Point(0, 917);
             this.btnAdministracion.Name = "btnAdministracion";
             this.btnAdministracion.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnAdministracion.Size = new System.Drawing.Size(323, 50);
@@ -205,11 +206,12 @@
             // 
             // pnlReportes
             // 
+            this.pnlReportes.Controls.Add(this.btnInformes);
             this.pnlReportes.Controls.Add(this.btnRVentas);
             this.pnlReportes.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlReportes.Location = new System.Drawing.Point(0, 837);
             this.pnlReportes.Name = "pnlReportes";
-            this.pnlReportes.Size = new System.Drawing.Size(323, 40);
+            this.pnlReportes.Size = new System.Drawing.Size(323, 80);
             this.pnlReportes.TabIndex = 11;
             // 
             // btnRVentas
@@ -529,7 +531,7 @@
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
             this.btnCerrarSesion.Image = global::Pantallas.Properties.Resources.salida_32x32;
             this.btnCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 927);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(0, 967);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnCerrarSesion.Size = new System.Drawing.Size(323, 50);
@@ -691,6 +693,25 @@
             this.hora.Enabled = true;
             this.hora.Tick += new System.EventHandler(this.hora_Tick);
             // 
+            // btnInformes
+            // 
+            this.btnInformes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(225)))));
+            this.btnInformes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnInformes.FlatAppearance.BorderSize = 0;
+            this.btnInformes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.btnInformes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInformes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnInformes.ForeColor = System.Drawing.Color.White;
+            this.btnInformes.Location = new System.Drawing.Point(0, 40);
+            this.btnInformes.Name = "btnInformes";
+            this.btnInformes.Padding = new System.Windows.Forms.Padding(60, 0, 0, 0);
+            this.btnInformes.Size = new System.Drawing.Size(323, 40);
+            this.btnInformes.TabIndex = 1;
+            this.btnInformes.Text = "Exportar Informes";
+            this.btnInformes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInformes.UseVisualStyleBackColor = false;
+            this.btnInformes.Click += new System.EventHandler(this.btnInformes_Click);
+            // 
             // FrmMenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -769,5 +790,6 @@
         private Button btnSolicitudes;
         public Label lblHoraLogo;
         private Button btnSolicitudStock;
+        private Button btnInformes;
     }
 }

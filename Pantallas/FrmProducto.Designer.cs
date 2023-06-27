@@ -30,7 +30,6 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlTitle = new System.Windows.Forms.Panel();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.gbBuscarProducto = new System.Windows.Forms.GroupBox();
@@ -57,6 +56,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.pnlStockInfo = new System.Windows.Forms.Panel();
             this.pnlDatos = new System.Windows.Forms.Panel();
+            this.cbMarcaProducto = new System.Windows.Forms.ComboBox();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -67,7 +67,6 @@
             this.txtStockProducto = new System.Windows.Forms.TextBox();
             this.cbCargaCategoria = new System.Windows.Forms.ComboBox();
             this.txtPrecioProducto = new System.Windows.Forms.TextBox();
-            this.txtMarcaProducto = new System.Windows.Forms.TextBox();
             this.txtNombreProducto = new System.Windows.Forms.TextBox();
             this.pnlLista = new System.Windows.Forms.Panel();
             this.pnlTitle.SuspendLayout();
@@ -87,7 +86,6 @@
             // 
             // pnlTitle
             // 
-            this.pnlTitle.Controls.Add(this.btnGuardar);
             this.pnlTitle.Controls.Add(this.label1);
             this.pnlTitle.Controls.Add(this.button1);
             this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
@@ -96,19 +94,6 @@
             this.pnlTitle.Name = "pnlTitle";
             this.pnlTitle.Size = new System.Drawing.Size(1100, 122);
             this.pnlTitle.TabIndex = 0;
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardar.Image = global::Pantallas.Properties.Resources.disco;
-            this.btnGuardar.Location = new System.Drawing.Point(921, 18);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(156, 82);
-            this.btnGuardar.TabIndex = 2;
-            this.btnGuardar.Text = "GUARDAR";
-            this.btnGuardar.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // label1
             // 
@@ -389,6 +374,7 @@
             // 
             // pnlDatos
             // 
+            this.pnlDatos.Controls.Add(this.cbMarcaProducto);
             this.pnlDatos.Controls.Add(this.btnCancelar);
             this.pnlDatos.Controls.Add(this.btnAceptar);
             this.pnlDatos.Controls.Add(this.label10);
@@ -399,13 +385,20 @@
             this.pnlDatos.Controls.Add(this.txtStockProducto);
             this.pnlDatos.Controls.Add(this.cbCargaCategoria);
             this.pnlDatos.Controls.Add(this.txtPrecioProducto);
-            this.pnlDatos.Controls.Add(this.txtMarcaProducto);
             this.pnlDatos.Controls.Add(this.txtNombreProducto);
             this.pnlDatos.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlDatos.Location = new System.Drawing.Point(0, 558);
             this.pnlDatos.Name = "pnlDatos";
             this.pnlDatos.Size = new System.Drawing.Size(1100, 215);
             this.pnlDatos.TabIndex = 4;
+            // 
+            // cbMarcaProducto
+            // 
+            this.cbMarcaProducto.FormattingEnabled = true;
+            this.cbMarcaProducto.Location = new System.Drawing.Point(185, 138);
+            this.cbMarcaProducto.Name = "cbMarcaProducto";
+            this.cbMarcaProducto.Size = new System.Drawing.Size(394, 30);
+            this.cbMarcaProducto.TabIndex = 9;
             // 
             // btnCancelar
             // 
@@ -488,6 +481,7 @@
             this.cbCargaCategoria.Name = "cbCargaCategoria";
             this.cbCargaCategoria.Size = new System.Drawing.Size(394, 30);
             this.cbCargaCategoria.TabIndex = 3;
+            this.cbCargaCategoria.TextChanged += new System.EventHandler(this.cbCargaCategoria_TextChanged);
             // 
             // txtPrecioProducto
             // 
@@ -495,13 +489,6 @@
             this.txtPrecioProducto.Name = "txtPrecioProducto";
             this.txtPrecioProducto.Size = new System.Drawing.Size(188, 30);
             this.txtPrecioProducto.TabIndex = 2;
-            // 
-            // txtMarcaProducto
-            // 
-            this.txtMarcaProducto.Location = new System.Drawing.Point(185, 137);
-            this.txtMarcaProducto.Name = "txtMarcaProducto";
-            this.txtMarcaProducto.Size = new System.Drawing.Size(394, 30);
-            this.txtMarcaProducto.TabIndex = 1;
             // 
             // txtNombreProducto
             // 
@@ -595,9 +582,7 @@
         private TextBox txtStockProducto;
         private ComboBox cbCargaCategoria;
         private TextBox txtPrecioProducto;
-        private TextBox txtMarcaProducto;
         private TextBox txtNombreProducto;
-        private Button btnGuardar;
         private Button btnCancelar;
         private Button btnAceptar;
         private Label label10;
@@ -605,5 +590,6 @@
         private Label label8;
         private Label label7;
         private Label label6;
+        private ComboBox cbMarcaProducto;
     }
 }

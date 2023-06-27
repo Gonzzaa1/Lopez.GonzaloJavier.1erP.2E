@@ -1,4 +1,5 @@
 ﻿using LibClases;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,25 +18,29 @@ namespace Pantallas
         private bool _busqueda;
         private string? _dni;
         private bool _mod;
+        Logs log = new Logs();
         private FrmClientes()
         {
             InitializeComponent();
             _usuario = null!;
+            log.logEvento += BaseDatos.CrearRegistro;
         }
         public FrmClientes(Usuario user, bool busqueda) : this()
         {
             _usuario = user;
             _busqueda = busqueda;
         }
-
+        public void CrearMensajeRegistro(string mensaje)
+        {
+            log.Log($"{DateTime.Now} : {mensaje}");
+        }
         private void FrmClientes_Load(object sender, EventArgs e)
         {
             btnAceptar.Visible = false;
             btnCancelar.Visible = false;
             btnBaja.Visible = false;
             btnMod.Visible = false;
-            dgvListado.DataSource = null;
-            dgvListado.DataSource = PCMaker.Clientes;
+            Actualizarlistado();
 
             if(_busqueda)
             {
@@ -43,15 +48,14 @@ namespace Pantallas
                 pnlLista.Visible = false;
             }
         }
+        private void Actualizarlistado()
+        {
+            dgvListado.DataSource = null;
+            dgvListado.DataSource = BaseDatos.ObtenerClientes();
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Close();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            BaseDatos.GuardarArchivoCliente(PCMaker.Clientes);
             Close();
         }
 
@@ -59,8 +63,7 @@ namespace Pantallas
         {
             if(txtBuscar.Text != String.Empty)
             {
-                dgvListado.DataSource = null;
-                dgvListado.DataSource = PCMaker.Clientes;
+                Actualizarlistado();
             }
         }
 
@@ -70,7 +73,8 @@ namespace Pantallas
             {
                 try
                 {
-                    Cliente clienteBuscado = PCMaker.BuscarCliente(txtBuscar.Text);
+                    Cliente clienteBuscado = BaseDatos.BuscarCliente(txtBuscar.Text);
+                    CrearMensajeRegistro($"El usuario {_usuario.User} busco al cliente DNI {clienteBuscado.Dni}.");
                     txtNombre.Text = clienteBuscado.Nombre;
                     txtApellido.Text = clienteBuscado.Apellido;
                     txtDni.Text = clienteBuscado.Dni.ToString();
@@ -116,6 +120,7 @@ namespace Pantallas
             txtNombre.Enabled = true;
             btnAceptar.Visible = true;
             btnCancelar.Visible = true;
+            CrearMensajeRegistro($"El usuario {_usuario.User} ingreso a dar de alta un cliente.");
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -125,9 +130,8 @@ namespace Pantallas
                 if(_mod && _dni != null)
                 {
                     
-                    Cliente cliente = PCMaker.BuscarCliente(_dni);
+                    Cliente cliente = BaseDatos.BuscarCliente(_dni);
                     PCMaker.ModificarCliente(cliente, txtNombre.Text, txtApellido.Text, txtDni.Text, txtEdad.Text, txtDireccion.Text, txtTelefono.Text, txtCorreo.Text);
-                    pnlDatos.Visible = false;
                     pnlBotonera.Enabled = true;
                     pnlLista.Visible = true;
                     btnBaja.Visible = false;
@@ -136,18 +140,18 @@ namespace Pantallas
                     _mod = false;
                     ReestablecerDatos();
                     MessageBox.Show($"Cliente {cliente.Nombre} {cliente.Apellido} modificado correctamente");
+                    CrearMensajeRegistro($"El usuario {_usuario.User} modifico correctamente al cliente DNI {txtDni.Text}.");
                 }
                 else
                 {
                     PCMaker.AltaCliente(txtNombre.Text, txtApellido.Text, txtDni.Text, txtEdad.Text, txtDireccion.Text, txtTelefono.Text, txtCorreo.Text);
-                    pnlDatos.Visible = false;
                     pnlBotonera.Visible = true;
                     pnlLista.Visible = true;
                     ReestablecerDatos();
                     MessageBox.Show("Nuevo Cliente agregado");
+                    CrearMensajeRegistro($"El usuario {_usuario.User} dio de alta al cliente DNI {txtDni.Text}.");
                 }
-                dgvListado.DataSource = null;
-                dgvListado.DataSource = PCMaker.Clientes;
+                Actualizarlistado();
             }
             catch(Exception ex)
             {
@@ -224,6 +228,7 @@ namespace Pantallas
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             ReestablecerDatos();
+            CrearMensajeRegistro($"El usuario {_usuario.User} cancelo la modificacion o alta de un cliente.");
         }
 
         private void btnBaja_Click(object sender, EventArgs e)
@@ -236,13 +241,13 @@ namespace Pantallas
                 {
                     if(_dni != null)
                     {
-                        PCMaker.BajaCliente(PCMaker.BuscarCliente(_dni));
+                        PCMaker.BajaCliente(_dni);
                         MessageBox.Show("Cliente eliminado");
                         btnBaja.Visible = false;
                         btnMod.Visible = false;
                         ReestablecerDatos();
-                        dgvListado.DataSource = null;
-                        dgvListado.DataSource = PCMaker.Clientes;
+                        Actualizarlistado();
+                        CrearMensajeRegistro($"El usuario {_usuario.User} elimino al cliente DNI {_dni} correctamente.");
                     }
                 }
                 catch(Exception ex)
@@ -265,6 +270,7 @@ namespace Pantallas
             txtCorreo.Enabled = true;
             btnAceptar.Visible = true;
             btnCancelar.Visible = true;
+            CrearMensajeRegistro($"El usuario {_usuario.User} ingreso a la seccion de modificar cliente.");
         }
     }
 }

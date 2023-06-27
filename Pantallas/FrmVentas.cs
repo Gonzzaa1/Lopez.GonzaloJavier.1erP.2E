@@ -1,4 +1,5 @@
 ﻿using LibClases;
+using Microsoft.VisualBasic.Logging;
 
 namespace Pantallas
 {
@@ -13,9 +14,11 @@ namespace Pantallas
         private Usuario? _usuario;
         private double _precioFinal;
         private int _cuotas;
+        Logs log = new Logs();
         private FrmVentas()
         {
             InitializeComponent();
+            log.logEvento += BaseDatos.CrearRegistro;
         }
         public FrmVentas(Usuario usuario,bool presupuesto,bool venta, bool estado,bool solicitudes):this()
         {
@@ -25,7 +28,10 @@ namespace Pantallas
             _solicitudes = solicitudes;
             _usuario = usuario;
         }
-
+        public void CrearMensajeRegistro(string mensaje)
+        {
+            log.Log($"{DateTime.Now} : {mensaje}");
+        }
         private void FrmVentas_Load(object sender, EventArgs e)
         {
             pnCliente.Visible = false;
@@ -60,7 +66,12 @@ namespace Pantallas
                 pnlSolicitudes.Visible = true;
                 btnAprobar.Visible = false;
                 btnRechazar.Visible = false;
-                dgvSolicitudes.Visible = false;
+                lblId.Text = String.Empty;
+                lblEstadoPresupuesto.Text = String.Empty;
+                dgvSolicitudes.Enabled = false;
+                dgvSolicitudes.DataSource = null;
+                dgvSolicitudes.DataSource = BaseDatos.ObtenerPresupuestos();
+                dgvSolicitudes.Columns[1].Visible = false;
             }
             else if(_solicitudes)
             {
@@ -71,7 +82,7 @@ namespace Pantallas
                 lblId.Text = String.Empty;
                 lblEstadoPresupuesto.Text = String.Empty;
                 dgvSolicitudes.DataSource = null;
-                dgvSolicitudes.DataSource = PCMaker.SolPresupuesto;
+                dgvSolicitudes.DataSource = BaseDatos.ObtenerPresupuestos();
                 dgvSolicitudes.Columns[1].Visible = false;
 
             }
@@ -346,6 +357,7 @@ namespace Pantallas
                 MessageBox.Show($"Presupuesto N° {lblPresupuestoID.Text} Creado");
                 pnPresupuesto.Visible = false;
                 pnCliente.Visible = true;
+                CrearMensajeRegistro($"El usuario {_usuario?.User} genero el Presupuesto N° {lblPresupuestoID.Text}.");
                 
             }
             else
@@ -360,7 +372,7 @@ namespace Pantallas
             {
                 try
                 {
-                    Cliente clienteBuscado = PCMaker.BuscarCliente(txtBuscarCliente.Text);
+                    Cliente clienteBuscado = BaseDatos.BuscarCliente(txtBuscarCliente.Text);
                     if(_presupuesto)
                     {
                         lblNombre.Text = clienteBuscado.Nombre;
@@ -424,6 +436,7 @@ namespace Pantallas
             try
             {
                 PCMaker.AltaCliente(txtNombre.Text, txtApellido.Text, txtDni.Text, txtEdad.Text, txtDomicilio.Text, txtTelefono.Text, txtCorreo.Text);
+                CrearMensajeRegistro($"El usuario {_usuario?.User} dio de alta al cliente {txtNombre.Text} {txtApellido.Text} DNI:{txtDni.Text}.");
                 if(_solicitudes)
                 {
                     lblApellido.Text = txtApellido.Text;
@@ -475,7 +488,6 @@ namespace Pantallas
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Presupuesto Enviado Correctamente");
-            BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
             Close();
         }
         private void BuscarPresupuesto(string id)
@@ -483,7 +495,8 @@ namespace Pantallas
             try
             {
                 Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(id);
-                if(_venta)
+                CrearMensajeRegistro($"El usuario {_usuario?.User} busco el presupuesto N° {id}.");
+                if (_venta)
                 {
                     if(presupuestoSeleccionado.Estado == EEstados.Aprobado)
                     {
@@ -502,6 +515,14 @@ namespace Pantallas
                         throw new Exception("Presupuesto no aprobado");
                     }
                     
+                }
+                else if(_estado)
+                {
+                    lblId.Text = presupuestoSeleccionado.Id;
+                    lblEstadoPresupuesto.Text = presupuestoSeleccionado.Estado.ToString();
+                    rtbPresupuesto.Text = PCMaker.MostrarProductosPresupuesto(presupuestoSeleccionado.Productos);
+                    btnAprobar.Visible = false;
+                    btnRechazar.Visible = false;
                 }
                 else
                 {
@@ -542,6 +563,11 @@ namespace Pantallas
                 BuscarPresupuesto(txtBuscarPVenta.Text);
                 txtBuscarPVenta.Text = String.Empty;
             }
+            if(_estado)
+            {
+                BuscarPresupuesto(txtBuscarNPresupuesto.Text);
+                txtBuscarNPresupuesto.Text = String.Empty;
+            }
         }
 
         private void btnRechazar_Click(object sender, EventArgs e)
@@ -553,7 +579,8 @@ namespace Pantallas
             lblId.Text = String.Empty;
             lblEstadoPresupuesto.Text = String.Empty;
 
-            BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
+            BaseDatos.ModificarEstadoPresupuesto(presupuesto);
+            CrearMensajeRegistro($"El usuario {_usuario?.User} rechazo el presupuesto N° {lblId.Text}.");
         }
 
         private void btnAprobar_Click(object sender, EventArgs e)
@@ -565,16 +592,19 @@ namespace Pantallas
             lblId.Text = String.Empty;
             lblEstadoPresupuesto.Text = String.Empty;
 
-            BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
+            BaseDatos.ModificarEstadoPresupuesto(presupuesto);
+            CrearMensajeRegistro($"El usuario {_usuario?.User} aprobo el presupuesto N° {lblId.Text}.");
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
+            CrearMensajeRegistro($"El usuario {_usuario?.User} volvio al menu principal.");
             Close();
         }
 
         private void btnPresupuesto_Click(object sender, EventArgs e)
         {
+            CrearMensajeRegistro($"El usuario {_usuario?.User} ingreso a la seccion de generar presupuesto.");
             btnPresupuesto.Visible = false;
             pnlVenta.Visible = false;
             pnPresupuesto.Visible = true;
@@ -738,7 +768,8 @@ namespace Pantallas
                 else
                     numero = txtNumeroTarjeta.Text;
 
-                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteNombre.Text, numero, _cuotas.ToString(), _precioFinal.ToString("#.##"), _usuario.User);
+                PCMaker.CrearVenta(lblIdPresupuesto.Text, lblClienteDni.Text, numero, _cuotas.ToString(), _precioFinal.ToString("#.##"), _usuario.User);
+                CrearMensajeRegistro($"El usuario {_usuario.User} realizo la venta del presupuesto N° {lblIdPresupuesto.Text}.");
 
                 _precioPresupuesto = 0;
                 pnlVenta.Visible = false;
@@ -749,14 +780,12 @@ namespace Pantallas
                 Presupuesto presupuestoSeleccionado = PCMaker.BuscarPresupuesto(lblIdPresupuesto.Text);
 
                 presupuestoSeleccionado.Estado = EEstados.Finalizado;
+                BaseDatos.ModificarEstadoPresupuesto(presupuestoSeleccionado);
+                
                 foreach(Producto producto in presupuestoSeleccionado.Productos)
                 {
                     PCMaker.SacarStockProducto(producto);
                 }
-
-                BaseDatos.GuardarArchivoVentas(PCMaker.Ventas);
-                BaseDatos.GuardarArchivoPresupuesto(PCMaker.SolPresupuesto);
-                BaseDatos.GuardarArchivoProducto(PCMaker.Productos);
             }
             
         }

@@ -271,7 +271,7 @@
             this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTitle.Location = new System.Drawing.Point(0, 0);
             this.pnlTitle.Name = "pnlTitle";
-            this.pnlTitle.Size = new System.Drawing.Size(1083, 122);
+            this.pnlTitle.Size = new System.Drawing.Size(1090, 122);
             this.pnlTitle.TabIndex = 0;
             // 
             // label1
@@ -317,7 +317,7 @@
             this.pnPresupuesto.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnPresupuesto.Location = new System.Drawing.Point(0, 122);
             this.pnPresupuesto.Name = "pnPresupuesto";
-            this.pnPresupuesto.Size = new System.Drawing.Size(1083, 742);
+            this.pnPresupuesto.Size = new System.Drawing.Size(1090, 742);
             this.pnPresupuesto.TabIndex = 1;
             // 
             // panel6
@@ -328,7 +328,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(245, 96);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(550, 646);
+            this.panel6.Size = new System.Drawing.Size(557, 646);
             this.panel6.TabIndex = 24;
             // 
             // pnSelector
@@ -340,7 +340,7 @@
             this.pnSelector.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnSelector.Location = new System.Drawing.Point(0, 108);
             this.pnSelector.Name = "pnSelector";
-            this.pnSelector.Size = new System.Drawing.Size(550, 538);
+            this.pnSelector.Size = new System.Drawing.Size(557, 538);
             this.pnSelector.TabIndex = 2;
             // 
             // rtbInfoProducto
@@ -395,7 +395,7 @@
             this.pnPerifericos.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnPerifericos.Location = new System.Drawing.Point(0, 54);
             this.pnPerifericos.Name = "pnPerifericos";
-            this.pnPerifericos.Size = new System.Drawing.Size(550, 54);
+            this.pnPerifericos.Size = new System.Drawing.Size(557, 54);
             this.pnPerifericos.TabIndex = 1;
             // 
             // btnMicrofono
@@ -477,7 +477,7 @@
             this.pnMarcas.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnMarcas.Location = new System.Drawing.Point(0, 0);
             this.pnMarcas.Name = "pnMarcas";
-            this.pnMarcas.Size = new System.Drawing.Size(550, 54);
+            this.pnMarcas.Size = new System.Drawing.Size(557, 54);
             this.pnMarcas.TabIndex = 0;
             // 
             // btnAmd
@@ -509,7 +509,7 @@
             this.panel4.Controls.Add(this.dgvProductos);
             this.panel4.Controls.Add(this.panel5);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(795, 96);
+            this.panel4.Location = new System.Drawing.Point(802, 96);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(288, 646);
             this.panel4.TabIndex = 21;
@@ -713,7 +713,7 @@
             this.pnTipo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTipo.Location = new System.Drawing.Point(245, 0);
             this.pnTipo.Name = "pnTipo";
-            this.pnTipo.Size = new System.Drawing.Size(838, 96);
+            this.pnTipo.Size = new System.Drawing.Size(845, 96);
             this.pnTipo.TabIndex = 11;
             // 
             // rtbInfo
@@ -788,7 +788,7 @@
             this.pnCliente.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnCliente.Location = new System.Drawing.Point(0, 864);
             this.pnCliente.Name = "pnCliente";
-            this.pnCliente.Size = new System.Drawing.Size(1083, 252);
+            this.pnCliente.Size = new System.Drawing.Size(1090, 252);
             this.pnCliente.TabIndex = 2;
             // 
             // pnEnviar
@@ -803,7 +803,7 @@
             this.pnEnviar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnEnviar.Location = new System.Drawing.Point(0, 200);
             this.pnEnviar.Name = "pnEnviar";
-            this.pnEnviar.Size = new System.Drawing.Size(1083, 52);
+            this.pnEnviar.Size = new System.Drawing.Size(1090, 52);
             this.pnEnviar.TabIndex = 11;
             this.pnEnviar.Visible = false;
             // 
@@ -893,7 +893,7 @@
             this.pnlDatosCliente.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlDatosCliente.Location = new System.Drawing.Point(0, 53);
             this.pnlDatosCliente.Name = "pnlDatosCliente";
-            this.pnlDatosCliente.Size = new System.Drawing.Size(1083, 147);
+            this.pnlDatosCliente.Size = new System.Drawing.Size(1090, 147);
             this.pnlDatosCliente.TabIndex = 10;
             this.pnlDatosCliente.Visible = false;
             // 
@@ -1041,7 +1041,7 @@
             this.pnlBuscarCliente.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlBuscarCliente.Location = new System.Drawing.Point(0, 0);
             this.pnlBuscarCliente.Name = "pnlBuscarCliente";
-            this.pnlBuscarCliente.Size = new System.Drawing.Size(1083, 53);
+            this.pnlBuscarCliente.Size = new System.Drawing.Size(1090, 53);
             this.pnlBuscarCliente.TabIndex = 9;
             // 
             // txtBuscarCliente
@@ -1104,7 +1104,7 @@
             this.pnlVenta.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlVenta.Location = new System.Drawing.Point(0, 1116);
             this.pnlVenta.Name = "pnlVenta";
-            this.pnlVenta.Size = new System.Drawing.Size(1083, 738);
+            this.pnlVenta.Size = new System.Drawing.Size(1090, 738);
             this.pnlVenta.TabIndex = 3;
             // 
             // pnBuscarPresupuesto
@@ -1116,7 +1116,7 @@
             this.pnBuscarPresupuesto.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnBuscarPresupuesto.Location = new System.Drawing.Point(0, 671);
             this.pnBuscarPresupuesto.Name = "pnBuscarPresupuesto";
-            this.pnBuscarPresupuesto.Size = new System.Drawing.Size(1083, 67);
+            this.pnBuscarPresupuesto.Size = new System.Drawing.Size(1090, 67);
             this.pnBuscarPresupuesto.TabIndex = 3;
             // 
             // btnPresupuesto
@@ -1165,7 +1165,7 @@
             this.pnlFinal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFinal.Location = new System.Drawing.Point(0, 609);
             this.pnlFinal.Name = "pnlFinal";
-            this.pnlFinal.Size = new System.Drawing.Size(1083, 62);
+            this.pnlFinal.Size = new System.Drawing.Size(1090, 62);
             this.pnlFinal.TabIndex = 2;
             // 
             // btnRealizarVenta
@@ -1186,7 +1186,7 @@
             this.pnlDatosVenta.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlDatosVenta.Location = new System.Drawing.Point(0, 149);
             this.pnlDatosVenta.Name = "pnlDatosVenta";
-            this.pnlDatosVenta.Size = new System.Drawing.Size(1083, 460);
+            this.pnlDatosVenta.Size = new System.Drawing.Size(1090, 460);
             this.pnlDatosVenta.TabIndex = 1;
             // 
             // panel1
@@ -1199,7 +1199,7 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.pnlInfoPago);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(1, 0);
+            this.panel1.Location = new System.Drawing.Point(8, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(603, 460);
             this.panel1.TabIndex = 1;
@@ -1737,7 +1737,7 @@
             this.rtbVentaProducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.rtbVentaProducto.Dock = System.Windows.Forms.DockStyle.Right;
             this.rtbVentaProducto.ForeColor = System.Drawing.Color.White;
-            this.rtbVentaProducto.Location = new System.Drawing.Point(604, 0);
+            this.rtbVentaProducto.Location = new System.Drawing.Point(611, 0);
             this.rtbVentaProducto.Name = "rtbVentaProducto";
             this.rtbVentaProducto.ReadOnly = true;
             this.rtbVentaProducto.Size = new System.Drawing.Size(479, 460);
@@ -1765,7 +1765,7 @@
             this.pnDatosCVenta.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnDatosCVenta.Location = new System.Drawing.Point(0, 0);
             this.pnDatosCVenta.Name = "pnDatosCVenta";
-            this.pnDatosCVenta.Size = new System.Drawing.Size(1083, 149);
+            this.pnDatosCVenta.Size = new System.Drawing.Size(1090, 149);
             this.pnDatosCVenta.TabIndex = 0;
             // 
             // label23
@@ -1920,7 +1920,7 @@
             this.pnlFactura.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFactura.Location = new System.Drawing.Point(0, 1854);
             this.pnlFactura.Name = "pnlFactura";
-            this.pnlFactura.Size = new System.Drawing.Size(1083, 738);
+            this.pnlFactura.Size = new System.Drawing.Size(1090, 738);
             this.pnlFactura.TabIndex = 4;
             // 
             // panel7
@@ -2181,7 +2181,7 @@
             this.pnlSolicitudes.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSolicitudes.Location = new System.Drawing.Point(0, 2592);
             this.pnlSolicitudes.Name = "pnlSolicitudes";
-            this.pnlSolicitudes.Size = new System.Drawing.Size(1083, 742);
+            this.pnlSolicitudes.Size = new System.Drawing.Size(1090, 742);
             this.pnlSolicitudes.TabIndex = 5;
             this.pnlSolicitudes.Visible = false;
             // 
@@ -2204,7 +2204,7 @@
             this.dgvSolicitudes.ReadOnly = true;
             this.dgvSolicitudes.RowHeadersVisible = false;
             this.dgvSolicitudes.RowTemplate.Height = 25;
-            this.dgvSolicitudes.Size = new System.Drawing.Size(245, 672);
+            this.dgvSolicitudes.Size = new System.Drawing.Size(252, 672);
             this.dgvSolicitudes.TabIndex = 2;
             this.dgvSolicitudes.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSolicitudes_CellContentDoubleClick);
             // 
@@ -2218,7 +2218,7 @@
             this.pnlDatosSolis.Controls.Add(this.lblId);
             this.pnlDatosSolis.Controls.Add(this.label13);
             this.pnlDatosSolis.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlDatosSolis.Location = new System.Drawing.Point(245, 70);
+            this.pnlDatosSolis.Location = new System.Drawing.Point(252, 70);
             this.pnlDatosSolis.Name = "pnlDatosSolis";
             this.pnlDatosSolis.Size = new System.Drawing.Size(838, 672);
             this.pnlDatosSolis.TabIndex = 1;
@@ -2300,7 +2300,7 @@
             this.pnlBuscarPresupuesto.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlBuscarPresupuesto.Location = new System.Drawing.Point(0, 0);
             this.pnlBuscarPresupuesto.Name = "pnlBuscarPresupuesto";
-            this.pnlBuscarPresupuesto.Size = new System.Drawing.Size(1083, 70);
+            this.pnlBuscarPresupuesto.Size = new System.Drawing.Size(1090, 70);
             this.pnlBuscarPresupuesto.TabIndex = 0;
             // 
             // btnBuscarPresupuesto
@@ -2337,7 +2337,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.ClientSize = new System.Drawing.Size(1100, 864);
+            this.ClientSize = new System.Drawing.Size(1107, 864);
             this.Controls.Add(this.pnlSolicitudes);
             this.Controls.Add(this.pnlFactura);
             this.Controls.Add(this.pnlVenta);
